@@ -28,33 +28,170 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Test = new System.Windows.Forms.Button();
+            this.runButton = new System.Windows.Forms.Button();
+            this.topMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programCommand = new System.Windows.Forms.TextBox();
+            this.singleCommand = new System.Windows.Forms.TextBox();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.canvas = new System.Windows.Forms.PictureBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.loadButton = new System.Windows.Forms.Button();
+            this.runCommand = new System.Windows.Forms.Button();
+            this.topMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
-            // Test
+            // runButton
             // 
-            this.Test.Location = new System.Drawing.Point(384, 273);
-            this.Test.Name = "Test";
-            this.Test.Size = new System.Drawing.Size(75, 23);
-            this.Test.TabIndex = 0;
-            this.Test.Text = "button1";
-            this.Test.UseVisualStyleBackColor = true;
+            this.runButton.Location = new System.Drawing.Point(12, 710);
+            this.runButton.Name = "runButton";
+            this.runButton.Size = new System.Drawing.Size(160, 23);
+            this.runButton.TabIndex = 0;
+            this.runButton.Text = "Run";
+            this.runButton.UseVisualStyleBackColor = true;
+            // 
+            // topMenu
+            // 
+            this.topMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.topMenu.Location = new System.Drawing.Point(0, 0);
+            this.topMenu.Name = "topMenu";
+            this.topMenu.Size = new System.Drawing.Size(1393, 24);
+            this.topMenu.TabIndex = 1;
+            this.topMenu.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.loadToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Text = "Load";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
+            // programCommand
+            // 
+            this.programCommand.Location = new System.Drawing.Point(12, 27);
+            this.programCommand.Multiline = true;
+            this.programCommand.Name = "programCommand";
+            this.programCommand.Size = new System.Drawing.Size(492, 677);
+            this.programCommand.TabIndex = 2;
+            // 
+            // singleCommand
+            // 
+            this.singleCommand.Location = new System.Drawing.Point(518, 713);
+            this.singleCommand.Name = "singleCommand";
+            this.singleCommand.Size = new System.Drawing.Size(694, 20);
+            this.singleCommand.TabIndex = 3;
+            // 
+            // canvas
+            // 
+            this.canvas.BackColor = System.Drawing.Color.Gainsboro;
+            this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.canvas.Location = new System.Drawing.Point(518, 27);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(860, 677);
+            this.canvas.TabIndex = 4;
+            this.canvas.TabStop = false;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(178, 710);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(160, 23);
+            this.saveButton.TabIndex = 5;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            // 
+            // loadButton
+            // 
+            this.loadButton.Location = new System.Drawing.Point(344, 710);
+            this.loadButton.Name = "loadButton";
+            this.loadButton.Size = new System.Drawing.Size(160, 23);
+            this.loadButton.TabIndex = 6;
+            this.loadButton.Text = "Load";
+            this.loadButton.UseVisualStyleBackColor = true;
+            // 
+            // runCommand
+            // 
+            this.runCommand.AutoEllipsis = true;
+            this.runCommand.Location = new System.Drawing.Point(1218, 713);
+            this.runCommand.Name = "runCommand";
+            this.runCommand.Size = new System.Drawing.Size(160, 23);
+            this.runCommand.TabIndex = 7;
+            this.runCommand.Text = "Run";
+            this.runCommand.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.Test);
+            this.BackColor = System.Drawing.Color.Silver;
+            this.ClientSize = new System.Drawing.Size(1393, 745);
+            this.Controls.Add(this.runCommand);
+            this.Controls.Add(this.loadButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.canvas);
+            this.Controls.Add(this.singleCommand);
+            this.Controls.Add(this.programCommand);
+            this.Controls.Add(this.runButton);
+            this.Controls.Add(this.topMenu);
+            this.MainMenuStrip = this.topMenu;
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ASE";
+            this.topMenu.ResumeLayout(false);
+            this.topMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button Test;
+        private System.Windows.Forms.Button runButton;
+        private System.Windows.Forms.MenuStrip topMenu;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.TextBox programCommand;
+        private System.Windows.Forms.TextBox singleCommand;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.PictureBox canvas;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.Button runCommand;
     }
 }
 
