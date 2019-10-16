@@ -14,7 +14,7 @@ namespace ase
 
         public void Draw()
         {
-            Console.WriteLine("Drawing a circle");
+            
         }
 
     }

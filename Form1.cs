@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,24 +13,34 @@ namespace ase
 {
     public partial class Form1 : Form
     {
+        Parser commandParser = new Parser();
+        FileManager file = new FileManager();
+        Bitmap drawing;
+
         public Form1()
         {
             InitializeComponent();
+            drawing = new Bitmap(canvas.Size.Width, canvas.Size.Height);
+            canvas.Image = drawing;
         }
 
         private void loadButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Load button on form clicked.");
+            programCommand.Text = file.LoadFile();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Save button on form clicked.");
+            file.SaveFile(programCommand.Text);
         }
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Run button (for multi line program) on form clicked.");
+           
+            commandParser.testDraw(canvas, drawing);
+
+            commandParser.callParser(programCommand.Text);
+            
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -47,6 +58,21 @@ namespace ase
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void runCommand_Click(object sender, EventArgs e)
+        {
+            commandParser.callParser(singleCommand.Text);
         }
     }
 }

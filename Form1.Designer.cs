@@ -31,6 +31,7 @@
             this.runButton = new System.Windows.Forms.Button();
             this.topMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,14 +43,13 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.loadButton = new System.Windows.Forms.Button();
             this.runCommand = new System.Windows.Forms.Button();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.SuspendLayout();
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(12, 710);
+            this.runButton.Location = new System.Drawing.Point(344, 713);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(160, 23);
             this.runButton.TabIndex = 0;
@@ -78,32 +78,40 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // programCommand
             // 
+            this.programCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
             this.programCommand.Location = new System.Drawing.Point(12, 27);
             this.programCommand.Multiline = true;
             this.programCommand.Name = "programCommand";
+            this.programCommand.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.programCommand.Size = new System.Drawing.Size(492, 677);
             this.programCommand.TabIndex = 2;
             // 
@@ -123,6 +131,7 @@
             this.canvas.Size = new System.Drawing.Size(860, 677);
             this.canvas.TabIndex = 4;
             this.canvas.TabStop = false;
+            this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             // 
             // openFileDialog
             // 
@@ -130,7 +139,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(178, 710);
+            this.saveButton.Location = new System.Drawing.Point(12, 713);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(160, 23);
             this.saveButton.TabIndex = 5;
@@ -140,7 +149,7 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(344, 710);
+            this.loadButton.Location = new System.Drawing.Point(178, 713);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(160, 23);
             this.loadButton.TabIndex = 6;
@@ -157,12 +166,7 @@
             this.runCommand.TabIndex = 7;
             this.runCommand.Text = "Run";
             this.runCommand.UseVisualStyleBackColor = true;
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.aboutToolStripMenuItem.Text = "About";
+            this.runCommand.Click += new System.EventHandler(this.runCommand_Click);
             // 
             // Form1
             // 
@@ -178,10 +182,12 @@
             this.Controls.Add(this.programCommand);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.topMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.topMenu;
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ASE";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.topMenu.ResumeLayout(false);
             this.topMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
