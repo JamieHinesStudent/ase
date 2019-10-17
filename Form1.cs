@@ -45,7 +45,7 @@ namespace ase
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Save button on menu clicked.");
+            file.SaveFile(programCommand.Text);
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -53,6 +53,7 @@ namespace ase
             Console.WriteLine("Load button on menu clicked.");
             var shape = ShapeFactory.GetShape<Circle>();
             shape.Draw();
+            programCommand.Text = file.LoadFile();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
