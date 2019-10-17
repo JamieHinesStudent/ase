@@ -20,7 +20,20 @@ namespace ase
         {
             string[] programLines = splitLines(text);
             Console.WriteLine(programLines.Length);
+            TokenizerClass token = new TokenizerClass(programLines[0]);
+           
         }
+
+        /**
+         * circle x
+         * triangle x,y,z
+         * rectangle x,y
+         * moveTo x,y
+         * drawTo x,y
+         * clear
+         * reset
+         * 
+         **/
 
 
 

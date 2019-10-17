@@ -77,6 +77,8 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="ShapeParameter.cs" />
+    <Compile Include="TokenizerClass.cs" />
+    <Compile Include="TokenTypeEnum.cs" />
     <Compile Include="Triangle.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
