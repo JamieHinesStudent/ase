@@ -17,11 +17,15 @@ namespace ase
         FileManager file = new FileManager();
         Bitmap drawing;
 
+        Commands test = new Commands();
+        Pen drawingPen = new Pen(Color.Black);
+
         public Form1()
         {
             InitializeComponent();
             drawing = new Bitmap(canvas.Size.Width, canvas.Size.Height);
             canvas.Image = drawing;
+            
         }
 
         private void loadButton_Click(object sender, EventArgs e)
@@ -73,7 +77,9 @@ namespace ase
 
         private void runCommand_Click(object sender, EventArgs e)
         {
-            commandParser.callParser(singleCommand.Text);
+            /**commandParser.callParser(singleCommand.Text);**/
+            System.Console.WriteLine("Clicked");
+            test.clearScreen(canvas);
         }
     }
 }
