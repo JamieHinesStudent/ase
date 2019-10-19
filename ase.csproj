@@ -78,6 +78,7 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="ShapeParameter.cs" />
+    <Compile Include="Token.cs" />
     <Compile Include="TokenizerClass.cs" />
     <Compile Include="TokenTypeEnum.cs" />
     <Compile Include="Triangle.cs" />

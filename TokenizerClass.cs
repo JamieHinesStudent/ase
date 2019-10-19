@@ -40,5 +40,10 @@ namespace ase
                 Console.WriteLine("Match");
             }
         }
+
+        public bool IsCommand()
+        {
+            return true;
+        }
     }
 }
