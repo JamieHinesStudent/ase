@@ -8,6 +8,7 @@ namespace ase
 {
     class Token
     {
+        /*
         public TokenTypeEnum Type { get;}
         public string Lexeme { get; }
         public int LineNumber { get; }
@@ -19,6 +20,11 @@ namespace ase
             Lexeme = lexeme;
             LineNumber = lineNumber;
             Position = position;
+
+        }
+        */
+        public Token()
+        {
 
         }
     }

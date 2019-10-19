@@ -72,6 +72,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IShape.cs" />
+    <Compile Include="Lexer.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,8 +80,7 @@
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="ShapeParameter.cs" />
     <Compile Include="Token.cs" />
-    <Compile Include="TokenizerClass.cs" />
-    <Compile Include="TokenTypeEnum.cs" />
+    <Compile Include="Tokens.cs" />
     <Compile Include="Triangle.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

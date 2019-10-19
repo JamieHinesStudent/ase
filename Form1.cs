@@ -40,7 +40,7 @@ namespace ase
 
         private void runButton_Click(object sender, EventArgs e)
         {
-           
+
             commandParser.testDraw(canvas, drawing);
 
             commandParser.callParser(programCommand.Text);
@@ -77,6 +77,8 @@ namespace ase
 
         private void runCommand_Click(object sender, EventArgs e)
         {
+            Lexer commandLexer = new Lexer(singleCommand.Text);
+            commandLexer.CreateToken();
             /**commandParser.callParser(singleCommand.Text);**/
             System.Console.WriteLine("Clicked");
             test.clearScreen(canvas);
