@@ -78,7 +78,14 @@ namespace ase
         private void runCommand_Click(object sender, EventArgs e)
         {
             Lexer commandLexer = new Lexer(singleCommand.Text);
-            commandLexer.CreateToken();
+            Tokens getNextToken = commandLexer.CreateToken();
+            while (getNextToken != Tokens.EOF){
+                System.Diagnostics.Debug.WriteLine(getNextToken.ToString());
+                getNextToken = commandLexer.CreateToken();
+            }
+            
+           
+            
             /**commandParser.callParser(singleCommand.Text);**/
             System.Console.WriteLine("Clicked");
             test.clearScreen(canvas);

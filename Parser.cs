@@ -20,7 +20,7 @@ namespace ase
         {
             string[] programLines = splitLines(text);
             Console.WriteLine(programLines.Length);
-            TokenizerClass token = new TokenizerClass(programLines[0]);
+            
            
         }
 

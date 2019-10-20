@@ -8,6 +8,12 @@ namespace ase
 {
     class Lexer
     {
+        /* Holds the position of the script it's reading **/
+        private int position;
+        private int line;
+        private int column;
+
+        /* Holds characters and the full script */
         private char lastCharacter;
         private string script;
 
@@ -16,10 +22,25 @@ namespace ase
         {
             script = input;
             lastCharacter = script[0];
+            position = 0;
+            line = 0;
+            column = 0;
         }
 
         private char GetNextChar()
         {
+            position++;
+            column++;
+
+            if (position >= script.Length){
+                return lastCharacter = (char)0;
+            }
+            
+            if ((lastCharacter = script[position]) == '\n'){
+                column = 1;
+                line++;
+            }
+
             return lastCharacter;
         }
 
@@ -58,22 +79,26 @@ namespace ase
                 return Tokens.IntegerLiteral;
             }
 
+            if (lastCharacter == (char)0){
+                System.Diagnostics.Debug.WriteLine("EOF");
+            }
+
             //Character is a symbol
+            Tokens symbolToken = Tokens.Undefined; 
             switch (lastCharacter)
             {
-                case '\n': return Tokens.NewLine;
-                case '(':  return Tokens.LeftBracket;
-                case ')':  return Tokens.RightBracket;
-                case ',':  return Tokens.Comma;
-                case ' ':  return Tokens.WhiteSpace;
-                case '+':  return Tokens.Add;
+                case '\n': symbolToken = Tokens.NewLine; break;
+                case '(':  symbolToken = Tokens.LeftBracket; break;
+                case ')':  symbolToken = Tokens.RightBracket; break;
+                case ',':  symbolToken =Tokens.Comma; break;
+                case ' ':  symbolToken = Tokens.WhiteSpace; break;
+                case '+':  symbolToken = Tokens.Add; break;
                 case (char)0: return Tokens.EOF;
+                
             }
 
             GetNextChar();
-            return Tokens.Undefined;
-
-
+            return symbolToken;
         }
     }
 }
