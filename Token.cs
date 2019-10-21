@@ -8,23 +8,21 @@ namespace ase
 {
     class Token
     {
-        /*
-        public TokenTypeEnum Type { get;}
-        public string Lexeme { get; }
-        public int LineNumber { get; }
-        public int Position { get; }
+        
+        public Tokens tokenType { get; }
+        public string value { get; }
+        public int lineNumber { get; }
+        public int position { get; }
+        public int column { get; }
 
-        public Token(TokenTypeEnum type, string lexeme, int lineNumber, int position)
-        {
-            Type = type;
-            Lexeme = lexeme;
-            LineNumber = lineNumber;
-            Position = position;
 
-        }
-        */
-        public Token()
+        public Token(Tokens tokenType, string value, int lineNumber, int position, int column)
         {
+            this.tokenType = tokenType;
+            this.value = value;
+            this.lineNumber = lineNumber;
+            this.position = position;
+            this.column = column;
 
         }
     }

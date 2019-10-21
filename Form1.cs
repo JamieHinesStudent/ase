@@ -13,9 +13,10 @@ namespace ase
 {
     public partial class Form1 : Form
     {
-        Parser commandParser = new Parser();
+        Parser parser = new Parser();
         FileManager file = new FileManager();
         Bitmap drawing;
+        DrawingPen canvasPen = new DrawingPen(0, 0, 860, 677);
 
         Commands test = new Commands();
         Pen drawingPen = new Pen(Color.Black);
@@ -25,6 +26,7 @@ namespace ase
             InitializeComponent();
             drawing = new Bitmap(canvas.Size.Width, canvas.Size.Height);
             canvas.Image = drawing;
+            
             
         }
 
@@ -40,11 +42,12 @@ namespace ase
 
         private void runButton_Click(object sender, EventArgs e)
         {
-
-            commandParser.testDraw(canvas, drawing);
+           parser.testDraw(canvas, drawing);
+           /* parser.testDrawing(canvas, drawing);*/
+           /* commandParser.testDraw(canvas, drawing);
 
             commandParser.callParser(programCommand.Text);
-            
+            */
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -54,10 +57,13 @@ namespace ase
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            programCommand.Text = file.LoadFile();
+            /*
             Console.WriteLine("Load button on menu clicked.");
             var shape = ShapeFactory.GetShape<Circle>();
             shape.Draw();
             programCommand.Text = file.LoadFile();
+            */
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -77,18 +83,22 @@ namespace ase
 
         private void runCommand_Click(object sender, EventArgs e)
         {
-            Lexer commandLexer = new Lexer(singleCommand.Text);
-            Tokens getNextToken = commandLexer.CreateToken();
-            while (getNextToken != Tokens.EOF){
-                System.Diagnostics.Debug.WriteLine(getNextToken.ToString());
-                getNextToken = commandLexer.CreateToken();
-            }
-            
-           
-            
-            /**commandParser.callParser(singleCommand.Text);**/
-            System.Console.WriteLine("Clicked");
-            test.clearScreen(canvas);
+            parser.parseText(singleCommand.Text, canvas, drawing, canvasPen);
+            /*
+            parser.resetPen(canvas, drawing, canvasPen);
+            parser.drawTo(canvas, drawing, 400, 400, canvasPen);
+            parser.moveTo(canvas, drawing, 500, 500, canvasPen);
+            parser.drawTo(canvas, drawing, 500, 600, canvasPen);
+            */
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string message = "ASE project.";
+            string title = "About";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result = MessageBox.Show(message, title, buttons, MessageBoxIcon.Information);
+          
         }
     }
 }

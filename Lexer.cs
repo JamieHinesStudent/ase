@@ -58,13 +58,13 @@ namespace ase
 
                 switch (builtString.ToUpper())
                 {
-                    case "DRAWTO": return Tokens.Drawto;
-                    case "MOVETO": return Tokens.Moveto;
-                    case "CLEAR": return Tokens.Clear;
-                    case "RESET": return Tokens.Reset;
+                    case "DRAWTO":    return Tokens.Drawto;
+                    case "MOVETO":    return Tokens.Moveto;
+                    case "CLEAR":     return Tokens.Clear;
+                    case "RESET":     return Tokens.Reset;
                     case "RECTANGLE": return Tokens.Rectangle;
-                    case "CIRCLE": return Tokens.Circle;
-                    case "TRIANGLE": return Tokens.Triangle;
+                    case "CIRCLE":    return Tokens.Circle;
+                    case "TRIANGLE":  return Tokens.Triangle;
                     default: return Tokens.Identifier;
                 }
             }
@@ -90,9 +90,10 @@ namespace ase
                 case '\n': symbolToken = Tokens.NewLine; break;
                 case '(':  symbolToken = Tokens.LeftBracket; break;
                 case ')':  symbolToken = Tokens.RightBracket; break;
-                case ',':  symbolToken =Tokens.Comma; break;
+                case ',':  symbolToken = Tokens.Comma; break;
                 case ' ':  symbolToken = Tokens.WhiteSpace; break;
                 case '+':  symbolToken = Tokens.Add; break;
+                case '=': symbolToken  = Tokens.Equals; break;
                 case (char)0: return Tokens.EOF;
                 
             }
