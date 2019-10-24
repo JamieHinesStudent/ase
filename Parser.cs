@@ -54,16 +54,10 @@ namespace ase
                 tokensReturned.Add(getNextToken);
                 tokensReturned.RemoveAll(t => t.tokenType.ToString() == "NewLine" || t.tokenType.ToString() == "WhiteSpace" || t.tokenType.ToString() == "EOF");
 
-                /*
-                for (int i=0; i<tokensReturned.Count; i++){
-                    System.Diagnostics.Debug.WriteLine(tokensReturned[i].tokenType.ToString());
-                    System.Diagnostics.Debug.WriteLine(tokensReturned[i].lineNumber);
-                }
-                */
+                
 
                 int maxLineNumber  = tokensReturned[tokensReturned.Count - 1].lineNumber;
-                /* starts at 1 */
-                //System.Diagnostics.Debug.WriteLine(maxLineNumber);
+                
 
                 /* for each line */
                 for (int i=1; i<maxLineNumber+1; i++){
@@ -72,7 +66,9 @@ namespace ase
                         for (int x=0; x<tokensReturned.Count; x++){
                             if (tokensReturned[x].lineNumber == i){
                                 foundFirst = true;
-                                switch(tokensReturned[0].tokenType.ToString()){
+                                ShapeFactory parserShapeFactory = new ShapeFactory();
+                                Shape buildShape;
+                                switch(tokensReturned[x].tokenType.ToString()){
                                     case "Clear": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
@@ -81,34 +77,51 @@ namespace ase
                                         }
                                         break;
                                     case "Reset": 
-                                        System.Diagnostics.Debug.WriteLine("Reset");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
+                                            System.Diagnostics.Debug.WriteLine("Reset");
                                             resetPen(sender, drawing, canvasPen);
                                         }
                                         break;
                                     case "Moveto": 
-                                        System.Diagnostics.Debug.WriteLine("Moveto");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                            System.Diagnostics.Debug.WriteLine("Moveto");
+                                            moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
                                         }
                                         break;
                                     case "Drawto": 
-                                        System.Diagnostics.Debug.WriteLine("Drawto");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                            System.Diagnostics.Debug.WriteLine("Drawto");
+                                            drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
                                         }
                                         break;
                                     case "Circle": 
-                                        System.Diagnostics.Debug.WriteLine("Circle");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2){
+                                            System.Diagnostics.Debug.WriteLine("Circle");
+                                            buildShape = parserShapeFactory.getShape("Circle");
+                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value));
+                                            buildShape.Draw(sender, drawing);
                                         }
                                         break;
                                     case "Rectangle": 
-                                        System.Diagnostics.Debug.WriteLine("Rectangle");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                            System.Diagnostics.Debug.WriteLine("Rectangle");
+                                            buildShape = parserShapeFactory.getShape("Rectangle");
+                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
+                                            buildShape.Draw(sender, drawing);
                                         }
                                         break;
                                     case "Triangle": 
-                                        System.Diagnostics.Debug.WriteLine("Triangle");
+                                        
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6){
+                                            System.Diagnostics.Debug.WriteLine("Triangle");
+                                            buildShape = parserShapeFactory.getShape("Triangle");
+                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value), Convert.ToInt32(tokensReturned[x+5].value));
+                                            buildShape.Draw(sender, drawing);
                                         }
                                         break;
                                     default: break;
@@ -119,23 +132,9 @@ namespace ase
                         }
                     
                     }while(foundFirst == false);       
-                    System.Diagnostics.Debug.WriteLine("loop");
+                    
                 }
-
-
-
-                
-                
-
-                
-        
-                
-
-                
-                
-
-            }
-
+            }   
 
             
         }
@@ -168,7 +167,7 @@ namespace ase
 
 
         /* Draws pen to position */
-        public void drawTo(Object sender, Object drawing, int x, int y, Object canvasPen){
+        public void drawTo(Object sender, Object drawing, Object canvasPen, int x, int y){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             DrawingPen local = (DrawingPen)canvasPen;
@@ -183,7 +182,7 @@ namespace ase
         }
 
         /* Moves pen to position */
-        public void moveTo(Object sender, Object drawing, int x, int y, Object canvasPen){
+        public void moveTo(Object sender, Object drawing, Object canvasPen, int x, int y){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             DrawingPen local = (DrawingPen)canvasPen;

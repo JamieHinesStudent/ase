@@ -38,10 +38,7 @@ namespace ase
         private void saveButton_Click(object sender, EventArgs e)
         {
             /*file.SaveFile(programCommand.Text);*/
-            ShapeFactory test = new ShapeFactory();
-            Shape tester = test.getShape("Rectangle");
-            tester.Set(200, 200, 500, 100);
-            tester.Draw(canvas, drawing);
+            
         }
 
         private void runButton_Click(object sender, EventArgs e)
