@@ -17,6 +17,33 @@ namespace ase
         private char lastCharacter;
         private string script;
 
+        private List<Token> tokensReturned = new List<Token>();
+
+        
+        public Token peekList(int index)
+        {
+            return tokensReturned[index];
+        }
+
+
+
+        public void removeSpacesList()
+        {
+            try
+            {
+                var itemToRemove = tokensReturned.Single(t => t.tokenType.ToString() == "WhiteSpace");
+                tokensReturned.Remove(itemToRemove);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public int listLength()
+        {
+            return tokensReturned.Count;
+        }
 
         public Lexer(string input)
         {
@@ -58,14 +85,14 @@ namespace ase
 
                 switch (builtString.ToUpper())
                 {
-                    case "DRAWTO":    return Tokens.Drawto;
-                    case "MOVETO":    return Tokens.Moveto;
-                    case "CLEAR":     return Tokens.Clear;
-                    case "RESET":     return Tokens.Reset;
-                    case "RECTANGLE": return Tokens.Rectangle;
-                    case "CIRCLE":    return Tokens.Circle;
-                    case "TRIANGLE":  return Tokens.Triangle;
-                    default: return Tokens.Identifier;
+                    case "DRAWTO":    tokensReturned.Add(new Token(Tokens.Drawto, "", line, position, column)); return Tokens.Drawto;
+                    case "MOVETO":    tokensReturned.Add(new Token(Tokens.Moveto, "", line, position, column)); return Tokens.Moveto;
+                    case "CLEAR":     tokensReturned.Add(new Token(Tokens.Clear, "", line, position, column)); return Tokens.Clear;
+                    case "RESET":     tokensReturned.Add(new Token(Tokens.Reset, "", line, position, column)); return Tokens.Reset;
+                    case "RECTANGLE": tokensReturned.Add(new Token(Tokens.Rectangle, "", line, position, column)); return Tokens.Rectangle;
+                    case "CIRCLE":    tokensReturned.Add(new Token(Tokens.Circle, "", line, position, column)); return Tokens.Circle;
+                    case "TRIANGLE":  tokensReturned.Add(new Token(Tokens.Triangle, "", line, position, column)); return Tokens.Triangle;
+                    default:          tokensReturned.Add(new Token(Tokens.Identifier, builtString.ToUpper(), line, position, column)); return Tokens.Identifier;
                 }
             }
 
@@ -76,11 +103,12 @@ namespace ase
                 do{builtNumber += lastCharacter;} while (char.IsDigit(GetNextChar()));
                 int integerNumber;
                 Int32.TryParse(builtNumber, out integerNumber);
+                tokensReturned.Add(new Token(Tokens.IntegerLiteral, builtNumber, line, position, column));
                 return Tokens.IntegerLiteral;
             }
 
             if (lastCharacter == (char)0){
-                System.Diagnostics.Debug.WriteLine("EOF");
+                tokensReturned.Add(new Token(Tokens.EOF, "", line, position, column));
             }
 
             //Character is a symbol
@@ -88,17 +116,18 @@ namespace ase
             switch (lastCharacter)
             {
                 case '\n': symbolToken = Tokens.NewLine; break;
-                case '(':  symbolToken = Tokens.LeftBracket; break;
-                case ')':  symbolToken = Tokens.RightBracket; break;
+                /*case '(':  symbolToken = Tokens.LeftBracket; break;*/
+                /*case ')':  symbolToken = Tokens.RightBracket; break;*/
                 case ',':  symbolToken = Tokens.Comma; break;
                 case ' ':  symbolToken = Tokens.WhiteSpace; break;
-                case '+':  symbolToken = Tokens.Add; break;
-                case '=': symbolToken  = Tokens.Equals; break;
-                case (char)0: return Tokens.EOF;
+                /*case '+':  symbolToken = Tokens.Add; break;*/
+                /*case '=': symbolToken  = Tokens.Equals; break;*/
+                case (char)0: symbolToken = Tokens.EOF; return Tokens.EOF;
                 
             }
 
             GetNextChar();
+            tokensReturned.Add(new Token(symbolToken, "", line, position, column));
             return symbolToken;
         }
     }

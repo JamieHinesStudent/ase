@@ -30,28 +30,74 @@ namespace ase
         
 
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
+
+            
+
             if (commands.Length >= 1){
                 lexer = new Lexer(commands);
                 Tokens getNextToken = lexer.CreateToken();
                 while (getNextToken != Tokens.EOF){
-                    System.Diagnostics.Debug.WriteLine(getNextToken.ToString());
+                    /*System.Diagnostics.Debug.WriteLine(getNextToken.ToString());*/
                     switch(getNextToken.ToString()){
                         case "Clear": clearScreen(sender, drawing); break;
                         case "Reset": resetPen(sender, drawing, canvasPen); break;
-                        case "MoveTo": System.Diagnostics.Debug.WriteLine("Move to command"); break;
-                        case "DrawTo": System.Diagnostics.Debug.WriteLine("Draw to command"); break;
+                        case "MoveTo": break;
+                        case "DrawTo": break;
                         case "Circle":
                             /* Get next int */
                             circle(sender, drawing, 10, canvasPen);
                             break;
-                        case "Rectangle": System.Diagnostics.Debug.WriteLine("Rectangle command"); break;
-                        case "Triangle": System.Diagnostics.Debug.WriteLine("Triangle command"); break;
+                        case "Rectangle": break;
+                        case "Triangle":  break;
                         default:
-                            System.Diagnostics.Debug.WriteLine("Not recognised");
+                            /*System.Diagnostics.Debug.WriteLine("Not recognised");*/
                             break;
                     }
                     getNextToken = lexer.CreateToken();
                 }
+
+                /* Remove spaces */
+                System.Diagnostics.Debug.WriteLine(lexer.listLength());
+                lexer.removeSpacesList();
+
+                /* testing code */
+                System.Diagnostics.Debug.WriteLine(lexer.listLength());
+                for (int i=0; i<lexer.listLength(); i++)
+                {
+                    switch (lexer.peekList(i).tokenType.ToString())
+                    {
+                        case "Clear": clearScreen(sender, drawing); break;
+                        case "Reset": resetPen(sender, drawing, canvasPen); break;
+                        case "MoveTo":
+                            int mX, mY;
+                            do
+                            {
+
+                            }
+                            while ((lexer.peekList(i).tokenType.ToString() != "NewLine") || lexer.peekList(i).tokenType.ToString() != "EOF");
+                           
+                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
+                            break;
+                        case "DrawTo":
+                            int dX, dY;
+                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
+                            break;
+                        case "Circle":
+                            int radius;
+                            /*check if next thing ignoring white spaces is number up until new line or eof*/
+                            break;
+                        case "Rectangle":
+                            int width, height;
+                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
+                            break;
+                        case "Triangle":
+                            int oneSide, twoSide, threeSide;
+                            /*check if next thing ignoring white spaces is number, comma, number, comma, number up until new line or eof*/
+                            break;
+                    }
+                    System.Diagnostics.Debug.WriteLine(lexer.peekList(i).tokenType.ToString());
+                }
+
             }
         }
 

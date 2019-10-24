@@ -42,12 +42,13 @@ namespace ase
 
         private void runButton_Click(object sender, EventArgs e)
         {
-           parser.testDraw(canvas, drawing);
-           /* parser.testDrawing(canvas, drawing);*/
-           /* commandParser.testDraw(canvas, drawing);
+            parser.parseText(programCommand.Text, canvas, drawing, canvasPen);
+            /*parser.testDraw(canvas, drawing);*/
+            /* parser.testDrawing(canvas, drawing);*/
+            /* commandParser.testDraw(canvas, drawing);
 
-            commandParser.callParser(programCommand.Text);
-            */
+             commandParser.callParser(programCommand.Text);
+             */
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -83,13 +84,14 @@ namespace ase
 
         private void runCommand_Click(object sender, EventArgs e)
         {
-            parser.parseText(singleCommand.Text, canvas, drawing, canvasPen);
-            /*
+            /*parser.parseText(singleCommand.Text, canvas, drawing, canvasPen);*/
+            
+            
             parser.resetPen(canvas, drawing, canvasPen);
             parser.drawTo(canvas, drawing, 400, 400, canvasPen);
             parser.moveTo(canvas, drawing, 500, 500, canvasPen);
             parser.drawTo(canvas, drawing, 500, 600, canvasPen);
-            */
+            
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
