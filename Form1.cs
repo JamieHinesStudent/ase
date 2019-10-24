@@ -37,18 +37,16 @@ namespace ase
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            file.SaveFile(programCommand.Text);
+            /*file.SaveFile(programCommand.Text);*/
+            ShapeFactory test = new ShapeFactory();
+            Shape tester = test.getShape("Rectangle");
+            tester.Set(200, 200, 500, 100);
+            tester.Draw(canvas, drawing);
         }
 
         private void runButton_Click(object sender, EventArgs e)
         {
             parser.parseText(programCommand.Text, canvas, drawing, canvasPen);
-            /*parser.testDraw(canvas, drawing);*/
-            /* parser.testDrawing(canvas, drawing);*/
-            /* commandParser.testDraw(canvas, drawing);
-
-             commandParser.callParser(programCommand.Text);
-             */
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -59,12 +57,6 @@ namespace ase
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             programCommand.Text = file.LoadFile();
-            /*
-            Console.WriteLine("Load button on menu clicked.");
-            var shape = ShapeFactory.GetShape<Circle>();
-            shape.Draw();
-            programCommand.Text = file.LoadFile();
-            */
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -84,14 +76,7 @@ namespace ase
 
         private void runCommand_Click(object sender, EventArgs e)
         {
-            /*parser.parseText(singleCommand.Text, canvas, drawing, canvasPen);*/
-            
-            
-            parser.resetPen(canvas, drawing, canvasPen);
-            parser.drawTo(canvas, drawing, 400, 400, canvasPen);
-            parser.moveTo(canvas, drawing, 500, 500, canvasPen);
-            parser.drawTo(canvas, drawing, 500, 600, canvasPen);
-            
+            parser.parseText(singleCommand.Text, canvas, drawing, canvasPen);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

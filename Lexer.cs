@@ -25,21 +25,6 @@ namespace ase
             return tokensReturned[index];
         }
 
-
-
-        public void removeSpacesList()
-        {
-            try
-            {
-                var itemToRemove = tokensReturned.Single(t => t.tokenType.ToString() == "WhiteSpace");
-                tokensReturned.Remove(itemToRemove);
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
         public int listLength()
         {
             return tokensReturned.Count;
@@ -115,13 +100,9 @@ namespace ase
             Tokens symbolToken = Tokens.Undefined; 
             switch (lastCharacter)
             {
-                case '\n': symbolToken = Tokens.NewLine; break;
-                /*case '(':  symbolToken = Tokens.LeftBracket; break;*/
-                /*case ')':  symbolToken = Tokens.RightBracket; break;*/
+                case '\n': symbolToken = Tokens.NewLine; break;     
                 case ',':  symbolToken = Tokens.Comma; break;
                 case ' ':  symbolToken = Tokens.WhiteSpace; break;
-                /*case '+':  symbolToken = Tokens.Add; break;*/
-                /*case '=': symbolToken  = Tokens.Equals; break;*/
                 case (char)0: symbolToken = Tokens.EOF; return Tokens.EOF;
                 
             }

@@ -9,6 +9,7 @@ namespace ase
 {
     public interface IShape
     {
-       void Draw();
+       void Draw(Object sender, Object drawing);
+       void Set(params int[] list);
     }
 }

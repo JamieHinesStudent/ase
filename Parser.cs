@@ -31,6 +31,8 @@ namespace ase
 
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
 
+            DrawingPen local = (DrawingPen)canvasPen;
+
             
 
             if (commands.Length >= 1){
@@ -41,14 +43,68 @@ namespace ase
                     switch(getNextToken.ToString()){
                         case "Clear": clearScreen(sender, drawing); break;
                         case "Reset": resetPen(sender, drawing, canvasPen); break;
-                        case "MoveTo": break;
-                        case "DrawTo": break;
-                        case "Circle":
-                            /* Get next int */
-                            circle(sender, drawing, 10, canvasPen);
+                        case "MoveTo":
+
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next comma */
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next newline */
+
                             break;
-                        case "Rectangle": break;
-                        case "Triangle":  break;
+
+                        case "DrawTo":
+
+                            Boolean xFound = false;
+                            Boolean yFound = false;
+                            Boolean commaFound = false;
+                            int xValue;
+                            int yValue;
+
+                            while (getNextToken.ToString() != "EOF" || getNextToken.ToString() != "NewLine")
+                            {
+                                if (getNextToken.ToString() != "WhiteSpace")
+                                {
+                                    if (xFound != true && getNextToken.ToString() != "IntegerLiteral")
+                                    {
+                                        xValue = 10;
+                                    }
+
+                                    else if (getNextToken.ToString() == "Comma")
+                                    {
+                                        commaFound = true;
+
+                                    }
+
+                                    else if (yFound != true && getNextToken.ToString() != "IntegerLiteral" && commaFound == true)
+                                    {
+                                        yValue = 10;
+                                    }
+                                }
+
+                                getNextToken = lexer.CreateToken();
+
+                            }
+                            
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next comma */
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next newline */
+
+                            break;
+
+                        case "Circle":
+                            
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next comma */
+                            /* Ignore white spaces get next int */
+                            /* Ignore white spaces get next newline */
+
+                            break;
+
+                        case "Rectangle":
+                            break;
+                        case "Triangle":
+                            break;
                         default:
                             /*System.Diagnostics.Debug.WriteLine("Not recognised");*/
                             break;
@@ -58,45 +114,10 @@ namespace ase
 
                 /* Remove spaces */
                 System.Diagnostics.Debug.WriteLine(lexer.listLength());
-                lexer.removeSpacesList();
+                /*lexer.removeSpacesList();*/
 
-                /* testing code */
-                System.Diagnostics.Debug.WriteLine(lexer.listLength());
-                for (int i=0; i<lexer.listLength(); i++)
-                {
-                    switch (lexer.peekList(i).tokenType.ToString())
-                    {
-                        case "Clear": clearScreen(sender, drawing); break;
-                        case "Reset": resetPen(sender, drawing, canvasPen); break;
-                        case "MoveTo":
-                            int mX, mY;
-                            do
-                            {
-
-                            }
-                            while ((lexer.peekList(i).tokenType.ToString() != "NewLine") || lexer.peekList(i).tokenType.ToString() != "EOF");
-                           
-                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
-                            break;
-                        case "DrawTo":
-                            int dX, dY;
-                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
-                            break;
-                        case "Circle":
-                            int radius;
-                            /*check if next thing ignoring white spaces is number up until new line or eof*/
-                            break;
-                        case "Rectangle":
-                            int width, height;
-                            /*check if next thing ignoring white spaces is number, comma, number up until new line or eof*/
-                            break;
-                        case "Triangle":
-                            int oneSide, twoSide, threeSide;
-                            /*check if next thing ignoring white spaces is number, comma, number, comma, number up until new line or eof*/
-                            break;
-                    }
-                    System.Diagnostics.Debug.WriteLine(lexer.peekList(i).tokenType.ToString());
-                }
+                
+                
 
             }
         }
@@ -155,66 +176,5 @@ namespace ase
             local.yCoordinate = y;
             canvas.Image = image;
         }
-
-        /* Circle */
-        private void circle(Object sender, Object drawing, int radius, Object canvasPen){
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            DrawingPen local = (DrawingPen)canvasPen;
-            Graphics g = Graphics.FromImage(image);
-
-            Pen mypen = new Pen(Color.Black);
-
-            g.DrawEllipse(Pens.Red, local.xCoordinate, local.yCoordinate, radius*2, radius*2);
-            canvas.Image = image;
-
-            g.Dispose();
-        }
-
-
-        /* Base for testing */
-        public void testDraw(Object sender, Object drawing)
-        {
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            Graphics g;
-            g = Graphics.FromImage(image);
-
-            Pen mypen = new Pen(Color.Black);
-
-            g.DrawLine(mypen, 0, 0, 500, 150);
-
-            g.DrawEllipse(Pens.Red, 50, 50, 20, 20);
-
-            g.DrawRectangle(Pens.Blue, 50,50,100,100);
-
-            Point[] points = { new Point(10, 10), new Point(100, 10), new Point(50, 100) };
-            g.DrawPolygon(new Pen(Color.Blue), points);
-            
-            canvas.Image = image;
-
-            g.Dispose();
-
-           
-        }
-
-        public void testDrawing(Object sender, Object drawing)
-        {
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            Graphics g;
-            g = Graphics.FromImage(image);
-
-            Pen mypen = new Pen(Color.Black);
-
-
-            g.DrawEllipse(Pens.Red, 50, 50, 100, 100);
-            
-            canvas.Image = image;
-
-            g.Dispose();
-        }
-        
-        
     }
 }
