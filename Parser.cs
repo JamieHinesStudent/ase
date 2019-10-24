@@ -27,102 +27,120 @@ namespace ase
            
         }
 
-        
+        private int tokensOnLine(List<Token> tokens, int lineNumber){
+            int count = 0;
+            for (int i=0; i<tokens.Count; i++){
+                if(tokens[i].lineNumber == lineNumber){
+                    count++;
+                }
+            }
+            return count;
+        }
 
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
 
             DrawingPen local = (DrawingPen)canvasPen;
 
+            List<Token> tokensReturned = new List<Token>();
             
-
             if (commands.Length >= 1){
                 lexer = new Lexer(commands);
-                Tokens getNextToken = lexer.CreateToken();
-                while (getNextToken != Tokens.EOF){
-                    /*System.Diagnostics.Debug.WriteLine(getNextToken.ToString());*/
-                    switch(getNextToken.ToString()){
-                        case "Clear": clearScreen(sender, drawing); break;
-                        case "Reset": resetPen(sender, drawing, canvasPen); break;
-                        case "MoveTo":
-
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next comma */
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next newline */
-
-                            break;
-
-                        case "DrawTo":
-
-                            Boolean xFound = false;
-                            Boolean yFound = false;
-                            Boolean commaFound = false;
-                            int xValue;
-                            int yValue;
-
-                            while (getNextToken.ToString() != "EOF" || getNextToken.ToString() != "NewLine")
-                            {
-                                if (getNextToken.ToString() != "WhiteSpace")
-                                {
-                                    if (xFound != true && getNextToken.ToString() != "IntegerLiteral")
-                                    {
-                                        xValue = 10;
-                                    }
-
-                                    else if (getNextToken.ToString() == "Comma")
-                                    {
-                                        commaFound = true;
-
-                                    }
-
-                                    else if (yFound != true && getNextToken.ToString() != "IntegerLiteral" && commaFound == true)
-                                    {
-                                        yValue = 10;
-                                    }
-                                }
-
-                                getNextToken = lexer.CreateToken();
-
-                            }
-                            
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next comma */
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next newline */
-
-                            break;
-
-                        case "Circle":
-                            
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next comma */
-                            /* Ignore white spaces get next int */
-                            /* Ignore white spaces get next newline */
-
-                            break;
-
-                        case "Rectangle":
-                            break;
-                        case "Triangle":
-                            break;
-                        default:
-                            /*System.Diagnostics.Debug.WriteLine("Not recognised");*/
-                            break;
-                    }
+                Token getNextToken = lexer.CreateToken();
+                while (getNextToken.tokenType != Tokens.EOF){
+                    tokensReturned.Add(getNextToken);
                     getNextToken = lexer.CreateToken();
                 }
 
-                /* Remove spaces */
-                System.Diagnostics.Debug.WriteLine(lexer.listLength());
-                /*lexer.removeSpacesList();*/
+                tokensReturned.Add(getNextToken);
+                tokensReturned.RemoveAll(t => t.tokenType.ToString() == "NewLine" || t.tokenType.ToString() == "WhiteSpace" || t.tokenType.ToString() == "EOF");
+
+                /*
+                for (int i=0; i<tokensReturned.Count; i++){
+                    System.Diagnostics.Debug.WriteLine(tokensReturned[i].tokenType.ToString());
+                    System.Diagnostics.Debug.WriteLine(tokensReturned[i].lineNumber);
+                }
+                */
+
+                int maxLineNumber  = tokensReturned[tokensReturned.Count - 1].lineNumber;
+                /* starts at 1 */
+                //System.Diagnostics.Debug.WriteLine(maxLineNumber);
+
+                /* for each line */
+                for (int i=1; i<maxLineNumber+1; i++){
+                    Boolean foundFirst = false;
+                    do{
+                        for (int x=0; x<tokensReturned.Count; x++){
+                            if (tokensReturned[x].lineNumber == i){
+                                foundFirst = true;
+                                switch(tokensReturned[0].tokenType.ToString()){
+                                    case "Clear": 
+                                        
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
+                                            System.Diagnostics.Debug.WriteLine("Clear");
+                                            clearScreen(sender, drawing);
+                                        }
+                                        break;
+                                    case "Reset": 
+                                        System.Diagnostics.Debug.WriteLine("Reset");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
+                                            resetPen(sender, drawing, canvasPen);
+                                        }
+                                        break;
+                                    case "Moveto": 
+                                        System.Diagnostics.Debug.WriteLine("Moveto");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                        }
+                                        break;
+                                    case "Drawto": 
+                                        System.Diagnostics.Debug.WriteLine("Drawto");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                        }
+                                        break;
+                                    case "Circle": 
+                                        System.Diagnostics.Debug.WriteLine("Circle");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2){
+                                        }
+                                        break;
+                                    case "Rectangle": 
+                                        System.Diagnostics.Debug.WriteLine("Rectangle");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                        }
+                                        break;
+                                    case "Triangle": 
+                                        System.Diagnostics.Debug.WriteLine("Triangle");
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6){
+                                        }
+                                        break;
+                                    default: break;
+                                }
+
+                                
+                            }
+                        }
+                    
+                    }while(foundFirst == false);       
+                    System.Diagnostics.Debug.WriteLine("loop");
+                }
+
+
+
+                
+                
+
+                
+        
+                
 
                 
                 
 
             }
+
+
+            
         }
 
-        /* Commands */
+      
 
         /* Clears the screen */
         private void clearScreen(Object sender, Object drawing){

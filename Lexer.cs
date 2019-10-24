@@ -35,7 +35,7 @@ namespace ase
             script = input;
             lastCharacter = script[0];
             position = 0;
-            line = 0;
+            line = 1;
             column = 0;
         }
 
@@ -56,7 +56,7 @@ namespace ase
             return lastCharacter;
         }
 
-        public Tokens CreateToken()
+        public Token CreateToken()
         {
             //Character is letter 
             if (char.IsLetter(lastCharacter)) {
@@ -70,46 +70,59 @@ namespace ase
 
                 switch (builtString.ToUpper())
                 {
-                    case "DRAWTO":    tokensReturned.Add(new Token(Tokens.Drawto, "", line, position, column)); return Tokens.Drawto;
-                    case "MOVETO":    tokensReturned.Add(new Token(Tokens.Moveto, "", line, position, column)); return Tokens.Moveto;
-                    case "CLEAR":     tokensReturned.Add(new Token(Tokens.Clear, "", line, position, column)); return Tokens.Clear;
-                    case "RESET":     tokensReturned.Add(new Token(Tokens.Reset, "", line, position, column)); return Tokens.Reset;
-                    case "RECTANGLE": tokensReturned.Add(new Token(Tokens.Rectangle, "", line, position, column)); return Tokens.Rectangle;
-                    case "CIRCLE":    tokensReturned.Add(new Token(Tokens.Circle, "", line, position, column)); return Tokens.Circle;
-                    case "TRIANGLE":  tokensReturned.Add(new Token(Tokens.Triangle, "", line, position, column)); return Tokens.Triangle;
-                    default:          tokensReturned.Add(new Token(Tokens.Identifier, builtString.ToUpper(), line, position, column)); return Tokens.Identifier;
+                    case "DRAWTO":    return new Token(Tokens.Drawto, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Drawto, "", line, position, column)); return Tokens.Drawto;
+                    case "MOVETO":    return new Token(Tokens.Moveto, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Moveto, "", line, position, column)); return Tokens.Moveto;
+                    case "CLEAR":     return new Token(Tokens.Clear, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Clear, "", line, position, column)); return Tokens.Clear;
+                    case "RESET":     return new Token(Tokens.Reset, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Reset, "", line, position, column)); return Tokens.Reset;
+                    case "RECTANGLE": return new Token(Tokens.Rectangle, "", line, position, column);//tokensReturned.Add(new Token(Tokens.Rectangle, "", line, position, column)); return Tokens.Rectangle;
+                    case "CIRCLE":    return new Token(Tokens.Circle, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Circle, "", line, position, column)); return Tokens.Circle;
+                    case "TRIANGLE":  return new Token(Tokens.Triangle, "", line, position, column); //tokensReturned.Add(new Token(Tokens.Triangle, "", line, position, column)); return Tokens.Triangle;
+                    default:          return new Token(Tokens.Identifier, builtString.ToUpper(), line, position, column); //tokensReturned.Add(new Token(Tokens.Identifier, builtString.ToUpper(), line, position, column)); return Tokens.Identifier;
                 }
             }
 
             //Character is number 
             if (char.IsDigit(lastCharacter))
             {
+                
                 string builtNumber = "";
                 do{builtNumber += lastCharacter;} while (char.IsDigit(GetNextChar()));
                 int integerNumber;
                 Int32.TryParse(builtNumber, out integerNumber);
-                tokensReturned.Add(new Token(Tokens.IntegerLiteral, builtNumber, line, position, column));
-                return Tokens.IntegerLiteral;
+                //tokensReturned.Add(new Token(Tokens.IntegerLiteral, builtNumber, line, position, column));
+                //return Tokens.IntegerLiteral;
+                return new Token(Tokens.IntegerLiteral, builtNumber, line, position, column);
+                
             }
 
             if (lastCharacter == (char)0){
-                tokensReturned.Add(new Token(Tokens.EOF, "", line, position, column));
+                //tokensReturned.Add(new Token(Tokens.EOF, "", line, position, column));
+                //System.Diagnostics.Debug.WriteLine("end of file 1");
+                return new Token(Tokens.EOF, "", line, position, column);
             }
 
             //Character is a symbol
             Tokens symbolToken = Tokens.Undefined; 
             switch (lastCharacter)
             {
+                
                 case '\n': symbolToken = Tokens.NewLine; break;     
                 case ',':  symbolToken = Tokens.Comma; break;
                 case ' ':  symbolToken = Tokens.WhiteSpace; break;
-                case (char)0: symbolToken = Tokens.EOF; return Tokens.EOF;
+                case '\t':   symbolToken = Tokens.WhiteSpace; break;
+                case '\r':   symbolToken = Tokens.WhiteSpace; break;
+                //case (char)0: symbolToken = Tokens.EOF; return Tokens.EOF;
+                case (char)0: symbolToken = Tokens.EOF; System.Diagnostics.Debug.WriteLine("end of file 2"); return new Token(Tokens.EOF, "", line, position, column);
+                
                 
             }
 
+            
             GetNextChar();
-            tokensReturned.Add(new Token(symbolToken, "", line, position, column));
+            /*tokensReturned.Add(new Token(symbolToken, "", line, position, column));
             return symbolToken;
+            */
+            return new Token(symbolToken, "", line, position, column);
         }
     }
 }
