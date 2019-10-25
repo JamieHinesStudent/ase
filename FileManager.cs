@@ -18,9 +18,9 @@ namespace ase
         private SaveFileDialog fileSaver;
 
         /// <summary>
-        /// 
+        /// Loads a file from the local storage on the computer.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the contents of a file that is loaded in</returns>
         public string LoadFile()
         {
             fileOpener = new OpenFileDialog();
@@ -30,11 +30,13 @@ namespace ase
                 {
                     var sr = new StreamReader(fileOpener.FileName);
                     return sr.ReadToEnd();
+                    
                 }
                 catch (SecurityException ex)
                 {
                     MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
                     $"Details:\n\n{ex.StackTrace}");
+                  
                     return null;
                    
                 }
@@ -45,6 +47,10 @@ namespace ase
             }
         }
 
+        /// <summary>
+        /// Saves a file to the local storage on the computer
+        /// </summary>
+        /// <param name="commandContent">This string contents of the script command box</param>
         public void SaveFile(string commandContent)
         {
             fileSaver = new SaveFileDialog();

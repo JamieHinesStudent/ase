@@ -8,17 +8,30 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// The logic of the program. It interprets the tokens recieved back from the lexer and actions the appropriate commands.
+    /// </summary>
     class Parser
     {
 
-        private Lexer lexer;
+        private Lexer lexer; //private instance of the lexer for use by the whole class
         
+        /// <summary>
+        /// Displays and error message if the parser can't interpret the commands.
+        /// </summary>
+        /// <param name="errorMessage">The error message to be displayed the user.</param>
         private void noParseError(string errorMessage){
             const string title = "Invalid Statement Error";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
-            DialogResult result = MessageBox.Show(errorMessage, title, buttons, MessageBoxIcon.Error);
+            MessageBox.Show(errorMessage, title, buttons, MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// Counts the number of tokens on a given line. Used for the error checking process.
+        /// </summary>
+        /// <param name="tokens">The token list created by the calling the lexer.</param>
+        /// <param name="lineNumber">The line number to count how many tokens are on it.</param>
+        /// <returns>Number of tokens on the given line.</returns>
         private int tokensOnLine(List<Token> tokens, int lineNumber){
             int count = 0;
             for (int i=0; i<tokens.Count; i++){
@@ -147,7 +160,11 @@ namespace ase
             
         }
 
-        /* Clears the screen */
+        /// <summary>
+        /// Clears the screen of any drawings made.
+        /// </summary>
+        /// <param name="sender">The canvas.</param>
+        /// <param name="drawing">The bitmap image.</param>
         private void clearScreen(Object sender, Object drawing){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
@@ -157,7 +174,12 @@ namespace ase
             g.Dispose();
         }
 
-        /* Resets the pen */
+        /// <summary>
+        /// Resets the coordinates of the pen to x:0 and y:0
+        /// </summary>
+        /// <param name="sender">The canvas.</param>
+        /// <param name="drawing">The bitmap image.</param>
+        /// <param name="canvasPen">The pen object where the x and y coordinates are stored.</param>
         public void resetPen(Object sender, Object drawing, Object canvasPen){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
@@ -171,7 +193,14 @@ namespace ase
             canvas.Image = image;
         }
 
-        /* Draws pen to position */
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="drawing"></param>
+        /// <param name="canvasPen"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void drawTo(Object sender, Object drawing, Object canvasPen, int x, int y){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
@@ -186,7 +215,14 @@ namespace ase
 
         }
 
-        /* Moves pen to position */
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="drawing"></param>
+        /// <param name="canvasPen"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void moveTo(Object sender, Object drawing, Object canvasPen, int x, int y){
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;

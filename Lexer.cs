@@ -8,27 +8,16 @@ namespace ase
 {
     class Lexer
     {
-        /* Holds the position of the script it's reading **/
+        /* Holds the position of the script it's reading */
         private int position;
         private int line;
         private int column;
 
         /* Holds characters and the full script */
         private char lastCharacter;
-        private string script;
+        private readonly string script;
 
         private List<Token> tokensReturned = new List<Token>();
-
-        
-        public Token peekList(int index)
-        {
-            return tokensReturned[index];
-        }
-
-        public int listLength()
-        {
-            return tokensReturned.Count;
-        }
 
         public Lexer(string input)
         {

@@ -16,9 +16,13 @@ namespace ase
         private int maxXCoordinate;
         private int maxYCoordinate;
 
-        ///<summary>
-        ///Constructor which takes in the initial x,y coordinates and the x,y size of the screen.
-        ///</summary>
+        /// <summary>
+        /// Constructor which takes in the initial x,y coordinates and the x,y size of the screen.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="maxX"></param>
+        /// <param name="maxY"></param>
         public DrawingPen(int x, int y, int maxX, int maxY)
         {
             xCoordinate = x;
@@ -26,13 +30,13 @@ namespace ase
             maxXCoordinate = maxX;
             maxYCoordinate = maxY;
         }
-
-        ///<summary>
-        ///Function to check if an x/y coordinate will go out of bounds on the screen.
-        ///</summary>
-        ///<returns>
-        ///Boolean value. False if the x/y coordinate is off the canvas and true if it's not.
-        ///</returns>
+        
+        /// <summary>
+        /// Function to check if an x/y coordinate will go out of bounds on the screen.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>Boolean value. False if the x/y coordinate is off the canvas and true if it's not.</returns>
         public bool checkDimensions(int x, int y)
         {
             if (x > maxXCoordinate || y > maxYCoordinate)

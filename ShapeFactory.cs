@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ase
 {
+    /// <summary>
+    /// Class which builds the shapes. Hides the construction of the shapes.
+    /// </summary>
     class ShapeFactory
     {
 
@@ -14,20 +17,9 @@ namespace ase
             shapeType = shapeType.ToUpper().Trim(); //yoi could argue that you want a specific word string to create an object but I'm allowing any case combination
             
            
-            if (shapeType.Equals("CIRCLE"))
-            {
-                return new Circle();
-
-            }
-            else if (shapeType.Equals("RECTANGLE"))
-            {
-                return new Rectangle();
-
-            }
-            else if (shapeType.Equals("TRIANGLE"))
-            {
-                return new Triangle ();
-            }
+            if (shapeType.Equals("CIRCLE")){return new Circle();}            //Builds a circle
+            else if (shapeType.Equals("RECTANGLE")){return new Rectangle();} //Builds a rectangle
+            else if (shapeType.Equals("TRIANGLE")){return new Triangle ();}  //Builds a triangle
             else
             {
                 //if we get here then what has been passed in is inkown so throw an appropriate exception

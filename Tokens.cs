@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace ase
 {
+    /// <summary>
+    /// The possible token types that the system can detect. These are used to evaluate what the input commands are.
+    /// </summary>
     public enum Tokens
     {
-        EOF,
-        Undefined,
+        EOF, //End Of File
+        Undefined, //Not recognised
         IntegerLiteral,
         StringLiteral,
         NewLine,
