@@ -9,11 +9,18 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// Class which manages the handling of external files. Such as loading and saving.
+    /// </summary>
     class FileManager
     {
         private OpenFileDialog fileOpener;
         private SaveFileDialog fileSaver;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string LoadFile()
         {
             fileOpener = new OpenFileDialog();

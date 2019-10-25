@@ -39,9 +39,7 @@ namespace ase
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            Pen mypen = new Pen(Color.Black);
-
-            g.DrawRectangle(Pens.Blue, x, y, width, height);
+            g.DrawRectangle(Pens.Black, x, y, width, height);
             canvas.Image = image;
 
             g.Dispose();

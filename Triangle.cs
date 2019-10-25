@@ -41,10 +41,8 @@ namespace ase
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            Pen mypen = new Pen(Color.Black);
-
-            Point[] points = { new Point(10, 10), new Point(100, 10), new Point(50, 100) };
-            g.DrawPolygon(new Pen(Color.Blue), points);
+            Point[] points = { new Point(x, y), new Point(side1, side2), new Point(side3, y) };
+            g.DrawPolygon(new Pen(Color.Black), points);
             canvas.Image = image;
 
             g.Dispose();

@@ -38,9 +38,7 @@ namespace ase
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            Pen mypen = new Pen(Color.Black);
-
-            g.DrawEllipse(Pens.Red, x, y, radius * 2, radius * 2);
+            g.DrawEllipse(Pens.Black, x, y, radius * 2, radius * 2);
             canvas.Image = image;
 
             g.Dispose();

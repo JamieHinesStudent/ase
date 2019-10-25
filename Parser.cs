@@ -11,20 +11,12 @@ namespace ase
     class Parser
     {
 
-
         private Lexer lexer;
-
-        private string[] splitLines(string command)
-        {
-            return command.Split(new[] { "\r\n", "\r", "\n" },StringSplitOptions.None);
-        }
-
-        public void callParser(string text)
-        {
-            string[] programLines = splitLines(text);
-            Console.WriteLine(programLines.Length);
-            
-           
+        
+        private void noParseError(string errorMessage){
+            const string title = "Invalid Statement Error";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result = MessageBox.Show(errorMessage, title, buttons, MessageBoxIcon.Error);
         }
 
         private int tokensOnLine(List<Token> tokens, int lineNumber){
@@ -72,8 +64,9 @@ namespace ase
                                     case "Clear": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
-                                            System.Diagnostics.Debug.WriteLine("Clear");
                                             clearScreen(sender, drawing);
+                                        }else{
+                                            noParseError("Clear statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Reset": 
@@ -81,6 +74,8 @@ namespace ase
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
                                             System.Diagnostics.Debug.WriteLine("Reset");
                                             resetPen(sender, drawing, canvasPen);
+                                        }else{
+                                            noParseError("Reset statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Moveto": 
@@ -88,6 +83,8 @@ namespace ase
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             System.Diagnostics.Debug.WriteLine("Moveto");
                                             moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
+                                        }else{
+                                            noParseError("Moveto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Drawto": 
@@ -95,6 +92,8 @@ namespace ase
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             System.Diagnostics.Debug.WriteLine("Drawto");
                                             drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
+                                        }else{
+                                            noParseError("Drawto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Circle": 
@@ -104,6 +103,8 @@ namespace ase
                                             buildShape = parserShapeFactory.getShape("Circle");
                                             buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value));
                                             buildShape.Draw(sender, drawing);
+                                        }else{
+                                            noParseError("Circle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Rectangle": 
@@ -113,6 +114,8 @@ namespace ase
                                             buildShape = parserShapeFactory.getShape("Rectangle");
                                             buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
                                             buildShape.Draw(sender, drawing);
+                                        }else{
+                                            noParseError("Rectangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Triangle": 
@@ -122,9 +125,14 @@ namespace ase
                                             buildShape = parserShapeFactory.getShape("Triangle");
                                             buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value), Convert.ToInt32(tokensReturned[x+5].value));
                                             buildShape.Draw(sender, drawing);
+                                        }else{
+                                            noParseError("Triangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    default: break;
+                                    default: 
+                                        
+                                        
+                                        break;
                                 }
 
                                 
@@ -138,8 +146,6 @@ namespace ase
 
             
         }
-
-      
 
         /* Clears the screen */
         private void clearScreen(Object sender, Object drawing){
@@ -164,7 +170,6 @@ namespace ase
             local.yCoordinate = 0;
             canvas.Image = image;
         }
-
 
         /* Draws pen to position */
         public void drawTo(Object sender, Object drawing, Object canvasPen, int x, int y){

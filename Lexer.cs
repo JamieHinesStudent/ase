@@ -111,8 +111,7 @@ namespace ase
                 
                 
             }
-
-            
+      
             GetNextChar();
             return new Token(symbolToken, "", line, position, column);
         }
