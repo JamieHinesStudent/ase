@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ase
+﻿namespace ase
 {
     /// <summary>
     /// The possible token types that the system can detect. These are used to evaluate what the input commands are.

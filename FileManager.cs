@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ase
@@ -20,7 +15,7 @@ namespace ase
         /// <summary>
         /// Loads a file from the local storage on the computer.
         /// </summary>
-        /// <returns>Returns the contents of a file that is loaded in</returns>
+        /// <returns>Returns the text contents of a file that is loaded in.</returns>
         public string LoadFile()
         {
             fileOpener = new OpenFileDialog();

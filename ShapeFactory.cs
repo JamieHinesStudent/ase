@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ase
 {
     /// <summary>
-    /// Class which builds the shapes. Hides the construction of the shapes.
+    /// Class which builds the shapes. Hides the complexity of the construction of the shapes.
     /// </summary>
     class ShapeFactory
     {
 
+        /// <summary>
+        /// Constructs the shape object based on the type passed into it.
+        /// </summary>
+        /// <param name="shapeType">The shape to be constructed.</param>
+        /// <returns>The newly created shape object.</returns>
         public Shape getShape(String shapeType)
         {
-            shapeType = shapeType.ToUpper().Trim(); //yoi could argue that you want a specific word string to create an object but I'm allowing any case combination
+            shapeType = shapeType.ToUpper().Trim(); //Removes whitespaces and converts to uppercase
             
            
             if (shapeType.Equals("CIRCLE")){return new Circle();}            //Builds a circle
@@ -22,7 +23,7 @@ namespace ase
             else if (shapeType.Equals("TRIANGLE")){return new Triangle ();}  //Builds a triangle
             else
             {
-                //if we get here then what has been passed in is inkown so throw an appropriate exception
+                //Shape doesn't exist
                 System.ArgumentException argEx = new System.ArgumentException("Factory error: "+shapeType+" does not exist");
                 throw argEx;
             }
