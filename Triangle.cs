@@ -12,7 +12,7 @@ namespace ase
         int side1, side2, side3;
 
         /// <summary>
-        /// Base constructor class
+        /// Base constructor class.
         /// </summary>
         public Triangle() : base()
         {
@@ -20,16 +20,16 @@ namespace ase
         }
 
         /// <summary>
-        /// Triangle constructor class
+        /// Triangle constructor class.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="drawing"></param>
-        /// <param name="canvasPen"></param>
-        /// <param name="side1">x coordinate</param>
-        /// <param name="side2">y coordinate</param>
-        /// <param name="side3">x coordinate</param>
-        /// <param name="x">current position of the x coordinate</param>
-        /// <param name="y">current position of the y coordinate</param>
+        /// <param name="sender">The canvas to draw on.</param>
+        /// <param name="drawing">The image to draw on.</param>
+        /// <param name="canvasPen">The pen object.</param>
+        /// <param name="side1">x coordinate.</param>
+        /// <param name="side2">y coordinate.</param>
+        /// <param name="side3">x coordinate.</param>
+        /// <param name="x">current position of the x coordinate.</param>
+        /// <param name="y">current position of the y coordinate.</param>
         public Triangle(int side1, int side2, int side3, int x, int y) : base(x, y)
         {
 
@@ -41,30 +41,29 @@ namespace ase
         /// <summary>
         /// Sets the variables needed for the draw command.
         /// </summary>
-        /// <param name="list">Array of integer to specifcy x and y coordinates</param>
+        /// <param name="list">Array of integer to specifcy x and y coordinates.</param>
         public override void Set(params int[] list)
         {
-            //list[0] is x, list[1] is y, list[2] is width, list[3] is height
-            base.Set(list[0], list[1]);
-            this.side1 = list[2];
-            this.side2 = list[3];
-            this.side3 = list[4];
+            base.Set(list[0], list[1]); //x and y coordinates
+            side1 = list[2]; //side 1
+            side2 = list[3]; //side 2
+            side3 = list[4]; //side 3
 
         }
 
         /// <summary>
-        /// Called to draw the triangle on the screen
+        /// Called to draw the triangle on the screen.
         /// </summary>
-        /// <param name="sender">The canvas to be drawn on</param>
-        /// <param name="drawing">The image to apply to the canvas</param>
+        /// <param name="sender">The canvas to be drawn on.</param>
+        /// <param name="drawing">The image to apply to the canvas.</param>
         public override void Draw(Object sender, Object drawing)
         {
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            Point[] points = { new Point(x, y), new Point(side1, side2), new Point(side3, y) };
-            g.DrawPolygon(new Pen(Color.Black), points);
+            Point[] points = { new Point(x, y), new Point(side1, side2), new Point(side3, y) }; //Sets the points for the triangle
+            g.DrawPolygon(new Pen(Color.Black), points); //Draws the points of the triangle
             canvas.Image = image;
 
             g.Dispose();

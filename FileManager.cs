@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security;
 using System.Windows.Forms;
 
@@ -27,13 +28,10 @@ namespace ase
                     return sr.ReadToEnd();
                     
                 }
-                catch (SecurityException ex)
+                catch (Exception)
                 {
-                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
-                    $"Details:\n\n{ex.StackTrace}");
-                  
+                    MessageBox.Show("Error loading the file.");
                     return null;
-                   
                 }
             }
             else
@@ -48,17 +46,22 @@ namespace ase
         /// <param name="commandContent">This string contents of the script command box</param>
         public void SaveFile(string commandContent)
         {
-            fileSaver = new SaveFileDialog();
-            fileSaver.FileName = "script.txt";
-            fileSaver.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-           
+            fileSaver = new SaveFileDialog{FileName = "script.txt",Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"};
+
             if (fileSaver.ShowDialog() == DialogResult.OK)
             {
-                System.IO.Stream fileStream = fileSaver.OpenFile();
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                sw.WriteLine(commandContent);
-                sw.Flush();
-                sw.Close();
+                try
+                {
+                    System.IO.Stream fileStream = fileSaver.OpenFile();
+                    System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
+                    sw.WriteLine(commandContent);
+                    sw.Flush();
+                    sw.Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error saving the file.");
+                }
             }
         }
     }

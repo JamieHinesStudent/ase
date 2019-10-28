@@ -109,7 +109,6 @@
                 case '\t':   symbolToken = Tokens.WhiteSpace; break;
                 case '\r':   symbolToken = Tokens.WhiteSpace; break;
                 case (char)0: symbolToken = Tokens.EOF; break;
-                //case (char)0: symbolToken = Tokens.EOF; return new Token(Tokens.EOF, "", line, position, column);
             }
 
             GetNextChar();

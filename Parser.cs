@@ -39,6 +39,12 @@ namespace ase
             return count;
         }
 
+        private Boolean IsComma(Token token)
+        {
+            if (token.tokenType.ToString() == "Comma"){return true;}
+            else{return false;}
+        }
+
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
 
             DrawingPen local = (DrawingPen)canvasPen;
@@ -91,39 +97,58 @@ namespace ase
                                     case "Moveto": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
-                                            System.Diagnostics.Debug.WriteLine("Moveto");
-                                            moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
-                                        }else{
+                                            try
+                                            {
+                                                if (IsComma(tokensReturned[x + 2]) == true) { moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                            }
+                                            catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                        }
+                                        else{
                                             noParseError("Moveto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Drawto": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
-                                            System.Diagnostics.Debug.WriteLine("Drawto");
-                                            drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
-                                        }else{
+                                            try
+                                            {
+                                                if (IsComma(tokensReturned[x + 2]) == true) { drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                            }
+                                            catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                        }
+                                        else{
                                             noParseError("Drawto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Circle": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2){
-                                            System.Diagnostics.Debug.WriteLine("Circle");
-                                            buildShape = parserShapeFactory.getShape("Circle");
-                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value));
-                                            buildShape.Draw(sender, drawing);
-                                        }else{
+                                            try
+                                            {
+                                                buildShape = parserShapeFactory.getShape("Circle");
+                                                buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value));
+                                                buildShape.Draw(sender, drawing);
+                                            }
+                                            catch (Exception) { noParseError("Circle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take an integer parameter."); }
+                                        }
+                                        else{
                                             noParseError("Circle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     case "Rectangle": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
-                                            System.Diagnostics.Debug.WriteLine("Rectangle");
-                                            buildShape = parserShapeFactory.getShape("Rectangle");
-                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value));
-                                            buildShape.Draw(sender, drawing);
+
+                                            if (IsComma(tokensReturned[x + 2]) == true)
+                                            {
+                                                try
+                                                {
+                                                    buildShape = parserShapeFactory.getShape("Rectangle");
+                                                    buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value));
+                                                    buildShape.Draw(sender, drawing);
+                                                }
+                                                catch (Exception){noParseError("Rectangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters.");}
+                                            }
                                         }else{
                                             noParseError("Rectangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
@@ -131,10 +156,16 @@ namespace ase
                                     case "Triangle": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6){
-                                            System.Diagnostics.Debug.WriteLine("Triangle");
-                                            buildShape = parserShapeFactory.getShape("Triangle");
-                                            buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x+1].value), Convert.ToInt32(tokensReturned[x+3].value), Convert.ToInt32(tokensReturned[x+5].value));
-                                            buildShape.Draw(sender, drawing);
+                                            if (IsComma(tokensReturned[x + 2]) == true && IsComma(tokensReturned[x + 4]) == true)
+                                            {
+                                                try
+                                                {
+                                                    buildShape = parserShapeFactory.getShape("Triangle");
+                                                    buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value));
+                                                    buildShape.Draw(sender, drawing);
+                                                }
+                                                catch (Exception) { noParseError("Triangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                            }
                                         }else{
                                             noParseError("Triangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
