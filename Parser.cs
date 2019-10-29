@@ -77,29 +77,21 @@ namespace ase
                                 ShapeFactory parserShapeFactory = new ShapeFactory();
                                 Shape buildShape;
                                 switch(tokensReturned[x].tokenType.ToString()){
-                                    case "Clear": 
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
-                                            clearScreen(sender, drawing);
-                                        }else{
-                                            noParseError("Clear statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
-                                        }
+                                    case "Clear":   
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){clearScreen(sender, drawing);}
+                                        else{noParseError("Clear statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
                                         break;
                                     case "Reset": 
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){
-                                            System.Diagnostics.Debug.WriteLine("Reset");
-                                            resetPen(sender, drawing, canvasPen);
-                                        }else{
-                                            noParseError("Reset statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
-                                        }
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){ resetPen(sender, drawing, canvasPen);}
+                                        else{noParseError("Reset statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
                                         break;
                                     case "Moveto": 
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             try
                                             {
-                                                if (IsComma(tokensReturned[x + 2]) == true) { moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString());}
                                             }
                                             catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
                                         }
@@ -112,7 +104,8 @@ namespace ase
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             try
                                             {
-                                                if (IsComma(tokensReturned[x + 2]) == true) { drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
                                             }
                                             catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
                                         }

@@ -51,7 +51,7 @@ namespace ase
         /// <returns>a string represnting the object</returns>
         public override string ToString()
         {
-            return base.ToString() + "    " + this.x + "," + this.y + " : ";
+            return base.ToString();
         }
 
 
