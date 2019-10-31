@@ -28,8 +28,8 @@ namespace ASE.TEST
         [Test]
         public void No_Data_Return()
         {
-            //comment
-            string expectedResult = "EOF";
+            
+            string expectedResult = "EOF"; //Expected EOF token
             var sut = new Lexer("");
             Assert.AreEqual(sut.CreateToken().tokenType.ToString(), expectedResult);
         }
