@@ -20,23 +20,23 @@ namespace ase
         public string LoadFile()
         {
             fileOpener = new OpenFileDialog();
-            if (fileOpener.ShowDialog() == DialogResult.OK)
+            if (fileOpener.ShowDialog() == DialogResult.OK) //Opens dialog
             {
                 try
                 {
                     var sr = new StreamReader(fileOpener.FileName);
-                    return sr.ReadToEnd();
+                    return sr.ReadToEnd(); //File in form a string returned
                     
                 }
-                catch (Exception)
+                catch (Exception) //Error in handling file
                 {
-                    MessageBox.Show("Error loading the file.");
-                    return null;
+                    MessageBox.Show("Error loading the file."); //Error message shown
+                    return null; // Empty returned
                 }
             }
             else
             {
-                return null;
+                return null; //Empty returned
             }
         }
 
@@ -46,9 +46,9 @@ namespace ase
         /// <param name="commandContent">This string contents of the script command box</param>
         public void SaveFile(string commandContent)
         {
-            fileSaver = new SaveFileDialog{FileName = "script.txt",Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"};
+            fileSaver = new SaveFileDialog{FileName = "script.txt",Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"}; //New file saver object with settings
 
-            if (fileSaver.ShowDialog() == DialogResult.OK)
+            if (fileSaver.ShowDialog() == DialogResult.OK) //File dialog
             {
                 try
                 {
@@ -60,7 +60,7 @@ namespace ase
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Error saving the file.");
+                    MessageBox.Show("Error saving the file."); //Error message displayed
                 }
             }
         }

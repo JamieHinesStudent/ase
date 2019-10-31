@@ -66,7 +66,7 @@ namespace ase
             g.DrawPolygon(new Pen(Color.Black), points); //Draws the points of the triangle
             canvas.Image = image;
 
-            g.Dispose();
+            g.Dispose(); //Gets rid of the graphics object to free up memory
         }
     }
 }

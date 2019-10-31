@@ -36,15 +36,29 @@ namespace ase
                     count++;
                 }
             }
+
             return count;
+            
         }
 
+        /// <summary>
+        /// Checks if the token passed in is a comma.
+        /// </summary>
+        /// <param name="token">A given token that you want to check.</param>
+        /// <returns>True if the token is a comma and false if it's not.</returns>
         private Boolean IsComma(Token token)
         {
             if (token.tokenType.ToString() == "Comma"){return true;}
             else{return false;}
         }
 
+        /// <summary>
+        /// Main function of the parser class. Responsible for parsing the text and actioning appropriate commands.
+        /// </summary>
+        /// <param name="commands">The command(s) to parse. These come from the text inputs.</param>
+        /// <param name="sender">The canvas to draw on.</param>
+        /// <param name="drawing">The image to draw on.</param>
+        /// <param name="canvasPen">The pen object to update which stores the x,y coordinates.</param>
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
 
             DrawingPen local = (DrawingPen)canvasPen;
@@ -52,8 +66,10 @@ namespace ase
             List<Token> tokensReturned = new List<Token>();
             
             if (commands.Length >= 1){
-                lexer = new Lexer(commands);
+                lexer = new Lexer(commands); //New lexer object
                 Token getNextToken = lexer.CreateToken();
+
+                //Generates all of the tokens for the piece of text given
                 while (getNextToken.tokenType != Tokens.EOF){
                     tokensReturned.Add(getNextToken);
                     getNextToken = lexer.CreateToken();
@@ -65,27 +81,28 @@ namespace ase
                 tokensReturned.RemoveAll(t => t.tokenType.ToString() == "NewLine" || t.tokenType.ToString() == "WhiteSpace" || t.tokenType.ToString() == "EOF");
 
                 int maxLineNumber  = tokensReturned[tokensReturned.Count - 1].lineNumber; //The number of lines in the program
-                
+
 
                 /* for each line */
                 for (int i=1; i<maxLineNumber+1; i++){
-                    Boolean foundFirst = false;
+                
+                    Boolean foundFirst = false; //Variable to store if the first token has been found on a line
                     do{
                         for (int x=0; x<tokensReturned.Count; x++){
                             if (tokensReturned[x].lineNumber == i){
-                                foundFirst = true;
-                                ShapeFactory parserShapeFactory = new ShapeFactory();
+                                foundFirst = true; //First token found
+                                ShapeFactory parserShapeFactory = new ShapeFactory(); //New shape factory object
                                 Shape buildShape;
                                 switch(tokensReturned[x].tokenType.ToString()){
-                                    case "Clear":   
+                                    case "Clear": //Clear token 
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){clearScreen(sender, drawing);}
                                         else{noParseError("Clear statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
                                         break;
-                                    case "Reset": 
+                                    case "Reset": //Reset token
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){ resetPen(sender, drawing, canvasPen);}
                                         else{noParseError("Reset statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
                                         break;
-                                    case "Moveto": 
+                                    case "Moveto": //Moveto token
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             try
@@ -99,7 +116,7 @@ namespace ase
                                             noParseError("Moveto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Drawto": 
+                                    case "Drawto": //Drawto token
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
                                             try
@@ -113,7 +130,7 @@ namespace ase
                                             noParseError("Drawto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Circle": 
+                                    case "Circle": //Circle token
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2){
                                             try
@@ -128,7 +145,7 @@ namespace ase
                                             noParseError("Circle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Rectangle": 
+                                    case "Rectangle": //Rectangle token
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
 
@@ -146,7 +163,7 @@ namespace ase
                                             noParseError("Rectangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Triangle": 
+                                    case "Triangle": //Triangle token
                                         
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6){
                                             if (IsComma(tokensReturned[x + 2]) == true && IsComma(tokensReturned[x + 4]) == true)
@@ -163,7 +180,7 @@ namespace ase
                                             noParseError("Triangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    default:
+                                    default: //Token not recognised
                                         if (tokensReturned[x].tokenType.ToString() == "Undefined")
                                         {
                                             noParseError("Syntax error. Command not recognised on line number " + tokensReturned[x].lineNumber.ToString());
