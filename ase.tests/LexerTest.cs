@@ -1,13 +1,12 @@
-﻿using ase;
-using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace ASE.TEST
+namespace ase.tests
 {
-    [TestFixture]
-    class LexerTest
+    [TestClass]
+    public class LexerTest
     {
-        [Test]
+        [TestMethod]
         public void Lexer_Returns_Correct_Tokens()
         {
             List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
@@ -25,13 +24,11 @@ namespace ASE.TEST
             for (int i = 0; i < sutReturns.Count; i++) { Assert.AreEqual(sutExpectedReturns[i], sutReturns[i].tokenType.ToString()); }
         }
 
-        [Test]
-        public void No_Data_Return()
+        [TestMethod]
+        public void Empty_Data_Return()
         {
-            
-            string expectedResult = "EOF"; //Expected EOF token
-            var sut = new Lexer("");
-            Assert.AreEqual(sut.CreateToken().tokenType.ToString(), expectedResult);
+            var sut = new Lexer(" ");
+            Assert.AreEqual(sut.CreateToken().tokenType.ToString(), "WhiteSpace");
         }
     }
 }

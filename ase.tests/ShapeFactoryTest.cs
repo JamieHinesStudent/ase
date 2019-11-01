@@ -1,12 +1,11 @@
-﻿using ase;
-using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ASE.TEST
+namespace ase.tests
 {
-    [TestFixture]
-    class ShapeFactoryTest
+    [TestClass]
+    public class ShapeFactoryTest
     {
-        [Test]
+        [TestMethod]
         public void ShapeFactory_Creates_Correct_Shape()
         {
             string[] shapes = { "Circle", "Rectangle", "Triangle" }; //Shapes to test
