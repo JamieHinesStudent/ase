@@ -26,9 +26,7 @@ namespace ase
                 //Shape doesn't exist
                 System.ArgumentException argEx = new System.ArgumentException("Factory error: "+shapeType+" does not exist");
                 throw argEx;
-            }
-
-           
+            }          
         }
     }
 }

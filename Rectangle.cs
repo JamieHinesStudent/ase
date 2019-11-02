@@ -14,10 +14,7 @@ namespace ase
         /// <summary>
         /// Base constructor.
         /// </summary>
-        public Rectangle():base()
-        {
-            
-        }
+        public Rectangle():base(){}
 
         /// <summary>
         /// Rectangle constructor.
@@ -60,7 +57,7 @@ namespace ase
             g.DrawRectangle(Pens.Black, x, y, width, height); //Draw function
             canvas.Image = image; //Updates canvas image
 
-            g.Dispose();
+            g.Dispose(); //Disposes of objects to free up memory
             
         }
     }

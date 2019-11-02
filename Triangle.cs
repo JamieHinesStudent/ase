@@ -14,10 +14,7 @@ namespace ase
         /// <summary>
         /// Base constructor class.
         /// </summary>
-        public Triangle() : base()
-        {
-           
-        }
+        public Triangle() : base(){}
 
         /// <summary>
         /// Triangle constructor class.
@@ -32,7 +29,6 @@ namespace ase
         /// <param name="y">current position of the y coordinate.</param>
         public Triangle(int side1, int side2, int side3, int x, int y) : base(x, y)
         {
-
             this.side1 = side1; 
             this.side2 = side2;
             this.side3 = side3;
@@ -48,7 +44,6 @@ namespace ase
             side1 = list[2]; //side 1
             side2 = list[3]; //side 2
             side3 = list[4]; //side 3
-
         }
 
         /// <summary>

@@ -19,7 +19,7 @@
         public Lexer(string input)
         {
             script = input;
-            lastCharacter = script[0];
+            lastCharacter = script[0]; //last character is the first character initially
 
             //Initial positioning
             position = 0;

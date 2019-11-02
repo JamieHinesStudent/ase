@@ -33,12 +33,10 @@ namespace ase
             int count = 0;
             for (int i=0; i<tokens.Count; i++){
                 if(tokens[i].lineNumber == lineNumber){
-                    count++;
+                    count++; //If line number matches one given then increment counter
                 }
             }
-
-            return count;
-            
+            return count; //return counter           
         }
 
         /// <summary>
@@ -48,8 +46,8 @@ namespace ase
         /// <returns>True if the token is a comma and false if it's not.</returns>
         private Boolean IsComma(Token token)
         {
-            if (token.tokenType.ToString() == "Comma"){return true;}
-            else{return false;}
+            if (token.tokenType.ToString() == "Comma"){return true;} //string is comma
+            else{return false;} //string is not comma
         }
 
         /// <summary>
@@ -61,9 +59,9 @@ namespace ase
         /// <param name="canvasPen">The pen object to update which stores the x,y coordinates.</param>
         public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
 
-            DrawingPen local = (DrawingPen)canvasPen;
+            DrawingPen local = (DrawingPen)canvasPen; //Local object of pen
 
-            List<Token> tokensReturned = new List<Token>();
+            List<Token> tokensReturned = new List<Token>(); //List which stores all the tokens returned
             
             if (commands.Length >= 1){
                 lexer = new Lexer(commands); //New lexer object
@@ -82,6 +80,8 @@ namespace ase
 
                 int maxLineNumber  = tokensReturned[tokensReturned.Count - 1].lineNumber; //The number of lines in the program
 
+                
+
 
                 /* for each line */
                 for (int i=1; i<maxLineNumber+1; i++){
@@ -89,95 +89,122 @@ namespace ase
                     Boolean foundFirst = false; //Variable to store if the first token has been found on a line
                     do{
                         for (int x=0; x<tokensReturned.Count; x++){
-                            if (tokensReturned[x].lineNumber == i){
+                            if (tokensReturned[x].lineNumber == i)
+                            {
                                 foundFirst = true; //First token found
                                 ShapeFactory parserShapeFactory = new ShapeFactory(); //New shape factory object
                                 Shape buildShape;
-                                switch(tokensReturned[x].tokenType.ToString()){
+                                switch (tokensReturned[x].tokenType.ToString())
+                                {
                                     case "Clear": //Clear token 
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){clearScreen(sender, drawing);}
-                                        else{noParseError("Clear statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { clearScreen(sender, drawing); } //Clears the screen
+                                        else { noParseError("Clear statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
                                         break;
                                     case "Reset": //Reset token
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1){ resetPen(sender, drawing, canvasPen);}
-                                        else{noParseError("Reset statement invalid on line number "+tokensReturned[x].lineNumber.ToString());}
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { resetPen(sender, drawing, canvasPen); } //Resets the screen
+                                        else { noParseError("Reset statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
                                         break;
                                     case "Moveto": //Moveto token
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4)
+                                        {
                                             try
                                             {
+                                                //Checks for valid parameters
                                                 if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
-                                                else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString());}
+                                                else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
                                             }
-                                            catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                            catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //Command invalid
                                         }
-                                        else{
-                                            noParseError("Moveto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
+                                        else
+                                        {
+                                            noParseError("Moveto statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Drawto": //Drawto token
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                    case "Drawto": //Drawto token                  
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4)
+                                        {
                                             try
                                             {
+                                                //Checks for valid parameters
                                                 if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
                                                 else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
                                             }
                                             catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
                                         }
-                                        else{
-                                            noParseError("Drawto statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
+                                        else
+                                        {
+                                            noParseError("Drawto statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Circle": //Circle token
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2){
+                                    case "Circle": //Circle token        
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2)
+                                        {
                                             try
                                             {
-                                                buildShape = parserShapeFactory.getShape("Circle");
-                                                buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value));
-                                                buildShape.Draw(sender, drawing);
+                                                //Checks for in bounds
+                                                if (local.CheckDimensions(local.xCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value) * 2), local.yCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value) * 2)))
+                                                {
+
+
+                                                    buildShape = parserShapeFactory.getShape("Circle"); //makes shape
+                                                    buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value)); //sets parameters
+                                                    buildShape.Draw(sender, drawing); //draws circle
+                                                }
+                                                else { noParseError("Circle's dimensions out of bounds"); }
                                             }
                                             catch (Exception) { noParseError("Circle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take an integer parameter."); }
                                         }
-                                        else{
-                                            noParseError("Circle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
+                                        else
+                                        {
+                                            noParseError("Circle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Rectangle": //Rectangle token
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
-
+                                    case "Rectangle": //Rectangle token    
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4)
+                                        {
                                             if (IsComma(tokensReturned[x + 2]) == true)
                                             {
                                                 try
                                                 {
-                                                    buildShape = parserShapeFactory.getShape("Rectangle");
-                                                    buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value));
-                                                    buildShape.Draw(sender, drawing);
+                                                    //Checks for in bounds
+                                                    if (local.CheckDimensions(local.xCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value)), local.yCoordinate + (Convert.ToInt32(tokensReturned[x + 3].value))))
+                                                    {
+                                                        buildShape = parserShapeFactory.getShape("Rectangle");
+                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value));
+                                                        buildShape.Draw(sender, drawing);
+                                                    }
+                                                    else { noParseError("Rectangle's dimensions out of bounds"); }
                                                 }
-                                                catch (Exception){noParseError("Rectangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters.");}
+                                                catch (Exception) { noParseError("Rectangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
                                             }
-                                        }else{
-                                            noParseError("Rectangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
+                                        }
+                                        else
+                                        {
+                                            noParseError("Rectangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Triangle": //Triangle token
-                                        
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6){
+                                    case "Triangle": //Triangle token          
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6)
+                                        {
                                             if (IsComma(tokensReturned[x + 2]) == true && IsComma(tokensReturned[x + 4]) == true)
                                             {
                                                 try
                                                 {
-                                                    buildShape = parserShapeFactory.getShape("Triangle");
-                                                    buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value));
-                                                    buildShape.Draw(sender, drawing);
+                                                    //Checks for in bounds
+                                                    if (local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 5].value), local.yCoordinate))
+                                                    {
+                                                        buildShape = parserShapeFactory.getShape("Triangle");
+                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value));
+                                                        buildShape.Draw(sender, drawing);
+                                                    }
+                                                    else { noParseError("Triangle's dimensions out of bounds"); }
                                                 }
                                                 catch (Exception) { noParseError("Triangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
                                             }
-                                        }else{
-                                            noParseError("Triangle statement invalid on line number "+tokensReturned[x].lineNumber.ToString());
+                                        }
+                                        else
+                                        {
+                                            noParseError("Triangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
                                     default: //Token not recognised
@@ -185,21 +212,16 @@ namespace ase
                                         {
                                             noParseError("Syntax error. Command not recognised on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
-                                        
 
                                         break;
                                 }
-
-                                
                             }
+                            //empty line encountered
+                            else { foundFirst = true; }
                         }
-                    
-                    }while(foundFirst == false);       
-                    
+                    }while(foundFirst == false);                   
                 }
-            }   
-
-            
+            }      
         }
 
         /// <summary>

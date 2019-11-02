@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Security;
 using System.Windows.Forms;
 
 namespace ase
@@ -52,9 +51,9 @@ namespace ase
             {
                 try
                 {
-                    System.IO.Stream fileStream = fileSaver.OpenFile();
+                    System.IO.Stream fileStream = fileSaver.OpenFile(); //Opens file
                     System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                    sw.WriteLine(commandContent);
+                    sw.WriteLine(commandContent); //Writes all content to file
                     sw.Flush();
                     sw.Close();
                 }

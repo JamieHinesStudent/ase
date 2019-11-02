@@ -9,22 +9,19 @@ namespace ase
     /// </summary>
     class Circle : Shape
     {
-        int radius;
+        int radius; //radius of the circle
 
         /// <summary>
         /// Base constructor.
         /// </summary>
-        public Circle():base()
-        {
-
-        }
+        public Circle():base(){}
 
         /// <summary>
         /// Circle constructor.
         /// </summary>
-        /// <param name="radius">radius to draw.</param>
-        /// <param name="x">x coordinate.</param>
-        /// <param name="y">y coordinate.</param>
+        /// <param name="radius">radius size to draw for the circle.</param>
+        /// <param name="x">x coordinate to start drawing the circle.</param>
+        /// <param name="y">y coordinate to start drawing the circle.</param>
         public Circle(int radius, int x, int y) : base(x, y)
         {
             this.radius = radius; //radius
@@ -55,7 +52,7 @@ namespace ase
             g.DrawEllipse(Pens.Black, x, y, radius * 2, radius * 2); //Draw function
             canvas.Image = image; //Sets the bitmap image to the canvas
 
-            g.Dispose();
+            g.Dispose(); //Disposes of object to free up memory
         }
     }
 }
