@@ -7,18 +7,39 @@
     {
         EOF, //End Of File
         Undefined, //Not recognised
-        IntegerLiteral,
-        StringLiteral,
-        NewLine,
-        WhiteSpace,
-        Comma,
-        Clear,
+
+        Clear, //Commands
         Drawto,
         Moveto,
         Reset,
         Rectangle,
         Circle,
         Triangle,
-        Identifier
+
+        IntegerLiteral, //Types
+        StringLiteral,
+        Identifier,
+        If,
+        EndIf,
+        Else,
+        Loop,
+        EndLoop,
+        For,
+        Then,
+        Counter,
+        Method,
+
+        Comma, //Symbols
+        Plus,
+        Minus,
+        Multiply,
+        Divide,
+        GreaterThan,
+        LessThan,
+        Equals,
+        OpenBracket,
+        CloseBracket,
+        NewLine,
+        WhiteSpace,
     }
 }

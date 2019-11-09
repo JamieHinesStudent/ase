@@ -16,17 +16,18 @@ namespace ase
         public Shape getShape(String shapeType)
         {
             shapeType = shapeType.ToUpper().Trim(); //Removes whitespaces and converts to uppercase
-            
-           
-            if (shapeType.Equals("CIRCLE")){return new Circle();}            //Builds a circle
-            else if (shapeType.Equals("RECTANGLE")){return new Rectangle();} //Builds a rectangle
-            else if (shapeType.Equals("TRIANGLE")){return new Triangle ();}  //Builds a triangle
-            else
+
+            switch (shapeType)
             {
-                //Shape doesn't exist
-                System.ArgumentException argEx = new System.ArgumentException("Factory error: "+shapeType+" does not exist");
-                throw argEx;
-            }          
+                case "CIRCLE": return new Circle();
+                case "RECTANGLE": return new Rectangle();
+                case "TRIANGLE": return new Triangle();
+                case "POLYGON": return new Polygon();
+                default:
+                    System.ArgumentException argEx = new System.ArgumentException("Factory error: " + shapeType + " does not exist");
+                    throw argEx;
+            }
+                    
         }
     }
 }
