@@ -14,6 +14,25 @@ namespace ase
         private Lexer lexer; //private instance of the lexer for use by the whole class
         private VariableStore variables = new VariableStore();
 
+        private void SetIdentifer(List<Token> allTokens, int[] positions)
+        {
+            for (int i=0; i<positions.Length; i++)
+            {
+                if (allTokens[positions[i]].tokenType.ToString() == "Identifier")
+                {
+                    switch (variables.ReturnPosition(allTokens[positions[i]].name.ToUpper()))
+                    {
+                        case -1: noParseError("Can't pass undeclared parameter on line " + allTokens[positions[i]].lineNumber.ToString()); break;
+                        default: allTokens[positions[i]].value = Convert.ToString(variables.ReturnValue(variables.ReturnPosition(allTokens[positions[i]].name.ToUpper()))); break;
+                    }
+                }
+
+            }
+            
+        }
+
+        
+        
         
         /// <summary>
         /// Displays and error message if the parser can't interpret the commands.
@@ -52,6 +71,8 @@ namespace ase
             else{return false;} //string is not comma
         }
 
+        
+
         /// <summary>
         /// Main function of the parser class. Responsible for parsing the text and actioning appropriate commands.
         /// </summary>
@@ -59,18 +80,21 @@ namespace ase
         /// <param name="sender">The canvas to draw on.</param>
         /// <param name="drawing">The image to draw on.</param>
         /// <param name="canvasPen">The pen object to update which stores the x,y coordinates.</param>
-        public void parseText(string commands, Object sender, Object drawing, Object canvasPen){
+        public void parseText(string commands, Object sender, Object drawing, Object canvasPen) {
 
             DrawingPen local = (DrawingPen)canvasPen; //Local object of pen
+            Commands command = new Commands();
 
             List<Token> tokensReturned = new List<Token>(); //List which stores all the tokens returned
-            
-            if (commands.Length >= 1){
+
+            if (commands.Length >= 1)
+            {
                 lexer = new Lexer(commands); //New lexer object
                 Token getNextToken = lexer.CreateToken();
 
                 //Generates all of the tokens for the piece of text given
-                while (getNextToken.tokenType != Tokens.EOF){
+                while (getNextToken.tokenType != Tokens.EOF)
+                {
                     tokensReturned.Add(getNextToken);
                     getNextToken = lexer.CreateToken();
                 }
@@ -80,30 +104,55 @@ namespace ase
                 //Removes newline, whitespace and end of file characters from the list
                 tokensReturned.RemoveAll(t => t.tokenType.ToString() == "NewLine" || t.tokenType.ToString() == "WhiteSpace" || t.tokenType.ToString() == "EOF");
 
-                int maxLineNumber  = tokensReturned[tokensReturned.Count - 1].lineNumber; //The number of lines in the program
+                int maxLineNumber = tokensReturned[tokensReturned.Count - 1].lineNumber; //The number of lines in the program
 
+                parseFull(sender, drawing, canvasPen, tokensReturned, maxLineNumber);
+
+            }
+        }
+
+        private void parseTokens(List<Token> tokenList, Object sender, Object drawing, Object canvasPen)
+        {
+            List<Token> tokensReturned = tokenList; //List which stores all the tokens returned
+
+            //Removes newline, whitespace and end of file characters from the list
+            tokensReturned.RemoveAll(t => t.tokenType.ToString() == "NewLine" || t.tokenType.ToString() == "WhiteSpace" || t.tokenType.ToString() == "EOF");
+
+            int maxLineNumber = tokensReturned[tokensReturned.Count - 1].lineNumber; //The number of lines in the program
+
+            parseFull(sender, drawing, canvasPen, tokensReturned, maxLineNumber);
+
+        }
+
+    
+
+        public void parseFull(Object sender, Object drawing, Object canvasPen, List<Token> tokensReturned, int maxLineNumber) {
+
+            
+
+            DrawingPen local = (DrawingPen)canvasPen; //Local object of pen
+            Commands command = new Commands();
+
+
+            /* for each line */
+            int i = 1;
+            while (i < maxLineNumber+1) { 
+            //for (int i=1; i<maxLineNumber+1; i++){
                 
-
-
-                /* for each line */
-                for (int i=1; i<maxLineNumber+1; i++){
-                
-                    Boolean foundFirst = false; //Variable to store if the first token has been found on a line
-                    do{
-                        for (int x=0; x<tokensReturned.Count; x++){
-                            if (tokensReturned[x].lineNumber == i)
-                            {
-                                foundFirst = true; //First token found
-                                ShapeFactory parserShapeFactory = new ShapeFactory(); //New shape factory object
-                                Shape buildShape;
-                                switch (tokensReturned[x].tokenType.ToString())
-                                {
-                                    case "Clear": //Clear token 
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { clearScreen(sender, drawing); } //Clears the screen
-                                        else { noParseError("Clear statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
-                                        break;
-                                    case "Reset": //Reset token
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { resetPen(sender, drawing, canvasPen); } //Resets the screen
+                Boolean foundFirst = false; //Variable to store if the first token has been found on a line
+                do{
+                    for (int x=0; x<tokensReturned.Count; x++){
+                        if (tokensReturned[x].lineNumber == i){
+                            foundFirst = true; //First token found
+                            ShapeFactory parserShapeFactory = new ShapeFactory(); //New shape factory object
+                            Shape buildShape;
+                            switch (tokensReturned[x].tokenType.ToString()){
+                                case "Clear": //Clear token 
+                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { command.clearScreen(sender, drawing); } //Clears the screen
+                                    else { noParseError("Clear statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
+                                    break;
+                                case "Reset": //Reset token
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 1) { command.resetPen(sender, drawing, canvasPen); } //Resets the screen
                                         else { noParseError("Reset statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
                                         break;
                                     case "Moveto": //Moveto token
@@ -112,7 +161,7 @@ namespace ase
                                             try
                                             {
                                                 //Checks for valid parameters
-                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
                                                 else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
                                             }
                                             catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //Command invalid
@@ -128,7 +177,7 @@ namespace ase
                                             try
                                             {
                                                 //Checks for valid parameters
-                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                                if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
                                                 else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
                                             }
                                             catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
@@ -141,6 +190,9 @@ namespace ase
                                     case "Circle": //Circle token 
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2)
                                         {
+                                            
+                                            SetIdentifer(tokensReturned, new int[] {x+1});
+
                                             try
                                             {
                                                 
@@ -165,6 +217,7 @@ namespace ase
                                     case "Rectangle": //Rectangle token    
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4)
                                         {
+                                            SetIdentifer(tokensReturned, new int[] { x + 1, x + 3});
                                             if (IsComma(tokensReturned[x + 2]) == true)
                                             {
                                                 try
@@ -189,6 +242,8 @@ namespace ase
                                     case "Triangle": //Triangle token          
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 6)
                                         {
+                                            SetIdentifer(tokensReturned, new int[] { x + 1, x + 3, x + 5});
+
                                             if (IsComma(tokensReturned[x + 2]) == true && IsComma(tokensReturned[x + 4]) == true)
                                             {
                                                 try
@@ -241,9 +296,86 @@ namespace ase
                                             }
                                         }
 
+                                        break;
+                                    case "Loop":
+
+                                        List<Token> loopTokens = new List<Token>(); //List which stores all the tokens in a loop
+                                    List<string> operators = new List<string>(){"GreaterThan","Equals","LessThan"};
+
+                                        Boolean endLoopFound = false;
+                                        int loopLineStart = x;
+                                        int loopSetCounter = x+1;
+
+                                        while ((endLoopFound == false) && (loopSetCounter < tokensReturned.Count))
+                                        {
+                                            if (tokensReturned[loopSetCounter].tokenType.ToString() == "EndLoop"){endLoopFound = true;}
+                                            else
+                                            {
+                                                loopTokens.Add(tokensReturned[loopSetCounter]);
+                                                loopSetCounter++;
+                                            }
+
+                                            
+
+                                        }
+
+                                        //validate loop start
+                                        for (int v=0; v<loopTokens.Count; v++){
+                                            System.Diagnostics.Debug.Write(loopTokens[v].tokenType.ToString());
+                                        }
+
+                                    
+                                        if ((loopTokens[0].tokenType.ToString() == "While") && (variables.ReturnPosition(loopTokens[1].name.ToUpper()) != -1) && (operators.Contains(loopTokens[2].tokenType.ToString())) && (loopTokens[3].tokenType.ToString() == "IntegerLiteral") ){
+                                            System.Diagnostics.Debug.WriteLine("valid loop");
+
+                                            
+                                            
+                                            if (endLoopFound == true){
+
+                                                switch(loopTokens[2].tokenType.ToString()){
+                                                    case "Equals": 
+                                                        while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) == Int32.Parse(loopTokens[3].value)){
+                                                            parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        }
+                                                    break;
+                                                    case "GreaterThan": 
+                                                    while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) > Int32.Parse(loopTokens[3].value)){
+                                                            parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        }
+                                                    break;
+                                                    case "LessThan": 
+                                                    while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) < Int32.Parse(loopTokens[3].value)){
+                                                            parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        }
+                                                    break;
+
+                                        
+                                                }
+                                                //parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                i = loopTokens[loopTokens.Count - 1].lineNumber + 2;
+
+                                            }
+                                            else{
+                                                noParseError("Loop not ended on line " + tokensReturned[loopSetCounter-1].lineNumber.ToString());
+                                                i = loopTokens[loopTokens.Count-1].lineNumber+3;
+                                            }
+                                        }else{
+                                        System.Diagnostics.Debug.WriteLine("Invalid loop");
+                                    }
+
+                                        //check if loop ended
                                         
 
+                                    
+                                       
+
                                         break;
+
+
+                                    case "If": break;
+
+                                    case "Method": break;
+
                                     default: //Token not recognised
                                         if (tokensReturned[x].tokenType.ToString() == "Undefined")
                                         {
@@ -255,84 +387,17 @@ namespace ase
                             }
                             //empty line encountered
                             else { foundFirst = true; }
+
+                        
                         }
-                    }while(foundFirst == false);                   
+                    }while(foundFirst == false);
+                i++;
                 }
-            }      
+            
+            }    
+        
         }
 
-        /// <summary>
-        /// Clears the screen of any drawings made.
-        /// </summary>
-        /// <param name="sender">The canvas.</param>
-        /// <param name="drawing">The bitmap image.</param>
-        private void clearScreen(Object sender, Object drawing){
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            Graphics g = Graphics.FromImage(image);
-            g.Clear(Color.Transparent);
-            canvas.Image = image;
-            g.Dispose();
-        }
-
-        /// <summary>
-        /// Resets the coordinates of the pen to x:0 and y:0.
-        /// </summary>
-        /// <param name="sender">The canvas.</param>
-        /// <param name="drawing">The bitmap image.</param>
-        /// <param name="canvasPen">The pen object where the x and y coordinates are stored.</param>
-        public void resetPen(Object sender, Object drawing, Object canvasPen){
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            DrawingPen local = (DrawingPen)canvasPen;
-            Graphics g = Graphics.FromImage(image);
-
-            g.TranslateTransform(0, 0);
-
-            local.xCoordinate = 0; //Reset x coordinate to 0
-            local.yCoordinate = 0; //Reset y coordinate to 0
-            canvas.Image = image; //Update image
-        }
-
-        /// <summary>
-        /// Draws a line from the current x,y coordinates to the given x,y coordinates.
-        /// </summary>
-        /// <param name="sender">The canvas to draw on.</param>
-        /// <param name="drawing">The image to darw on.</param>
-        /// <param name="canvasPen">The pen object which stores x,y coordinates.</param>
-        /// <param name="x">The x coordinate to draw to.</param>
-        /// <param name="y">The y coordinate to draw to.</param>
-        public void drawTo(Object sender, Object drawing, Object canvasPen, int x, int y){
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            DrawingPen local = (DrawingPen)canvasPen;
-            Graphics g = Graphics.FromImage(image);
-
-            g.DrawLine(new Pen(Color.Black), local.xCoordinate, local.yCoordinate, x, y); //Draw line command
-            local.xCoordinate = x;
-            local.yCoordinate = y;
-            canvas.Image = image; //Updates the image
-
-        }
-
-        /// <summary>
-        /// Moves the pen to a given x and y coordinate.
-        /// </summary>
-        /// <param name="sender">The canvas to draw on.</param>
-        /// <param name="drawing">The image to draw on.</param>
-        /// <param name="canvasPen">The pen object.</param>
-        /// <param name="x">X coordinate to move to.</param>
-        /// <param name="y">Y coordinate to move to.</param>
-        public void moveTo(Object sender, Object drawing, Object canvasPen, int x, int y){
-            PictureBox canvas = (PictureBox)sender;
-            Bitmap image = (Bitmap)drawing;
-            DrawingPen local = (DrawingPen)canvasPen;
-            Graphics g = Graphics.FromImage(image);
-
-            g.TranslateTransform(x, y); //Sets x and y coordinates
-            local.xCoordinate = x; //Updates the x coordinate in the pen object
-            local.yCoordinate = y; //Updates the y coordinate in the pen object
-            canvas.Image = image; //Updates the image
-        }
+        
     }
-}
+

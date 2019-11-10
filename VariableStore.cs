@@ -15,6 +15,10 @@ namespace ase
             variables = new List<Token>();
         }
 
+        public void ClearDown(){
+            variables.Clear();
+        }
+
         public void AddVariable(Token variable)
         {
             variables.Add(variable);

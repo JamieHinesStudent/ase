@@ -83,7 +83,7 @@
                     case "THEN":      return new Token(Tokens.Then, "", "", line, position, column);
                     case "ENDIF":     return new Token(Tokens.EndIf, "", "", line, position, column);
                     case "LOOP":      return new Token(Tokens.Loop, "", "", line, position, column);
-                    case "FOR":       return new Token(Tokens.For, "", "", line, position, column);
+                    case "WHILE":       return new Token(Tokens.While, "", "", line, position, column);
                     case "ENDLOOP":   return new Token(Tokens.EndLoop, "", "", line, position, column);
                     case "COUNTER":   return new Token(Tokens.Counter, "", "", line, position, column);
                     case "METHOD":    return new Token(Tokens.Method, "", "", line, position, column);

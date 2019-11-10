@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Circle.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="DrawingPen.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Form1.cs">

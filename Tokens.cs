@@ -24,7 +24,7 @@
         EndIf,
         Loop,
         EndLoop,
-        For,
+        While,
         Then,
         Counter,
         Method,
