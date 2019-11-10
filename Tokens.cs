@@ -15,13 +15,13 @@
         Rectangle,
         Circle,
         Triangle,
+        Polygon,
 
         IntegerLiteral, //Types
         StringLiteral,
         Identifier,
         If,
         EndIf,
-        Else,
         Loop,
         EndLoop,
         For,
@@ -33,7 +33,6 @@
         Plus,
         Minus,
         Multiply,
-        Divide,
         GreaterThan,
         LessThan,
         Equals,

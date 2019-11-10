@@ -12,6 +12,8 @@ namespace ase
     {
 
         private Lexer lexer; //private instance of the lexer for use by the whole class
+        private VariableStore variables = new VariableStore();
+
         
         /// <summary>
         /// Displays and error message if the parser can't interpret the commands.
@@ -136,11 +138,12 @@ namespace ase
                                             noParseError("Drawto statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
                                         break;
-                                    case "Circle": //Circle token        
+                                    case "Circle": //Circle token 
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2)
                                         {
                                             try
                                             {
+                                                
                                                 //Checks for in bounds
                                                 if (local.CheckDimensions(local.xCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value) * 2), local.yCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value) * 2)))
                                                 {
@@ -206,6 +209,40 @@ namespace ase
                                         {
                                             noParseError("Triangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
                                         }
+                                        break;
+                                    case "Identifier":
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 3)
+                                        {
+                                            if (variables.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
+                                            {
+                                                switch (tokensReturned[x + 1].tokenType.ToString())
+                                                {
+                                                    case "Equals": variables.Assign(variables.ReturnPosition(tokensReturned[x].name.ToUpper()), Convert.ToInt32(tokensReturned[x + 2].value)); break;
+                                                    case "Plus": variables.Addition(variables.ReturnPosition(tokensReturned[x].name.ToUpper()), Convert.ToInt32(tokensReturned[x + 2].value)); break;
+                                                    case "Minus": variables.Subtract(variables.ReturnPosition(tokensReturned[x].name.ToUpper()), Convert.ToInt32(tokensReturned[x + 2].value)); break;
+                                                    case "Multiply": variables.Multiply(variables.ReturnPosition(tokensReturned[x].name.ToUpper()), Convert.ToInt32(tokensReturned[x + 2].value)); break;
+                                                    default: noParseError("Invalid operator on variable on line " + tokensReturned[x].lineNumber.ToString()); break;
+
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                if (tokensReturned[x + 1].tokenType.ToString() == "Equals")
+                                                {
+                                                    tokensReturned[x].value = tokensReturned[x + 2].value;
+                                                    variables.AddVariable(tokensReturned[x]);
+                                                }
+                                                else
+                                                {
+                                                    noParseError("Variable doesn't exist on line " + tokensReturned[x].lineNumber.ToString());
+                                                }
+                                                
+                                            }
+                                        }
+
+                                        
+
                                         break;
                                     default: //Token not recognised
                                         if (tokensReturned[x].tokenType.ToString() == "Undefined")

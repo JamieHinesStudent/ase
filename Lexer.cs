@@ -71,14 +71,23 @@
                 //When the string is constructed it switches against it to see if it was a command
                 switch (builtString.ToUpper())
                 {
-                    case "DRAWTO":    return new Token(Tokens.Drawto, "", line, position, column);
-                    case "MOVETO":    return new Token(Tokens.Moveto, "", line, position, column);
-                    case "CLEAR":     return new Token(Tokens.Clear, "", line, position, column);
-                    case "RESET":     return new Token(Tokens.Reset, "", line, position, column);
-                    case "RECTANGLE": return new Token(Tokens.Rectangle, "", line, position, column);
-                    case "CIRCLE":    return new Token(Tokens.Circle, "", line, position, column);
-                    case "TRIANGLE":  return new Token(Tokens.Triangle, "", line, position, column);
-                    default:          return new Token(Tokens.Undefined, "", line, position, column); //this would be an identifier
+                    case "DRAWTO":    return new Token(Tokens.Drawto, "", "", line, position, column);
+                    case "MOVETO":    return new Token(Tokens.Moveto, "", "", line, position, column);
+                    case "CLEAR":     return new Token(Tokens.Clear, "", "", line, position, column);
+                    case "RESET":     return new Token(Tokens.Reset, "", "", line, position, column);
+                    case "RECTANGLE": return new Token(Tokens.Rectangle, "", "", line, position, column);
+                    case "CIRCLE":    return new Token(Tokens.Circle, "", "", line, position, column);
+                    case "TRIANGLE":  return new Token(Tokens.Triangle, "", "", line, position, column);
+                    case "POLYGON":   return new Token(Tokens.Polygon, "", "", line, position, column);
+                    case "IF":        return new Token(Tokens.If, "", "", line, position, column);
+                    case "THEN":      return new Token(Tokens.Then, "", "", line, position, column);
+                    case "ENDIF":     return new Token(Tokens.EndIf, "", "", line, position, column);
+                    case "LOOP":      return new Token(Tokens.Loop, "", "", line, position, column);
+                    case "FOR":       return new Token(Tokens.For, "", "", line, position, column);
+                    case "ENDLOOP":   return new Token(Tokens.EndLoop, "", "", line, position, column);
+                    case "COUNTER":   return new Token(Tokens.Counter, "", "", line, position, column);
+                    case "METHOD":    return new Token(Tokens.Method, "", "", line, position, column);
+                    default:          return new Token(Tokens.Identifier, builtString.ToUpper(), "0", line, position, column); //this would be an identifier
                 }
             }
 
@@ -90,29 +99,37 @@
                 string builtNumber = "";
                 do{builtNumber += lastCharacter;} while (char.IsDigit(GetNextChar()));
 
-                return new Token(Tokens.IntegerLiteral, builtNumber, line, position, column);
+                return new Token(Tokens.IntegerLiteral, "", builtNumber, line, position, column);
                 
             }
 
             //EOF file has been reached
             if (lastCharacter == (char)0){
-                return new Token(Tokens.EOF, "", line, position, column);
+                return new Token(Tokens.EOF, "", "", line, position, column);
             }
 
             //Character is a symbol
             Tokens symbolToken = Tokens.Undefined; 
             switch (lastCharacter)
             {           
-                case '\n': symbolToken = Tokens.NewLine; break;     
-                case ',':  symbolToken = Tokens.Comma; break;
-                case ' ':  symbolToken = Tokens.WhiteSpace; break;
-                case '\t':   symbolToken = Tokens.WhiteSpace; break;
-                case '\r':   symbolToken = Tokens.WhiteSpace; break;
-                case (char)0: symbolToken = Tokens.EOF; break;
+                case '\n':    symbolToken = Tokens.NewLine;      break;     
+                case ',':     symbolToken = Tokens.Comma;        break;
+                case ' ':     symbolToken = Tokens.WhiteSpace;   break;
+                case '\t':    symbolToken = Tokens.WhiteSpace;   break;
+                case '\r':    symbolToken = Tokens.WhiteSpace;   break;
+                case '+':     symbolToken = Tokens.Plus;         break;
+                case '-':     symbolToken = Tokens.Minus;        break;
+                case '*':     symbolToken = Tokens.Multiply;     break;
+                case '>':     symbolToken = Tokens.GreaterThan;  break;
+                case '<':     symbolToken = Tokens.LessThan;     break;
+                case '=':     symbolToken = Tokens.Equals;       break;
+                case '(':     symbolToken = Tokens.OpenBracket;  break;
+                case ')':     symbolToken = Tokens.CloseBracket; break;
+                case (char)0: symbolToken = Tokens.EOF;          break;
             }
 
             GetNextChar();
-            return new Token(symbolToken, "", line, position, column);
+            return new Token(symbolToken, "", "", line, position, column);
         }
     }
 }

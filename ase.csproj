@@ -84,6 +84,7 @@
     <Compile Include="Tokens.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="Variable.cs" />
+    <Compile Include="VariableStore.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
