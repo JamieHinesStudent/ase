@@ -6,14 +6,32 @@ using System.Threading.Tasks;
 
 namespace ase
 {
-    class VariableStore
+    public sealed class VariableStore
     {
-        private List<Token> variables;
+        //delete
+        private static readonly VariableStore instance = new VariableStore();
+        private List<Token> variables = new List<Token>();
 
+        static VariableStore()
+        {
+        }
+
+        private VariableStore()
+        {
+        }
+
+        public static VariableStore Instance{
+            get{
+                return instance;
+            }
+        }
+    
+        /*
         public VariableStore()
         {
             variables = new List<Token>();
         }
+        */
 
         public void ClearDown(){
             variables.Clear();

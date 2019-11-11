@@ -3,7 +3,7 @@
     ///<summary>
     ///Class which stores information about the tokens returned by the lexer class.
     ///</summary>
-    class Token
+    public class Token
     {
         
         public Tokens tokenType { get; }
