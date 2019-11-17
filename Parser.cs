@@ -14,6 +14,7 @@ namespace ase
         private Lexer lexer; //private instance of the lexer for use by the whole class
         //private VariableStore variables = new VariableStore();
         private VariableStore variables = VariableStore.Instance;
+        private MethodStore methods = MethodStore.Instance;
 
         private void SetIdentifer(List<Token> allTokens, int[] positions)
         {
@@ -84,7 +85,12 @@ namespace ase
             else{return false;} //string is not comma
         }
 
-        
+        public Boolean ValidParameters()
+        {
+            return true;
+        }
+
+
 
         /// <summary>
         /// Main function of the parser class. Responsible for parsing the text and actioning appropriate commands.
@@ -466,7 +472,62 @@ namespace ase
 
                                     break;
 
-                                case "Method": break;
+                                case "Method":
+                                    System.Diagnostics.Debug.WriteLine("Method declaration line");
+                                    List<Token> methodHeaderTokens = new List<Token>();
+                                    List<Token> methodBodyTokens = new List<Token>(); //List which stores all the tokens in the method declaration statement
+                                    methodHeaderTokens = allTokensOnLine(tokensReturned, i);
+                                    System.Diagnostics.Debug.WriteLine(methodHeaderTokens.Count);
+                                    for (int c = 0; c < methodHeaderTokens.Count; c++)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(methodHeaderTokens[c].tokenType.ToString());
+                                    }
+
+
+                                    Boolean endMethodFound = false;
+                                    //int methodLineStart = x+1;
+                                    int methodSetCounter = x + 4; //for method with no parameters (dynamically set this depending on parameter list
+
+                                    while ((endMethodFound == false) && (methodSetCounter < tokensReturned.Count))
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(endMethodFound);
+                                        if (tokensReturned[methodSetCounter].tokenType.ToString() == "EndMethod") { endMethodFound = true; }
+                                        else
+                                        {
+                                            methodBodyTokens.Add(tokensReturned[methodSetCounter]);
+                                            methodSetCounter++;
+                                        }
+                                    }
+
+                                    /*
+                                    for (int o = 0; o < methodBodyTokens.Count; o++)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine("B: "+methodBodyTokens[o].tokenType.ToString());
+                                    }
+                                    */
+                                    System.Diagnostics.Debug.WriteLine(endMethodFound);
+                                    if (endMethodFound == true){
+                                        methods.AddMethod(methodHeaderTokens[1].value.ToUpper(), new List<int> { } , methodBodyTokens);
+                                    }else{
+                                        noParseError("Method declaration not ended on line " + tokensReturned[x].lineNumber.ToString());
+                                    }
+
+                                    if (methodBodyTokens.Count == 0){
+                                        System.Diagnostics.Debug.WriteLine(methodBodyTokens.Count);
+                                        i = tokensReturned[x].lineNumber + 2;
+                                    }else{
+                                        i = methodBodyTokens[methodBodyTokens.Count - 1].lineNumber + 2;
+                                    }
+                                    
+                                    
+
+
+
+
+                                    //check syntax
+                                    // method space (....)
+                                    //check method doesn't already exsist
+                                    break;
 
                                 default: //Token not recognised
                                     if (tokensReturned[x].tokenType.ToString() == "Undefined"){

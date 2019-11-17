@@ -74,6 +74,8 @@
     </Compile>
     <Compile Include="IShape.cs" />
     <Compile Include="Lexer.cs" />
+    <Compile Include="Method.cs" />
+    <Compile Include="MethodStore.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Program.cs" />

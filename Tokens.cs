@@ -28,6 +28,7 @@
         Then,
         Counter,
         Method,
+        EndMethod,
 
         Comma, //Symbols
         Plus,
