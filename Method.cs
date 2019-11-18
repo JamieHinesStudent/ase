@@ -9,10 +9,10 @@ namespace ase
     public class Method
     {
         public string name { get; set; }
-        public List<int> parameters { get; set; }
+        public List<string> parameters { get; set; }
         public List<Token> definition { get; set; }
 
-        public Method(string name, List<int> parameters, List<Token> definition)
+        public Method(string name, List<string> parameters, List<Token> definition)
         {
             this.name = name;
             this.parameters = parameters;

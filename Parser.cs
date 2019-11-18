@@ -279,6 +279,16 @@ namespace ase
                                         }
                                         break;
                                     case "Identifier":
+
+                                    //check if it's a method first
+                                    if (methods.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine("method found");
+                                        parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+                                    }
+                                    else
+                                    {
+
                                         if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 3)
                                         {
                                             if (variables.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
@@ -305,9 +315,10 @@ namespace ase
                                                 {
                                                     noParseError("Variable doesn't exist on line " + tokensReturned[x].lineNumber.ToString());
                                                 }
-                                                
+
                                             }
                                         }
+                                    }
 
                                         break;
 
@@ -477,20 +488,52 @@ namespace ase
                                     List<Token> methodHeaderTokens = new List<Token>();
                                     List<Token> methodBodyTokens = new List<Token>(); //List which stores all the tokens in the method declaration statement
                                     methodHeaderTokens = allTokensOnLine(tokensReturned, i);
-                                    System.Diagnostics.Debug.WriteLine(methodHeaderTokens.Count);
+                                    //System.Diagnostics.Debug.WriteLine(methodHeaderTokens.Count);
+                                    
+                                    /*
                                     for (int c = 0; c < methodHeaderTokens.Count; c++)
                                     {
-                                        System.Diagnostics.Debug.WriteLine(methodHeaderTokens[c].tokenType.ToString());
+                                        System.Diagnostics.Debug.WriteLine("H: "+methodHeaderTokens[c].tokenType.ToString());
                                     }
+                                    */
 
-
+                                    //check for open close brackets
+                                    int openBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "OpenBracket");
+                                    int closeBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "CloseBracket");
+                                    List<Token> parameters = methodHeaderTokens.GetRange(openBracketIndex, (closeBracketIndex - openBracketIndex));
+                                    List<string> namedParameters = new List<string>();
+                                    Boolean validParameters = true;
+                                    Boolean methodAlreadyDefined = methods.MethodExists(methodHeaderTokens[1].name.ToUpper());
+                                    //System.Diagnostics.Debug.WriteLine("Parameters length: "+parameters.Count);
+                                    if (parameters.Count > 1)
+                                    {
+                                        parameters.RemoveAll(t => t.tokenType.ToString() == "Comma");
+                                        for (int p=1; p<parameters.Count; p++)
+                                        {
+                                            System.Diagnostics.Debug.WriteLine("Parameter: " + parameters[p].tokenType.ToString());
+                                            if (parameters[p].tokenType.ToString() == "Identifier")
+                                            {
+                                                namedParameters.Add(parameters[p].name.ToUpper());
+                                            }
+                                            else
+                                            {
+                                                validParameters = false;
+                                                noParseError("Parameter declared in method is not an identifier " + tokensReturned[x].lineNumber.ToString());
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //empty list
+                                    }
                                     Boolean endMethodFound = false;
                                     //int methodLineStart = x+1;
-                                    int methodSetCounter = x + 4; //for method with no parameters (dynamically set this depending on parameter list
+                                    int methodSetCounter = x + methodHeaderTokens.Count;
+                                    //int methodSetCounter = x + 4; //for method with no parameters (dynamically set this depending on parameter list
 
                                     while ((endMethodFound == false) && (methodSetCounter < tokensReturned.Count))
                                     {
-                                        System.Diagnostics.Debug.WriteLine(endMethodFound);
+                                        //System.Diagnostics.Debug.WriteLine(endMethodFound);
                                         if (tokensReturned[methodSetCounter].tokenType.ToString() == "EndMethod") { endMethodFound = true; }
                                         else
                                         {
@@ -505,21 +548,28 @@ namespace ase
                                         System.Diagnostics.Debug.WriteLine("B: "+methodBodyTokens[o].tokenType.ToString());
                                     }
                                     */
-                                    System.Diagnostics.Debug.WriteLine(endMethodFound);
-                                    if (endMethodFound == true){
-                                        methods.AddMethod(methodHeaderTokens[1].value.ToUpper(), new List<int> { } , methodBodyTokens);
+                                    //System.Diagnostics.Debug.WriteLine(endMethodFound);
+                                    if (endMethodFound == true && validParameters == true){
+                                        //System.Diagnostics.Debug.WriteLine(methodHeaderTokens[1].name.ToUpper());
+                                        methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters , methodBodyTokens);
                                     }else{
                                         noParseError("Method declaration not ended on line " + tokensReturned[x].lineNumber.ToString());
                                     }
 
                                     if (methodBodyTokens.Count == 0){
-                                        System.Diagnostics.Debug.WriteLine(methodBodyTokens.Count);
+                                        //System.Diagnostics.Debug.WriteLine(methodBodyTokens.Count);
                                         i = tokensReturned[x].lineNumber + 2;
                                     }else{
                                         i = methodBodyTokens[methodBodyTokens.Count - 1].lineNumber + 2;
                                     }
-                                    
-                                    
+
+                                    List<Token> test = methods.GetMethodDefinition(0);
+                                    for (int k=0; k< test.Count; k++)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(test[k].tokenType.ToString());
+                                    }
+                                    //System.Diagnostics.Debug.WriteLine(methods.GetMethodDefinition(0));
+                                
 
 
 

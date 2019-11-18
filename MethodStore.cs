@@ -21,7 +21,7 @@ namespace ase
 
         public static MethodStore Instance { get{return instance;} }
 
-        public void AddMethod(string name, List<int> parameters, List<Token> definition)
+        public void AddMethod(string name, List<string> parameters, List<Token> definition)
         {
             Method newMethod = new Method(name, parameters, definition);
             methods.Add(newMethod);
@@ -30,6 +30,19 @@ namespace ase
         public int ReturnPosition(string name)
         {
             return methods.FindIndex(m => m.name == name);
+        }
+
+        public Boolean MethodExists(string name)
+        {
+            if (methods.FindIndex(m => m.name == name) == -1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
 
         public List<Token> GetMethodDefinition(int index)
