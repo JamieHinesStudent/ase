@@ -6,8 +6,7 @@
     public class Token
     {
         
-        public Tokens tokenType { get; }
-
+        public Tokens tokenType { get; set; }
         public string name { get; set; }
         public string value { get; set; }
         public int lineNumber { get; }

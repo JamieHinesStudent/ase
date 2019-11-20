@@ -284,7 +284,134 @@ namespace ase
                                     if (methods.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
                                     {
                                         System.Diagnostics.Debug.WriteLine("method found");
-                                        parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+
+                                        //check if method has parameters or not
+                                        if (methods.HasParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper())) == true)
+                                        {
+                                            List<string> methodParameters = methods.ReturnParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+
+                                            //remove commas
+                                            List<Token> methodCall = allTokensOnLine(tokensReturned, i);
+                                            methodCall.RemoveAll(t => t.tokenType.ToString() == "Comma");
+                                            //System.Diagnostics.Debug.WriteLine("Method call count: "+methodCall.Count);
+                                            //1 param = 4
+                                            //two param = 5
+                                            //System.Diagnostics.Debug.WriteLine("Method parameters number: "+methodParameters.Count);
+
+                                            if ((methodCall.Count - methodParameters.Count) == 3)
+                                            {
+                                                //check if the parameter passed in is identifer or number
+                                                List<Token> passedParameters = new List<Token>();
+                                                List<int> passedParametersValue = new List<int>();
+                                                Boolean validAfterParse = true;
+                                                System.Diagnostics.Debug.WriteLine("Method call count: "+methodCall.Count);
+                                                System.Diagnostics.Debug.WriteLine("Method parameters number: " + methodParameters.Count);
+                                                //int parametersEntered = 0;
+
+                                                for (int step = 2; step < methodCall.Count - 1; step++) {
+                                                    System.Diagnostics.Debug.WriteLine("Step value: " + step);
+                                                    if ((methodCall[step].tokenType.ToString() == "Identifier") && (variables.ReturnPosition(methodCall[step].name.ToUpper()) != -1))
+                                                    {
+                                                        passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (methodCall[step].tokenType.ToString() == "IntegerLiteral")
+                                                        {
+                                                            passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
+                                                        }
+                                                        else
+                                                        {
+                                                            validAfterParse = false;
+                                                        }
+
+                                                    }
+                                                   
+                                                }
+
+                                                if (validAfterParse == true)
+                                                {
+                                                    //look over and replace tokens
+                                                    List<Token> methodBody = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+
+                                                    System.Diagnostics.Debug.WriteLine("pp: "+ passedParametersValue.Count);
+                                                    System.Diagnostics.Debug.WriteLine("mp: "+ methodParameters.Count);
+
+                                                    if (passedParametersValue.Count == methodParameters.Count)
+                                                    {
+                                                        System.Diagnostics.Debug.WriteLine("good");
+                                                        //have list of integer - passedParameter values
+                                                        //have list of string - methodParameters
+                                                        for (int tokenInBody = 0; tokenInBody < methodBody.Count; tokenInBody++)
+                                                        {
+                                                            if (methodBody[tokenInBody].tokenType.ToString() == "Identifier")
+                                                            {
+                                                                if (methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper()) != -1)
+                                                                {
+                                                                    methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral;
+                                                                    methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString();
+
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                        parseTokens(methodBody, sender, drawing, canvasPen);
+                                                    }
+                                                    else
+                                                    {
+                                                        System.Diagnostics.Debug.WriteLine("method error 2");
+                                                    }
+                                                    
+                                                    //then call tokens
+                                                }
+                                                else
+                                                {
+
+                                                }
+                                                System.Diagnostics.Debug.WriteLine("valid amount of parameters");
+
+                                            }
+                                            else
+                                            {
+                                                //System.Diagnostics.Debug.WriteLine("Invalid amount of parameters!!");
+                                                noParseError("Incorrect number of parameters to method call on line " + tokensReturned[x].lineNumber.ToString());
+                                                //System.Diagnostics.Debug.WriteLine(methodCall.Count);
+
+                                            }
+
+                                            //check rest of tokens on line to make sure there is correct number of tokens and open/close brackets
+                                            //load in method tokens
+
+                                            //loop over them and replace any occurances of the parameters with the value passed in, if the value passed in is a variable then convert the variable 
+                                            // to it's integer value
+                                            // allow the addition, substraction, multiplication of variables?
+
+                                        }
+                                        else
+                                        {
+                                            List<Token> methodCallTokens = allTokensOnLine(tokensReturned, i);
+                                            //System.Diagnostics.Debug.WriteLine(methodCallTokens.Count);
+                                            if (methodCallTokens.Count == 3)
+                                            {
+                                                if ((methodCallTokens[0].tokenType.ToString() == "Identifier") && (methodCallTokens[1].tokenType.ToString() == "OpenBracket") && (methodCallTokens[2].tokenType.ToString() == "CloseBracket"))
+                                                {
+                                                    parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+
+                                                }
+                                                else
+                                                {
+                                                    noParseError("Method not called properly on line " + tokensReturned[x].lineNumber.ToString());
+                                                }
+                                            }
+                                            else
+                                            {
+                                                noParseError("Method not called properly it has no parameters on line " + tokensReturned[x].lineNumber.ToString());
+                                            }
+                                            
+                                            //parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+                                        }
+                                        
                                     }
                                     else
                                     {
@@ -550,8 +677,14 @@ namespace ase
                                     */
                                     //System.Diagnostics.Debug.WriteLine(endMethodFound);
                                     if (endMethodFound == true && validParameters == true){
+                                        
+                                        
+                                            System.Diagnostics.Debug.WriteLine("Method created");
+                                            methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters, methodBodyTokens);
+                                        
+                                        
                                         //System.Diagnostics.Debug.WriteLine(methodHeaderTokens[1].name.ToUpper());
-                                        methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters , methodBodyTokens);
+                                        //methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters , methodBodyTokens);
                                     }else{
                                         noParseError("Method declaration not ended on line " + tokensReturned[x].lineNumber.ToString());
                                     }
@@ -563,11 +696,13 @@ namespace ase
                                         i = methodBodyTokens[methodBodyTokens.Count - 1].lineNumber + 2;
                                     }
 
+                                    /*
                                     List<Token> test = methods.GetMethodDefinition(0);
                                     for (int k=0; k< test.Count; k++)
                                     {
                                         System.Diagnostics.Debug.WriteLine(test[k].tokenType.ToString());
                                     }
+                                    */
                                     //System.Diagnostics.Debug.WriteLine(methods.GetMethodDefinition(0));
                                 
 

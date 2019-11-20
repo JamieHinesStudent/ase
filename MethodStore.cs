@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ase
 {
@@ -20,6 +17,24 @@ namespace ase
         }
 
         public static MethodStore Instance { get{return instance;} }
+
+        public List<string> ReturnParameters(int index)
+        {
+            return methods[index].parameters;
+        }
+
+        public Boolean HasParameters(int index)
+        {
+            if (methods[index].parameters.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
 
         public void AddMethod(string name, List<string> parameters, List<Token> definition)
         {
@@ -45,6 +60,11 @@ namespace ase
 
         }
 
+        /// <summary>
+        /// Returns the method body as an list of tokens which can then be executed.
+        /// </summary>
+        /// <param name="index">The index of the method of where it's stored in the array.</param>
+        /// <returns>The tokens which the method contains.</returns>
         public List<Token> GetMethodDefinition(int index)
         {
             return methods[index].definition;
