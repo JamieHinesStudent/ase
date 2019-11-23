@@ -9,7 +9,7 @@
         public Tokens tokenType { get; set; }
         public string name { get; set; }
         public string value { get; set; }
-        public int lineNumber { get; }
+        public int lineNumber { get; set; }
         public int position { get; }
         public int column { get; }
 

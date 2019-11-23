@@ -52,6 +52,8 @@ namespace ase
             g.DrawEllipse(Pens.Black, x, y, radius * 2, radius * 2); //Draw function
             canvas.Image = image; //Sets the bitmap image to the canvas
 
+            System.Diagnostics.Debug.WriteLine("Circle radius: "+radius);
+
             g.Dispose(); //Disposes of object to free up memory
         }
     }

@@ -23,6 +23,12 @@ namespace ase
             return methods[index].parameters;
         }
 
+        
+
+        public void ClearDown(){
+            methods.Clear();
+        }
+
         public Boolean HasParameters(int index)
         {
             if (methods[index].parameters.Count == 0)

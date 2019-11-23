@@ -16,6 +16,14 @@ namespace ase
         private VariableStore variables = VariableStore.Instance;
         private MethodStore methods = MethodStore.Instance;
 
+        private void printTokens(List<Token> test)
+        {
+            for (int i=0; i<test.Count; i++)
+            {
+                System.Diagnostics.Debug.WriteLine("> "+test[i].tokenType.ToString());
+            }
+        }
+
         private void SetIdentifer(List<Token> allTokens, int[] positions)
         {
             for (int i=0; i<positions.Length; i++)
@@ -216,6 +224,7 @@ namespace ase
 
                                                     buildShape = parserShapeFactory.getShape("Circle"); //makes shape
                                                     buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value)); //sets parameters
+                                                    System.Diagnostics.Debug.WriteLine("Drawing circle");
                                                     buildShape.Draw(sender, drawing); //draws circle
                                                 }
                                                 else { noParseError("Circle's dimensions out of bounds"); }
@@ -283,12 +292,14 @@ namespace ase
                                     //check if it's a method first
                                     if (methods.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
                                     {
-                                        System.Diagnostics.Debug.WriteLine("method found");
+                                        System.Diagnostics.Debug.WriteLine(">>>method found<<<");
 
                                         //check if method has parameters or not
                                         if (methods.HasParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper())) == true)
                                         {
                                             List<string> methodParameters = methods.ReturnParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+
+                                            
 
                                             //remove commas
                                             List<Token> methodCall = allTokensOnLine(tokensReturned, i);
@@ -297,6 +308,7 @@ namespace ase
                                             //1 param = 4
                                             //two param = 5
                                             //System.Diagnostics.Debug.WriteLine("Method parameters number: "+methodParameters.Count);
+                                            
 
                                             if ((methodCall.Count - methodParameters.Count) == 3)
                                             {
@@ -304,12 +316,12 @@ namespace ase
                                                 List<Token> passedParameters = new List<Token>();
                                                 List<int> passedParametersValue = new List<int>();
                                                 Boolean validAfterParse = true;
-                                                System.Diagnostics.Debug.WriteLine("Method call count: "+methodCall.Count);
-                                                System.Diagnostics.Debug.WriteLine("Method parameters number: " + methodParameters.Count);
+                                                //System.Diagnostics.Debug.WriteLine("Method call count: "+methodCall.Count);
+                                                //System.Diagnostics.Debug.WriteLine("Method parameters number: " + methodParameters.Count);
                                                 //int parametersEntered = 0;
 
                                                 for (int step = 2; step < methodCall.Count - 1; step++) {
-                                                    System.Diagnostics.Debug.WriteLine("Step value: " + step);
+                                                    //System.Diagnostics.Debug.WriteLine("Value: " + methodCall[step].value);
                                                     if ((methodCall[step].tokenType.ToString() == "Identifier") && (variables.ReturnPosition(methodCall[step].name.ToUpper()) != -1))
                                                     {
                                                         passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
@@ -329,47 +341,114 @@ namespace ase
                                                    
                                                 }
 
+                                                /*
+                                                for (int er=0; er<passedParametersValue.Count; er++)
+                                                {
+                                                    System.Diagnostics.Debug.WriteLine("pp value: " + passedParametersValue[er]);
+                                                }
+                                                */
+
                                                 if (validAfterParse == true)
                                                 {
                                                     //look over and replace tokens
-                                                    List<Token> methodBody = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+                                                    //<YourType> oldList = new List<YourType>();
+                                                    //List<YourType> newList = new List<YourType>(oldList.Count);
 
-                                                    System.Diagnostics.Debug.WriteLine("pp: "+ passedParametersValue.Count);
-                                                    System.Diagnostics.Debug.WriteLine("mp: "+ methodParameters.Count);
+                                                    /*
+                                                    oldList.ForEach((item) =>
+                                                    {
+                                                        newList.Add(new YourType(item));
+                                                    });
+                                                    */
+
+                                                    List<Token> methodBodyCopy = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+                                                    //List<Token> methodBody = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+                                                    List<Token> methodBody = new List<Token>();
+
+                                                    for (int listItem = 0; listItem<methodBodyCopy.Count; listItem++)
+                                                    {
+                                                        Token temp = new Token(methodBodyCopy[listItem].tokenType, methodBodyCopy[listItem].name, methodBodyCopy[listItem].value, methodBodyCopy[listItem].lineNumber, methodBodyCopy[listItem].position, methodBodyCopy[listItem].column);
+                                                        methodBody.Add(temp);
+
+                                                    }
+                                                    
+
+                                                    
+                                                    //printTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())));
+                                                    List<Token> hold = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+
+
+
+                                                    //System.Diagnostics.Debug.WriteLine("pp: "+ passedParametersValue.Count);
+                                                    //System.Diagnostics.Debug.WriteLine("mp: "+ methodParameters.Count);
 
                                                     if (passedParametersValue.Count == methodParameters.Count)
                                                     {
+                                                        //printTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())));
                                                         System.Diagnostics.Debug.WriteLine("good");
                                                         //have list of integer - passedParameter values
                                                         //have list of string - methodParameters
                                                         for (int tokenInBody = 0; tokenInBody < methodBody.Count; tokenInBody++)
                                                         {
+                                                            //methodBody[tokenInBody].lineNumber = i;
+
                                                             if (methodBody[tokenInBody].tokenType.ToString() == "Identifier")
                                                             {
                                                                 if (methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper()) != -1)
                                                                 {
+                                                                    //take copy of token and edit
                                                                     methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral;
                                                                     methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString();
+                                                                    //System.Diagnostics.Debug.WriteLine("mb token value: "+methodBody[tokenInBody].value);
+                                                                    System.Diagnostics.Debug.WriteLine("l");
+                                                                    //printTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())));
+                                                                    //printTokens(methodBody);
+
 
                                                                 }
 
                                                             }
+                                                            else
+                                                            {
+                                                                printTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())));
+                                                                //System.Diagnostics.Debug.WriteLine("Token not identifier");
+                                                                //System.Diagnostics.Debug.WriteLine(">>> token type >>>"+ methodBody[tokenInBody].tokenType.ToString());
+                                                            }
                                                         }
 
+                                                        //printTokens(methodBody);
+                                                        printTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())));
+
+                                                        /*
+                                                        for (int l=0; l<methodBody.Count; l++){
+                                                            System.Diagnostics.Debug.WriteLine("mb: "+methodBody[l].tokenType.ToString());
+                                                            System.Diagnostics.Debug.WriteLine("mb: " + methodBody[l].value);
+                                                        }
+                                                        */
+                                                        //System.Diagnostics.Debug.WriteLine("Tokens parsed");
                                                         parseTokens(methodBody, sender, drawing, canvasPen);
+                                                        System.Diagnostics.Debug.WriteLine("hold print");
+                                                        printTokens(hold);
+                                                        //methodBody = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
+                                                        //i += 1;
                                                     }
                                                     else
                                                     {
                                                         System.Diagnostics.Debug.WriteLine("method error 2");
                                                     }
-                                                    
-                                                    //then call tokens
+
+                                                    //System.Diagnostics.Debug.WriteLine("Reset method");
+                                                    //methods.SetDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()), hold);
+
+
                                                 }
                                                 else
                                                 {
 
                                                 }
                                                 System.Diagnostics.Debug.WriteLine("valid amount of parameters");
+                                                //i = tokensReturned[x].lineNumber + 1;
+                                                //methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()))
 
                                             }
                                             else
@@ -677,10 +756,17 @@ namespace ase
                                     */
                                     //System.Diagnostics.Debug.WriteLine(endMethodFound);
                                     if (endMethodFound == true && validParameters == true){
-                                        
-                                        
+
+                                        if (methodAlreadyDefined == false){
                                             System.Diagnostics.Debug.WriteLine("Method created");
                                             methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters, methodBodyTokens);
+
+                                        }else{
+                                            noParseError("Method already defined on " + tokensReturned[x].lineNumber.ToString());
+                                        }
+                                        
+                                        
+                                            
                                         
                                         
                                         //System.Diagnostics.Debug.WriteLine(methodHeaderTokens[1].name.ToUpper());

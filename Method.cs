@@ -13,7 +13,7 @@ namespace ase
     {
         public string name { get; set; } //name of the method
         public List<string> parameters { get; set; } //parameters the method can except
-        public List<Token> definition { get; set; } //the tokens which make up the method
+        public List<Token> definition { get;} //the tokens which make up the method
 
         /// <summary>
         /// Method constructor.
