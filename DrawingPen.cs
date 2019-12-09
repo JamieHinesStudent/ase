@@ -1,4 +1,6 @@
-﻿namespace ase
+﻿using System.Drawing;
+
+namespace ase
 {
     ///<summary>
     ///DrawingPen class. It holds all the information about the drawing pen. Such as it's x and y corrdinates.
@@ -9,6 +11,13 @@
         public int yCoordinate { get; set; } //Current y coordinate of the pen
         private readonly int maxXCoordinate; //Max width of the canvas
         private readonly int maxYCoordinate; //Max height of the canvas
+
+        Pen Colour { get; set; }
+        //= new Pen(Color.Black);
+
+        
+
+
 
         /// <summary>
         /// Constructor which takes in the initial x,y coordinates and the x,y size of the screen.
@@ -23,6 +32,7 @@
             yCoordinate = y;
             maxXCoordinate = maxX;
             maxYCoordinate = maxY;
+            Colour = new Pen(Color.Black);
         }
         
         /// <summary>

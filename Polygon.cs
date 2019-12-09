@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// Class which draws the polygon shape.
+    /// </summary>
     class Polygon : Shape
     {
         int[] polygonPoints;
