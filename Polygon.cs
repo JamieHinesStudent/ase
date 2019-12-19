@@ -24,6 +24,11 @@ namespace ase
             polygonPoints = list.Skip(2).ToArray();
         }
 
+        /// <summary>
+        /// Method to draw the polygon.
+        /// </summary>
+        /// <param name="sender">Canvas to draw on.</param>
+        /// <param name="drawing">Image to draw on.</param>
         public override void Draw(Object sender, Object drawing)
         {
             //Constructs the objects

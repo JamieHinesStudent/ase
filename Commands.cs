@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// Class which provides the commands to draw on the canvas.
+    /// </summary>
     class Commands
     {
         /// <summary>

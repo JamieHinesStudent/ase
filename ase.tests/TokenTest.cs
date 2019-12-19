@@ -14,7 +14,7 @@ namespace ase.tests
         [TestMethod]
         public void Check_Correct_Token_Made_Type()
         {
-            var sut = new Token(Tokens.Moveto, "", 1,1,1); //Creates a token with values
+            var sut = new Token(Tokens.Moveto, "", "", 1,1,1); //Creates a token with values
             Assert.AreEqual("Moveto", sut.tokenType.ToString()); //Assert statement
         }
 
@@ -24,7 +24,7 @@ namespace ase.tests
         [TestMethod]
         public void Check_Correct_Token_Made_LineNumber()
         {
-            var sut = new Token(Tokens.Moveto, "", 1, 1, 1); //Creates a token with values
+            var sut = new Token(Tokens.Moveto, "", "", 1, 1, 1); //Creates a token with values
             Assert.AreEqual(1, sut.lineNumber); //Assert statement
         }
     }

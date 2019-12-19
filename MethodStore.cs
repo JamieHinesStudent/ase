@@ -75,9 +75,14 @@ namespace ase
             return methods.FindIndex(m => m.name == name); //returns index, -1 if not found
         }
 
+        /// <summary>
+        /// Returns the method name.
+        /// </summary>
+        /// <param name="index">The index of the method in the list.</param>
+        /// <returns>The method name.</returns>
         public string GetName (int index)
         {
-            if (index > methods.Count && index != -1)
+            if (index > methods.Count && index != -1) //method doesn't exist
             {
                 return "NULL";
             }

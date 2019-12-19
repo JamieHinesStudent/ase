@@ -17,7 +17,7 @@ namespace ase.tests
         {
             var sut = new Parser();
             PrivateObject obj = new PrivateObject(sut); //Allows testing of private methods
-            var retVal = obj.Invoke("IsComma", new Token(Tokens.Comma, "", 1, 1, 1));
+            var retVal = obj.Invoke("IsComma", new Token(Tokens.Comma, "", "", 1, 1, 1));
             Assert.AreEqual(true, retVal);
         }
 
@@ -29,7 +29,7 @@ namespace ase.tests
         {
             var sut = new Parser();
             PrivateObject obj = new PrivateObject(sut); //Allows testing of private methods
-            var retVal = obj.Invoke("IsComma", new Token(Tokens.Clear, "", 1, 1, 1));
+            var retVal = obj.Invoke("IsComma", new Token(Tokens.Clear, "", "", 1, 1, 1));
             Assert.AreEqual(false, retVal);
         }
 
@@ -41,7 +41,7 @@ namespace ase.tests
         {
             var sut = new Parser();
             PrivateObject obj = new PrivateObject(sut); //Allows testing of private methods
-            var retVal = obj.Invoke("tokensOnLine", new List<Token>() { new Token(Tokens.Circle, "", 1, 1, 1), new Token(Tokens.WhiteSpace, "", 1,2,2), new Token(Tokens.Clear, "", 2, 1,1) }, 1);
+            var retVal = obj.Invoke("tokensOnLine", new List<Token>() { new Token(Tokens.Circle, "", "", 1, 1, 1), new Token(Tokens.WhiteSpace, "", "", 1,2,2), new Token(Tokens.Clear, "", "", 2, 1,1) }, 1);
             Assert.AreEqual(2, retVal);
 
         }
