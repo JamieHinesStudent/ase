@@ -26,7 +26,7 @@ namespace ase
             {
                 if (allTokens[positions[i]].tokenType.ToString() == "Identifier") //checks to see if its a identifer
                 {
-                    switch (variables.ReturnPosition(allTokens[positions[i]].name.ToUpper()))
+                    switch (variables.ReturnPosition(allTokens[positions[i]].name.ToUpper())) //convert variable name to upper to check
                     {
                         case -1: noParseError("Can't pass undeclared parameter on line " + allTokens[positions[i]].lineNumber.ToString()); break; //variable not declared
                         default: allTokens[positions[i]].value = Convert.ToString(variables.ReturnValue(variables.ReturnPosition(allTokens[positions[i]].name.ToUpper()))); break; //variable declared
@@ -48,7 +48,7 @@ namespace ase
             List<Token> returnTokens = new List<Token>();
             for (int i = 0; i < allTokens.Count; i++)
             {
-                if (allTokens[i].lineNumber == lineNumber)
+                if (allTokens[i].lineNumber == lineNumber) //line numbers match
                 {
                     returnTokens.Add(allTokens[i]); //adds matching token to the list
                 }
@@ -65,7 +65,7 @@ namespace ase
         private void noParseError(string errorMessage){
             const string title = "Invalid Statement Error";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
-            MessageBox.Show(errorMessage, title, buttons, MessageBoxIcon.Error);
+            MessageBox.Show(errorMessage, title, buttons, MessageBoxIcon.Error); //displays the error message on the screen
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ase
             if (commands.Length >= 1)
             {
                 lexer = new Lexer(commands); //New lexer object
-                Token getNextToken = lexer.CreateToken();
+                Token getNextToken = lexer.CreateToken(); //gets the first token
 
                 //Generates all of the tokens for the piece of text given
                 while (getNextToken.tokenType != Tokens.EOF)
@@ -167,16 +167,13 @@ namespace ase
         /// <param name="maxLineNumber">The number of lines in the program.</param>
         public void parseFull(Object sender, Object drawing, Object canvasPen, List<Token> tokensReturned, int maxLineNumber) {
 
-            
-
             DrawingPen local = (DrawingPen)canvasPen; //Local object of pen
             Commands command = new Commands(); //commands
 
 
-            /* for each line */
+            //for each line
             int i = 1;
             while (i < maxLineNumber+1) { 
-            //for (int i=1; i<maxLineNumber+1; i++){
                 
                 Boolean foundFirst = false; //Variable to store if the first token has been found on a line
                 do{
@@ -195,36 +192,36 @@ namespace ase
                                     else { noParseError("Reset statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); } //Error message displayed if more than one token on line
                                     break;
                                 case "Moveto": //Moveto token
-                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){ //tokens on line check
                                         try{
                                             //Checks for valid parameters
                                             if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.moveTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
-                                            else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
+                                            else { noParseError("Moveto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); } //error message
                                         }
                                             catch (Exception) { noParseError("MoveTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //Command invalid
                                     }
                                     else{
-                                        noParseError("Moveto statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
+                                        noParseError("Moveto statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                     }
                                     break;
                                 case "Drawto": //Drawto token                  
-                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){
+                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){ //tokens on line check
                                         try{
                                             //Checks for valid parameters
                                             if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
-                                            else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); }
+                                            else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); } //error message
                                         }
-                                            catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                            catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //command invalid
                                     }
                                     else{
-                                        noParseError("Drawto statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
+                                        noParseError("Drawto statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                     }
                                     break;
                                 case "Circle": //Circle token 
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2)
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 2) //tokens on line check
                                         {
                                             
-                                            SetIdentifer(tokensReturned, new int[] {x+1});
+                                            SetIdentifer(tokensReturned, new int[] {x+1}); //get value
 
                                             try
                                             {
@@ -238,38 +235,38 @@ namespace ase
                                                     buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value)); //sets parameters
                                                     buildShape.Draw(sender, drawing); //draws circle
                                                 }
-                                                else { noParseError("Circle's dimensions out of bounds"); }
+                                                else { noParseError("Circle's dimensions out of bounds"); } //error message
                                             }
-                                            catch (Exception) { noParseError("Circle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take an integer parameter."); }
+                                            catch (Exception) { noParseError("Circle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take an integer parameter."); } //error message
                                         }
                                         else
                                         {
-                                            noParseError("Circle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
+                                            noParseError("Circle statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                         }
                                         break;
                                 case "Rectangle": //Rectangle token    
-                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4)
+                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4) //tokens on line check
                                         {
-                                            SetIdentifer(tokensReturned, new int[] { x + 1, x + 3});
-                                            if (IsComma(tokensReturned[x + 2]) == true)
+                                            SetIdentifer(tokensReturned, new int[] { x + 1, x + 3}); //get value
+                                            if (IsComma(tokensReturned[x + 2]) == true) //syntax checking for a comma
                                             {
                                                 try
                                                 {
                                                     //Checks for in bounds
                                                     if (local.CheckDimensions(local.xCoordinate + (Convert.ToInt32(tokensReturned[x + 1].value)), local.yCoordinate + (Convert.ToInt32(tokensReturned[x + 3].value))))
                                                     {
-                                                        buildShape = parserShapeFactory.getShape("Rectangle");
-                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value));
-                                                        buildShape.Draw(sender, drawing);
+                                                        buildShape = parserShapeFactory.getShape("Rectangle"); //makes shape
+                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); //sets parameters
+                                                        buildShape.Draw(sender, drawing); //draws rectangle
                                                     }
-                                                    else { noParseError("Rectangle's dimensions out of bounds"); }
+                                                    else { noParseError("Rectangle's dimensions out of bounds"); } //error message
                                                 }
-                                                catch (Exception) { noParseError("Rectangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                                catch (Exception) { noParseError("Rectangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //error message
                                             }
                                         }
                                         else
                                         {
-                                            noParseError("Rectangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
+                                            noParseError("Rectangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                         }
                                         break;
                                     case "Triangle": //Triangle token          
@@ -284,79 +281,67 @@ namespace ase
                                                     //Checks for in bounds
                                                     if (local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 5].value), local.yCoordinate))
                                                     {
-                                                        buildShape = parserShapeFactory.getShape("Triangle");
-                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value));
-                                                        buildShape.Draw(sender, drawing);
+                                                        buildShape = parserShapeFactory.getShape("Triangle"); //creates shape
+                                                        buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value)); //sets shape coordinates
+                                                        buildShape.Draw(sender, drawing); //draws the shape
                                                     }
-                                                    else { noParseError("Triangle's dimensions out of bounds"); }
+                                                    else { noParseError("Triangle's dimensions are out of bounds"); } //error message
                                                 }
-                                                catch (Exception) { noParseError("Triangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); }
+                                                catch (Exception) { noParseError("Triangle command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //error message
                                             }
                                         }
                                         else
                                         {
-                                            noParseError("Triangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString());
+                                            noParseError("Triangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                         }
                                         break;
-                                    case "Identifier":
+                                    case "Identifier": //Identifier token (this could be a method or variable)
 
-                                    System.Diagnostics.Debug.WriteLine(tokensReturned[x].name.ToUpper());
-                                    System.Diagnostics.Debug.WriteLine(methods.ReturnPosition("SHAPE"));
-                                    //System.Diagnostics.Debug.WriteLine(methods.GetName(0));
-                                    //System.Diagnostics.Debug.WriteLine(methods.GetName(1));
                                     //check if it's a method first
                                     if (methods.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
                                     {
-                                        System.Diagnostics.Debug.WriteLine(">>>method found<<<");
 
                                         //check if method has parameters or not
                                         if (methods.HasParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper())) == true)
                                         {
-                                            List<string> methodParameters = methods.ReturnParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
-
-                                            
+                                            List<string> methodParameters = methods.ReturnParameters(methods.ReturnPosition(tokensReturned[x].name.ToUpper())); //gets the methods parameters
 
                                             //remove commas
                                             List<Token> methodCall = allTokensOnLine(tokensReturned, i);
-                                            methodCall.RemoveAll(t => t.tokenType.ToString() == "Comma");
+                                            methodCall.RemoveAll(t => t.tokenType.ToString() == "Comma"); //removes all commas to allow easy comparison
                                             
-                                            if ((methodCall.Count - methodParameters.Count) == 3)
+                                            if ((methodCall.Count - methodParameters.Count) == 3) //checks the correct amount of parameters have been passed in
                                             {
                                                 //check if the parameter passed in is identifer or number
                                                 List<Token> passedParameters = new List<Token>();
                                                 List<int> passedParametersValue = new List<int>();
-                                                Boolean validAfterParse = true;
+                                                Boolean validAfterParse = true; //valid method hold variable
 
                                                 for (int step = 2; step < methodCall.Count - 1; step++) {
-                                                    if ((methodCall[step].tokenType.ToString() == "Identifier") && (variables.ReturnPosition(methodCall[step].name.ToUpper()) != -1))
+                                                    if ((methodCall[step].tokenType.ToString() == "Identifier") && (variables.ReturnPosition(methodCall[step].name.ToUpper()) != -1)) //if passed parameter is an identifier
                                                     {
-                                                        //passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
-                                                        passedParametersValue.Add(variables.ReturnValue(variables.ReturnPosition(methodCall[step].name.ToUpper())));
-                                                        //passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
-                                                        System.Diagnostics.Debug.WriteLine("Identifier passed in");
+                                                        passedParametersValue.Add(variables.ReturnValue(variables.ReturnPosition(methodCall[step].name.ToUpper()))); //gets the value of the passed parameters and adds to list
                                                     }
                                                     else
                                                     {
-                                                        if (methodCall[step].tokenType.ToString() == "IntegerLiteral")
+                                                        if (methodCall[step].tokenType.ToString() == "IntegerLiteral") //if passed parameter is an integer
                                                         {
-                                                            passedParametersValue.Add(Convert.ToInt32(methodCall[step].value));
-                                                            System.Diagnostics.Debug.WriteLine("Integer passed in");
+                                                            passedParametersValue.Add(Convert.ToInt32(methodCall[step].value)); //adds value to the list
                                                         }
                                                         else
                                                         {
-                                                            validAfterParse = false;
+                                                            validAfterParse = false; //invalid parameter passed
                                                         }
-
-                                                    }
-                                                   
+                                                    }                                                  
                                                 }
 
-                                                if (validAfterParse == true)
+                                                if (validAfterParse == true) //all parameters are valid
                                                 {
 
-                                                    List<Token> methodBodyCopy = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
-                                                    List<Token> methodBody = new List<Token>();
+                                                    List<Token> methodBodyCopy = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())); //gets method body
+                                                    List<Token> methodBody = new List<Token>(); //empty list to store new tokens which represent the method body
 
+                                                    //full clone of the token list
                                                     for (int listItem = 0; listItem<methodBodyCopy.Count; listItem++)
                                                     {
                                                         Token temp = new Token(methodBodyCopy[listItem].tokenType, methodBodyCopy[listItem].name, methodBodyCopy[listItem].value, methodBodyCopy[listItem].lineNumber, methodBodyCopy[listItem].position, methodBodyCopy[listItem].column);
@@ -366,45 +351,40 @@ namespace ase
                                                     
                                                     List<Token> hold = methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper()));
 
-                                                    if (passedParametersValue.Count == methodParameters.Count)
+                                                    if (passedParametersValue.Count == methodParameters.Count) //checks the amount of parameters line up
                                                     {
-                                                        for (int tokenInBody = 0; tokenInBody < methodBody.Count; tokenInBody++)
+                                                        for (int tokenInBody = 0; tokenInBody < methodBody.Count; tokenInBody++) //loops over method body
                                                         {
-                                                            //methodBody[tokenInBody].lineNumber = i;
 
-                                                            if (methodBody[tokenInBody].tokenType.ToString() == "Identifier")
+                                                            if (methodBody[tokenInBody].tokenType.ToString() == "Identifier") //if token encountered is an identifier
                                                             {
-                                                                if (methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper()) != -1)
+                                                                if (methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper()) != -1) //checks identifier exists
                                                                 {
-                                                                    //take copy of token and edit
 
-                                                                    //allow for addition, subtraction, multiplication
-
-                                                                    //delete this if doesn't work
-                                                                    if (tokensOnLine(methodBody, methodBody[tokenInBody].lineNumber) == 3)
+                                                                    if (tokensOnLine(methodBody, methodBody[tokenInBody].lineNumber) == 3) //checks the correct amount of tokens are on line
                                                                     {
-                                                                        string[] methodIfOperators = {"Plus","Minus","Multiply", "Equals"};
-                                                                        //System.Diagnostics.Debug.WriteLine("Declaration here?");
-                                                                        if ((Array.IndexOf(methodIfOperators, methodBody[tokenInBody + 1].tokenType.ToString()) != -1) && (methodBody[tokenInBody + 2].tokenType.ToString() == "IntegerLiteral"))
+                                                                        string[] methodIfOperators = {"Plus","Minus","Multiply", "Equals"}; //operators
+                                                                      
+                                                                        if ((Array.IndexOf(methodIfOperators, methodBody[tokenInBody + 1].tokenType.ToString()) != -1) && (methodBody[tokenInBody + 2].tokenType.ToString() == "IntegerLiteral")) //checks tokens
                                                                         {
                                                                             switch (methodBody[tokenInBody + 1].tokenType.ToString())
                                                                             {
-                                                                                case "Plus": 
+                                                                                case "Plus": //additon
                                                                               
                                                                                     passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())] += Convert.ToInt32(methodBody[tokenInBody + 2].value);
                                                                                     
                                                                                     break;
-                                                                                case "Minus": 
+                                                                                case "Minus": //minus
                                                                                     
                                                                                     passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())] -= Convert.ToInt32(methodBody[tokenInBody + 2].value);
                                                                                     
                                                                                     break;
-                                                                                case "Multiply": 
+                                                                                case "Multiply": //multiply
                                                                                     
                                                                                     passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())] *= Convert.ToInt32(methodBody[tokenInBody + 2].value);
                                                                                     
                                                                                     break;
-                                                                                case "Equals":
+                                                                                case "Equals": //equals
                                                                                     
                                                                                     passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())] = Convert.ToInt32(methodBody[tokenInBody + 2].value);
                                                                                     
@@ -413,95 +393,70 @@ namespace ase
 
                                                                         }
 
-                                                                        methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral;
-                                                                        methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString();
+                                                                        methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral; //changes token type for parse
+                                                                        methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString(); //changes token value for parse
 
                                                                     }
                                                                     else
                                                                     {
-                                                                        methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral;
-                                                                        methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString();
+                                                                        methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral; //changes token type for parse
+                                                                        methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString(); //changes token value for parse
                                                                     }
-
-                                                                    //methodBody[tokenInBody].tokenType = Tokens.IntegerLiteral;
-                                                                    //methodBody[tokenInBody].value = passedParametersValue[methodParameters.IndexOf(methodBody[tokenInBody].name.ToUpper())].ToString();
                                                                 }
-
-                                                            }
-                                                            
+                                                            }                                                           
                                                         }
                                                         
-                                                        for (int pol=0; pol<methodBody.Count; pol++)
-                                                        {
-                                                            System.Diagnostics.Debug.WriteLine(methodBody[pol].tokenType.ToString());
-                                                        }
-                                                        parseTokens(methodBody, sender, drawing, canvasPen);
+                                                        parseTokens(methodBody, sender, drawing, canvasPen); //parse tokens
                                                         
                                                     }
                                                     else
                                                     {
-                                                        noParseError("Incorrect number of parameters to method call on line " + tokensReturned[x].lineNumber.ToString());
+                                                        noParseError("Incorrect number of parameters to method call on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                                     }
-
-                                                    
-
-
                                                 }
                                                 else
                                                 {
-
+                                                    noParseError("Invalid parameter passed to method on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                                 }
-                                                
-
                                             }
                                             else
                                             {
-                                                //System.Diagnostics.Debug.WriteLine("Invalid amount of parameters!!");
-                                                noParseError("Incorrect number of parameters to method call on line " + tokensReturned[x].lineNumber.ToString());
-                                                //System.Diagnostics.Debug.WriteLine(methodCall.Count);
-
+                                                noParseError("Incorrect number of parameters to method call on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                             }
-
-                                            //check rest of tokens on line to make sure there is correct number of tokens and open/close brackets
-                                            //load in method tokens
-
-                                            //loop over them and replace any occurances of the parameters with the value passed in, if the value passed in is a variable then convert the variable 
-                                            // to it's integer value
-                                            // allow the addition, substraction, multiplication of variables?
 
                                         }
                                         else
                                         {
-                                            System.Diagnostics.Debug.WriteLine("Identifer");
-                                            List<Token> methodCallTokens = allTokensOnLine(tokensReturned, i);
+                                            
+                                            List<Token> methodCallTokens = allTokensOnLine(tokensReturned, i); //gets the tokens used to call the method
                                             //System.Diagnostics.Debug.WriteLine(methodCallTokens.Count);
-                                            if (methodCallTokens.Count == 3)
+                                            if (methodCallTokens.Count == 3) //if method with no parameters
                                             {
                                                 if ((methodCallTokens[0].tokenType.ToString() == "Identifier") && (methodCallTokens[1].tokenType.ToString() == "OpenBracket") && (methodCallTokens[2].tokenType.ToString() == "CloseBracket"))
                                                 {
-                                                    parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+                                                    parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen); //parse the tokens
 
                                                 }
                                                 else
                                                 {
-                                                    noParseError("Method not called properly on line " + tokensReturned[x].lineNumber.ToString());
+                                                    noParseError("Method not called properly on line " + tokensReturned[x].lineNumber.ToString()); //error message
                                                 }
                                             }
                                             else
                                             {
-                                                noParseError("Method not called properly it has no parameters on line " + tokensReturned[x].lineNumber.ToString());
+                                                noParseError("Method not called properly it has no parameters on line " + tokensReturned[x].lineNumber.ToString()); //error message
                                             }
                                             
-                                            //parseTokens(methods.GetMethodDefinition(methods.ReturnPosition(tokensReturned[x].name.ToUpper())), sender, drawing, canvasPen);
+                                            
                                         }
                                         
                                     }
-                                    else
+                                    else //will be a variable
                                     {
 
-                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 3)
+                                        if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 3) //syntax checking
                                         {
-                                            if (variables.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
+                                            if (variables.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1) //check variable exists
                                             {
                                                 switch (tokensReturned[x + 1].tokenType.ToString())
                                                 {
@@ -514,16 +469,16 @@ namespace ase
                                                 }
 
                                             }
-                                            else
+                                            else //new variable created
                                             {
                                                 if (tokensReturned[x + 1].tokenType.ToString() == "Equals")
                                                 {
                                                     tokensReturned[x].value = tokensReturned[x + 2].value;
-                                                    variables.AddVariable(tokensReturned[x]);
+                                                    variables.AddVariable(tokensReturned[x]); //add variable to list
                                                 }
                                                 else
                                                 {
-                                                    noParseError("Variable doesn't exist on line " + tokensReturned[x].lineNumber.ToString());
+                                                    noParseError("Variable doesn't exist on line " + tokensReturned[x].lineNumber.ToString()); //error message
                                                 }
 
                                             }
@@ -532,99 +487,102 @@ namespace ase
 
                                         break;
 
-                                case "Loop":
+                                case "Loop": //loop token
 
                                     List<Token> loopTokens = new List<Token>(); //List which stores all the tokens in a loop
-                                    List<string> operators = new List<string>(){"GreaterThan","Equals","LessThan"};
+                                    List<string> operators = new List<string>(){"GreaterThan","Equals","LessThan"}; //operators
 
-                                    Boolean endLoopFound = false;
-                                    int loopLineStart = x;
-                                    int loopSetCounter = x+1;
+                                    Boolean endLoopFound = false; //end loop found check
+                                    int loopLineStart = x; //loop start 
+                                    int loopSetCounter = x+1; //loop counter
 
+                                    //gets all tokens in the loop
                                     while ((endLoopFound == false) && (loopSetCounter < tokensReturned.Count)){
-                                        if (tokensReturned[loopSetCounter].tokenType.ToString() == "EndLoop"){endLoopFound = true;}
+                                        if (tokensReturned[loopSetCounter].tokenType.ToString() == "EndLoop"){endLoopFound = true;} //end loop found
                                         else{
                                             loopTokens.Add(tokensReturned[loopSetCounter]);
                                             loopSetCounter++;
                                         }
                                     }
 
-                                    if ((loopTokens[0].tokenType.ToString() == "While") && (variables.ReturnPosition(loopTokens[1].name.ToUpper()) != -1) && (operators.Contains(loopTokens[2].tokenType.ToString())) && (loopTokens[3].tokenType.ToString() == "IntegerLiteral") ){
-                                        System.Diagnostics.Debug.WriteLine("valid loop");
-
+                                    //for variable iterator
+                                    if ((loopTokens[0].tokenType.ToString() == "While") && (variables.ReturnPosition(loopTokens[1].name.ToUpper()) != -1) && (operators.Contains(loopTokens[2].tokenType.ToString())) && (loopTokens[3].tokenType.ToString() == "IntegerLiteral") ){ //checks the format of the loop
+                                       
+                                        //checks loop has ended
                                         if (endLoopFound == true){
 
-                                            switch(loopTokens[2].tokenType.ToString()){
-                                                case "Equals": 
+                                            switch(loopTokens[2].tokenType.ToString()){ //checks the comparison operator of the loop
+                                                case "Equals": //equals 
                                                     while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) == Int32.Parse(loopTokens[3].value)){
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "GreaterThan": 
+                                                case "GreaterThan": //greater than
                                                     while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) > Int32.Parse(loopTokens[3].value)){
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "LessThan": 
+                                                case "LessThan": //less than
                                                     while (variables.ReturnValue(variables.ReturnPosition(loopTokens[1].name.ToUpper())) < Int32.Parse(loopTokens[3].value)){
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
                                             }
                                                 
-                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 2;
+                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 2; //update counter
 
                                         }
-                                        else{
-                                            noParseError("Loop not ended on line " + tokensReturned[loopSetCounter-1].lineNumber.ToString());
-                                            i = loopTokens[loopTokens.Count-1].lineNumber+3;
+                                        else{ //loop not ended
+                                            noParseError("Loop not ended on line " + tokensReturned[loopSetCounter-1].lineNumber.ToString()); //error message
+                                            i = loopTokens[loopTokens.Count-1].lineNumber+3; //update counter
                                         }
                                     
                                     }
+
+                                    //for integer iterator
                                     else if ((loopTokens[0].tokenType.ToString() == "While") && (loopTokens[1].tokenType.ToString() == "IntegerLiteral") && (operators.Contains(loopTokens[2].tokenType.ToString())) && (loopTokens[3].tokenType.ToString() == "IntegerLiteral"))
                                     {
-                                        System.Diagnostics.Debug.WriteLine("valid loop");
-
+                                        
+                                        //end loop check
                                         if (endLoopFound == true)
                                         {
 
-                                            switch (loopTokens[2].tokenType.ToString())
+                                            switch (loopTokens[2].tokenType.ToString()) //switch operator
                                             {
-                                                case "Equals":
+                                                case "Equals": //equals
                                                     while (Int32.Parse(loopTokens[1].value) == Int32.Parse(loopTokens[3].value))
                                                     {
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "GreaterThan":
+                                                case "GreaterThan": //greater than
                                                     while (Int32.Parse(loopTokens[1].value) > Int32.Parse(loopTokens[3].value))
                                                     {
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "LessThan":
+                                                case "LessThan": //less than
                                                     while (Int32.Parse(loopTokens[1].value) < Int32.Parse(loopTokens[3].value))
                                                     {
-                                                        parseTokens(loopTokens, sender, drawing, canvasPen);
+                                                        parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
                                             }
 
-                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 2;
+                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 2; //update counter
 
                                         }
                                         else
                                         {
-                                            noParseError("Loop not ended on line " + tokensReturned[loopSetCounter - 1].lineNumber.ToString());
-                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 3;
+                                            noParseError("Loop not ended on line " + tokensReturned[loopSetCounter - 1].lineNumber.ToString()); //error message
+                                            i = loopTokens[loopTokens.Count - 1].lineNumber + 3; //update counter
                                         }
 
                                     }
                                     else
                                     {
-                                        noParseError("Loop not created properly on line number " + tokensReturned[x].lineNumber.ToString());
-                                        //System.Diagnostics.Debug.WriteLine("Invalid loop");
-                                        i = loopTokens[loopTokens.Count - 1].lineNumber + 2;
+                                        noParseError("Loop not created properly on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+                                        i = loopTokens[loopTokens.Count - 1].lineNumber + 2; //update counter
                                     }
 
                                     break;
@@ -632,13 +590,14 @@ namespace ase
 
                                 case "If":
                                     List<Token> ifTokens = new List<Token>(); //List which stores all the tokens in an if statement
-                                    List<string> ifOperators = new List<string>() { "GreaterThan", "Equals", "LessThan" };
-                                    Boolean multiline = false;
-                                    int ifSetCounter = x + 1;
+                                    List<string> ifOperators = new List<string>() { "GreaterThan", "Equals", "LessThan" }; //operators
+                                    Boolean multiline = false; //multiline check
+                                    int ifSetCounter = x + 1; //if counter
 
+                                    //gets the if tokens 
                                     while ((multiline == false) && (ifSetCounter < tokensReturned.Count))
                                     {
-                                        if ((tokensReturned[ifSetCounter].tokenType.ToString() == "EndIf")) { multiline = true; }
+                                        if ((tokensReturned[ifSetCounter].tokenType.ToString() == "EndIf")) { multiline = true; } //end if found
                                         else
                                         {
                                             ifTokens.Add(tokensReturned[ifSetCounter]);
@@ -646,53 +605,54 @@ namespace ase
                                         }
                                     }
 
+                                    //if statement is single line
                                     if (multiline == false)
                                     {
-                                        ifTokens = allTokensOnLine(ifTokens, i);
-                                        if ((variables.ReturnPosition(ifTokens[0].name.ToUpper()) != -1) && (ifOperators.Contains(ifTokens[1].tokenType.ToString())) && (ifTokens[2].tokenType.ToString() == "IntegerLiteral") && (ifTokens[3].tokenType.ToString() == "Then"))
+                                        ifTokens = allTokensOnLine(ifTokens, i); //gets the if tokens from the single line
+                                        if ((variables.ReturnPosition(ifTokens[0].name.ToUpper()) != -1) && (ifOperators.Contains(ifTokens[1].tokenType.ToString())) && (ifTokens[2].tokenType.ToString() == "IntegerLiteral") && (ifTokens[3].tokenType.ToString() == "Then")) //token checks
                                         {
-                                            switch (ifTokens[1].tokenType.ToString())
+                                            switch (ifTokens[1].tokenType.ToString()) //operator check
                                             {
-                                                case "GreaterThan":
-                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) > Int32.Parse(ifTokens[2].value))
+                                                case "GreaterThan": //greater than
+                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) > Int32.Parse(ifTokens[2].value)) //get value
                                                     {
-                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
+                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "LessThan":
-                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) < Int32.Parse(ifTokens[2].value))
+                                                case "LessThan": //less than
+                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) < Int32.Parse(ifTokens[2].value)) //get value
                                                     {
-                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
+                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
-                                                case "Equals":
-                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) == Int32.Parse(ifTokens[2].value))
+                                                case "Equals": //equals
+                                                    if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) == Int32.Parse(ifTokens[2].value)) //get value
                                                     {
-                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
+                                                        parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
 
                                             }
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1; //update counter
                                         }
                                         else if ((ifTokens[0].tokenType.ToString() == "IntegerLiteral") && (ifOperators.Contains(ifTokens[1].tokenType.ToString())) && (ifTokens[2].tokenType.ToString() == "IntegerLiteral") && (ifTokens[3].tokenType.ToString() == "Then"))
                                         {
                                             //System.Diagnostics.Debug.WriteLine("single line integer comparison");
                                             switch (ifTokens[1].tokenType.ToString())
                                             {
-                                                case "GreaterThan":
+                                                case "GreaterThan": //greater than
                                                     if (Int32.Parse(ifTokens[0].value) > Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "LessThan":
+                                                case "LessThan": //less than
                                                     if (Int32.Parse(ifTokens[0].value) < Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "Equals":
+                                                case "Equals": //equals
                                                     if (Int32.Parse(ifTokens[0].value) == Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
@@ -700,41 +660,40 @@ namespace ase
                                                     break;
 
                                             }
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1; //update counter
 
                                         }
                                         else
                                         {
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 1; //update counter
                                         }
 
-                                        //Add all tokens on line
+                                        
                                     }
+
+                                    //multiline if statement
                                     else
                                     {
+                                        //syntax checking for variable comparator
                                         if ((variables.ReturnPosition(ifTokens[0].name.ToUpper()) != -1) && (ifOperators.Contains(ifTokens[1].tokenType.ToString())) && (ifTokens[2].tokenType.ToString() == "IntegerLiteral") && (ifTokens[3].tokenType.ToString() == "Then"))
                                         {
-                                            System.Diagnostics.Debug.WriteLine(">"+ifTokens[1].tokenType.ToString());
-                                            List<Token> test = ifTokens.GetRange(4, ifTokens.Count - 4);
-                                            for (int u=0; u<test.Count; u++)
-                                            {
-                                                System.Diagnostics.Debug.WriteLine("I" + test[u].tokenType.ToString());
-                                            }
+                                            
+                                            //operator check
                                             switch (ifTokens[1].tokenType.ToString())
                                             {
-                                                case "GreaterThan": 
+                                                case "GreaterThan": //greater than
                                                     if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) > Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "LessThan":
+                                                case "LessThan": //less than
                                                     if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) < Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "Equals":
+                                                case "Equals": //equals
                                                     if (variables.ReturnValue(variables.ReturnPosition(ifTokens[0].name.ToUpper())) == Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
@@ -744,27 +703,29 @@ namespace ase
                                             }
                                             
                                             
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2; //update counter
                                             
                                         }
+
+                                        //syntax checking for integer comparator
                                         else if ((ifTokens[0].tokenType.ToString() == "IntegerLiteral") && (ifOperators.Contains(ifTokens[1].tokenType.ToString())) && (ifTokens[2].tokenType.ToString() == "IntegerLiteral") && (ifTokens[3].tokenType.ToString() == "Then"))
                                         {
-                                            
+                                            //operator check
                                             switch (ifTokens[1].tokenType.ToString())
                                             {
-                                                case "GreaterThan":
+                                                case "GreaterThan": //greater than
                                                     if (Int32.Parse(ifTokens[0].value) > Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "LessThan":
+                                                case "LessThan": //less than
                                                     if (Int32.Parse(ifTokens[0].value) < Int32.Parse(ifTokens[2].value))
                                                     { 
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
-                                                case "Equals":
+                                                case "Equals": //equals
                                                     if (Int32.Parse(ifTokens[0].value) == Int32.Parse(ifTokens[2].value))
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
@@ -772,106 +733,109 @@ namespace ase
                                                     break;
 
                                             }
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2; //update counter
 
                                         }
                                         else
                                         {
-                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2;
+                                            i = ifTokens[ifTokens.Count - 1].lineNumber + 2; //update counter
                                         }
                                     }
 
 
                                     break;
 
-                                case "Method":
-                                    System.Diagnostics.Debug.WriteLine("Method declaration line");
-                                    List<Token> methodHeaderTokens = new List<Token>();
+                                case "Method": //method definition 
+                                    
+                                    List<Token> methodHeaderTokens = new List<Token>(); //list to hold header tokens
                                     List<Token> methodBodyTokens = new List<Token>(); //List which stores all the tokens in the method declaration statement
-                                    methodHeaderTokens = allTokensOnLine(tokensReturned, i);
-                                    //System.Diagnostics.Debug.WriteLine(methodHeaderTokens.Count);
+                                    methodHeaderTokens = allTokensOnLine(tokensReturned, i); //gets all tokens on header line
                                     
-                                    
-
                                     //check for open close brackets
-                                    int openBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "OpenBracket");
-                                    int closeBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "CloseBracket");
-                                    List<Token> parameters = methodHeaderTokens.GetRange(openBracketIndex, (closeBracketIndex - openBracketIndex));
-                                    List<string> namedParameters = new List<string>();
-                                    Boolean validParameters = true;
-                                    Boolean methodAlreadyDefined = methods.MethodExists(methodHeaderTokens[1].name.ToUpper());
-                                    //System.Diagnostics.Debug.WriteLine("Parameters length: "+parameters.Count);
-                                    if (parameters.Count > 1)
+                                    if ((methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "OpenBracket") != -1) && (methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "CloseBracket") != -1))
                                     {
-                                        parameters.RemoveAll(t => t.tokenType.ToString() == "Comma");
-                                        for (int p=1; p<parameters.Count; p++)
+                                        int openBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "OpenBracket"); //index of open bracket
+                                        int closeBracketIndex = methodHeaderTokens.FindIndex(m => m.tokenType.ToString() == "CloseBracket"); //index of close bracket
+                                        List<Token> parameters = methodHeaderTokens.GetRange(openBracketIndex, (closeBracketIndex - openBracketIndex)); //gets parameters
+                                        List<string> namedParameters = new List<string>(); //list to hold parameters
+                                        Boolean validParameters = true; //parameter check
+                                        Boolean methodAlreadyDefined = methods.MethodExists(methodHeaderTokens[1].name.ToUpper()); //checks if method already exists
+                                        
+                                        //if parameters are present
+                                        if (parameters.Count > 1)
                                         {
-                                            System.Diagnostics.Debug.WriteLine("Parameter: " + parameters[p].tokenType.ToString());
-                                            if (parameters[p].tokenType.ToString() == "Identifier")
+                                            parameters.RemoveAll(t => t.tokenType.ToString() == "Comma"); //remove all commas from parameter list
+
+                                            //loops over parameter list
+                                            for (int p = 1; p < parameters.Count; p++)
                                             {
-                                                namedParameters.Add(parameters[p].name.ToUpper());
+                                                
+                                                if (parameters[p].tokenType.ToString() == "Identifier") //parameter is identifer
+                                                {
+                                                    namedParameters.Add(parameters[p].name.ToUpper()); //add to list
+                                                }
+                                                else
+                                                {
+                                                    validParameters = false; //parameters invalid
+                                                    noParseError("Parameter declared in method is not an identifier on line number" + tokensReturned[x].lineNumber.ToString()); //error message
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //method with no parameters
+                                        }
+                                        Boolean endMethodFound = false; //end method check
+                                        
+                                        int methodSetCounter = x + methodHeaderTokens.Count; //update counter
+                                        
+                                        //populates the method body
+                                        while ((endMethodFound == false) && (methodSetCounter < tokensReturned.Count))
+                                        {
+                                            
+                                            if (tokensReturned[methodSetCounter].tokenType.ToString() == "EndMethod") { endMethodFound = true; } //end method found
+                                            else
+                                            {
+                                                methodBodyTokens.Add(tokensReturned[methodSetCounter]); //adds token to body definition
+                                                methodSetCounter++;
+                                            }
+                                        }
+
+                                        if (endMethodFound == true && validParameters == true) //method valid
+                                        {
+
+                                            if (methodAlreadyDefined == false) //method not already defined
+                                            {
+                                                methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters, methodBodyTokens); //creates the method
                                             }
                                             else
                                             {
-                                                validParameters = false;
-                                                noParseError("Parameter declared in method is not an identifier " + tokensReturned[x].lineNumber.ToString());
+                                                noParseError("Method with the same name has already been defined on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                             }
+                                        }
+                                        else
+                                        {
+                                            noParseError("Method declaration not ended on line " + tokensReturned[x].lineNumber.ToString()); //error message
+                                        }
+
+                                        if (methodBodyTokens.Count == 0) //empty method
+                                        {
+                                            i = tokensReturned[x].lineNumber + 2; //update counter
+                                        }
+                                        else
+                                        {
+                                            i = methodBodyTokens[methodBodyTokens.Count - 1].lineNumber + 2; //update counter
                                         }
                                     }
                                     else
                                     {
-                                        //empty list
+                                        noParseError("Syntax error. Method not defined properly on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                     }
-                                    Boolean endMethodFound = false;
-                                    //int methodLineStart = x+1;
-                                    int methodSetCounter = x + methodHeaderTokens.Count;
-                                    //int methodSetCounter = x + 4; //for method with no parameters (dynamically set this depending on parameter list
-
-                                    while ((endMethodFound == false) && (methodSetCounter < tokensReturned.Count))
-                                    {
-                                        //System.Diagnostics.Debug.WriteLine(endMethodFound);
-                                        if (tokensReturned[methodSetCounter].tokenType.ToString() == "EndMethod") { endMethodFound = true; }
-                                        else
-                                        {
-                                            methodBodyTokens.Add(tokensReturned[methodSetCounter]);
-                                            methodSetCounter++;
-                                        }
-                                    }
-
-                                    if (endMethodFound == true && validParameters == true){
-
-                                        if (methodAlreadyDefined == false){
-                                            System.Diagnostics.Debug.WriteLine("Method created");
-                                            methods.AddMethod(methodHeaderTokens[1].name.ToUpper(), namedParameters, methodBodyTokens);
-
-                                        }else{
-                                            noParseError("Method with the same name has already been defined on line number " + tokensReturned[x].lineNumber.ToString());
-                                        }
-                                    }else{
-                                        noParseError("Method declaration not ended on line " + tokensReturned[x].lineNumber.ToString());
-                                    }
-
-                                    if (methodBodyTokens.Count == 0){
-                                        //System.Diagnostics.Debug.WriteLine(methodBodyTokens.Count);
-                                        i = tokensReturned[x].lineNumber + 2;
-                                    }else{
-                                        i = methodBodyTokens[methodBodyTokens.Count - 1].lineNumber + 2;
-                                    }
-
-                                    
-                                
-
-
-
-
-                                    //check syntax
-                                    // method space (....)
-                                    //check method doesn't already exsist
                                     break;
 
                                 default: //Token not recognised
                                     if (tokensReturned[x].tokenType.ToString() == "Undefined"){
-                                        noParseError("Syntax error. Command not recognised on line number " + tokensReturned[x].lineNumber.ToString());
+                                        noParseError("Syntax error. Command not recognised on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                     }
 
                                     break;
