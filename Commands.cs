@@ -56,7 +56,7 @@ namespace ase
         /// <param name="canvasPen">The pen object which stores x,y coordinates.</param>
         /// <param name="x">The x coordinate to draw to.</param>
         /// <param name="y">The y coordinate to draw to.</param>
-        public void drawTo(Object sender, Object drawing, Object canvasPen, int x, int y)
+        public void drawTo(Object Pen, Object sender, Object drawing, Object canvasPen, int x, int y)
         {
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;

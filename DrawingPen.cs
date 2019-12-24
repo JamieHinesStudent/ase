@@ -12,8 +12,38 @@ namespace ase
         private readonly int maxXCoordinate; //Max width of the canvas
         private readonly int maxYCoordinate; //Max height of the canvas
 
-        Pen Colour { get; set; }
-        //= new Pen(Color.Black);
+        public Pen Colour { get; set; } //pen object
+        
+
+        /// <summary>
+        /// Returns the pen object so the colour can be found.
+        /// </summary>
+        /// <returns>Pen object.</returns>
+        public Pen returnColour()
+        {
+            return Colour;
+        }
+
+        /// <summary>
+        /// Function to set the colour of the pen object in the program.
+        /// </summary>
+        /// <param name="colourName">Colour to set</param>
+        /// <returns>True if the colour was set, false if it was not.</returns>
+        public bool SetColour(string colourName)
+        {
+            switch (colourName){
+                case "RED": Colour.Color = Color.Red;  return true;
+                case "BLUE": Colour.Color = Color.Blue; return true;
+                case "YELLOW": Colour.Color = Color.Yellow; return true;
+                case "GREEN": Colour.Color = Color.Green; return true;
+                case "ORANGE": Colour.Color = Color.Orange; return true;
+                case "BLACK": Colour.Color = Color.Black; return true;
+                case "PINK": Colour.Color = Color.Pink; return true;
+                case "WHITE": Colour.Color = Color.White; return true;
+            }
+            return false;
+
+        }
 
         
 

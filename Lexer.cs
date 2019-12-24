@@ -88,6 +88,7 @@
                     case "COUNTER":   return new Token(Tokens.Counter, "", "", line, position, column);
                     case "METHOD":    return new Token(Tokens.Method, "", "", line, position, column);
                     case "ENDMETHOD":    return new Token(Tokens.EndMethod, "", "", line, position, column);
+                    case "COLOUR":    return new Token(Tokens.Colour, "", "", line, position, column);
                     default:          return new Token(Tokens.Identifier, builtString.ToUpper(), "0", line, position, column); //this would be an identifier
                 }
             }

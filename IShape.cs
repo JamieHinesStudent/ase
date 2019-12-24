@@ -10,9 +10,10 @@ namespace ase
         /// <summary>
         /// Method which is used by the shapes to draw.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas which they draw on.</param>
         /// <param name="drawing">The bitmap image to draw onto.</param>
-       void Draw(Object sender, Object drawing);
+        void Draw(Object Pen, Object sender, Object drawing);
 
         /// <summary>
         /// Method which sets the parameters of the shape so it can have sets of coordinates and sizes.

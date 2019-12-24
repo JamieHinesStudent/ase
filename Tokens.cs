@@ -41,5 +41,7 @@
         CloseBracket,
         NewLine,
         WhiteSpace,
+
+        Colour,
     }
 }

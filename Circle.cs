@@ -40,16 +40,19 @@ namespace ase
         /// <summary>
         /// Draws the circle on the screen.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas to be drawn on.</param>
         /// <param name="drawing">The image to be drawn on.</param>
-        public override void Draw(Object sender, Object drawing)
+        public override void Draw(Object Pen, Object sender, Object drawing)
         {
             //Constructs the objects
+            DrawingPen colouredPen = (DrawingPen)Pen;
+            Pen penColour = colouredPen.returnColour();
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            g.DrawEllipse(Pens.Black, x, y, radius * 2, radius * 2); //Draw function
+            g.DrawEllipse(penColour, x, y, radius * 2, radius * 2); //Draw function
             canvas.Image = image; //Sets the bitmap image to the canvas
 
             g.Dispose(); //Disposes of object to free up memory

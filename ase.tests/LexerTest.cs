@@ -58,7 +58,7 @@ namespace ase.tests
         public void Lexer_Returns_Correct_Tokens_Part2()
         {
             List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
-            string[] sutExpectedReturns = { "Identifer", "WhiteSpace", "Equals", "WhiteSpace", "IntegerLiteral" }; //Expected tokens
+            string[] sutExpectedReturns = { "Identifier", "WhiteSpace", "Equals", "WhiteSpace", "IntegerLiteral" }; //Expected tokens
 
             var sut = new Lexer("Count = 50"); //Sample command
             Token nextToken = sut.CreateToken();

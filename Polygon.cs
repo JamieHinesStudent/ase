@@ -27,11 +27,14 @@ namespace ase
         /// <summary>
         /// Method to draw the polygon.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">Canvas to draw on.</param>
         /// <param name="drawing">Image to draw on.</param>
-        public override void Draw(Object sender, Object drawing)
+        public override void Draw(Object Pen, Object sender, Object drawing)
         {
             //Constructs the objects
+            DrawingPen colouredPen = (DrawingPen)Pen;
+            Pen penColour = colouredPen.returnColour();
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
@@ -41,7 +44,7 @@ namespace ase
                 points.Add(new Point(polygonPoints[i], polygonPoints[i + 1]));
             }
 
-            g.DrawPolygon(Pens.Black, points.ToArray());
+            g.DrawPolygon(penColour, points.ToArray());
 
             canvas.Image = image; //Sets the bitmap image to the canvas
 

@@ -31,9 +31,10 @@ namespace ase
         /// <summary>
         /// Abstract methods that the shape classes implement to draw shapes.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas to draw on.</param>
         /// <param name="drawing">The image to draw on.</param>
-        public abstract void Draw(Object sender, Object drawing);
+        public abstract void Draw(Object Pen, Object sender, Object drawing);
 
         /// <summary>
         /// Virtual set method which can be overridden by more specific child versions. Sets the parameters for the shape.

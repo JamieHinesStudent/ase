@@ -208,7 +208,7 @@ namespace ase
                                     if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 4){ //tokens on line check
                                         try{
                                             //Checks for valid parameters
-                                            if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.drawTo(sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
+                                            if (IsComma(tokensReturned[x + 2]) == true && local.CheckDimensions(Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)) == true) { SetIdentifer(tokensReturned, new int[] { x + 1, x + 3 }); command.drawTo(local, sender, drawing, canvasPen, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); }
                                             else { noParseError("Drawto statement invalid, coordinates are out of bounds on line number " + tokensReturned[x].lineNumber.ToString()); } //error message
                                         }
                                             catch (Exception) { noParseError("DrawTo command on line " + tokensReturned[x].lineNumber.ToString() + " can only take integer parameters."); } //command invalid
@@ -233,7 +233,8 @@ namespace ase
 
                                                     buildShape = parserShapeFactory.getShape("Circle"); //makes shape
                                                     buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value)); //sets parameters
-                                                    buildShape.Draw(sender, drawing); //draws circle
+                                               
+                                                buildShape.Draw(local, sender, drawing); //draws circle
                                                 }
                                                 else { noParseError("Circle's dimensions out of bounds"); } //error message
                                             }
@@ -257,7 +258,7 @@ namespace ase
                                                     {
                                                         buildShape = parserShapeFactory.getShape("Rectangle"); //makes shape
                                                         buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value)); //sets parameters
-                                                        buildShape.Draw(sender, drawing); //draws rectangle
+                                                        buildShape.Draw(local, sender, drawing); //draws rectangle
                                                     }
                                                     else { noParseError("Rectangle's dimensions out of bounds"); } //error message
                                                 }
@@ -283,7 +284,7 @@ namespace ase
                                                     {
                                                         buildShape = parserShapeFactory.getShape("Triangle"); //creates shape
                                                         buildShape.Set(local.xCoordinate, local.yCoordinate, Convert.ToInt32(tokensReturned[x + 1].value), Convert.ToInt32(tokensReturned[x + 3].value), Convert.ToInt32(tokensReturned[x + 5].value)); //sets shape coordinates
-                                                        buildShape.Draw(sender, drawing); //draws the shape
+                                                        buildShape.Draw(local, sender, drawing); //draws the shape
                                                     }
                                                     else { noParseError("Triangle's dimensions are out of bounds"); } //error message
                                                 }
@@ -295,7 +296,149 @@ namespace ase
                                             noParseError("Triangle statement invalid on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                         }
                                         break;
-                                    case "Identifier": //Identifier token (this could be a method or variable)
+
+                                case "Polygon": //Polygon token
+                                    if (((tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) % 2) == 0) && (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) >= 4)) //check correct number of tokens on the line
+                                    {
+                                        try
+                                        {
+                                            int arraySize = 0; //array size to pass
+                                            
+                                            //calculate array size
+                                            for (int polygonParam = 1; polygonParam < tokensOnLine(tokensReturned, tokensReturned[x].lineNumber); polygonParam += 2)
+                                            {
+                                                arraySize++; //increment array size
+
+                                            }
+
+                                            
+                                            //tokens for polygon
+                                            int[] tokensForPoly = new int[arraySize];
+
+                                            //values for polygon
+
+                                            int polyCounter = 0; //counter variable
+                                            //set items in array
+                                            for (int polygonParam = 1; polygonParam < tokensOnLine(tokensReturned, tokensReturned[x].lineNumber); polygonParam += 2)
+                                            {
+                                                tokensForPoly[polyCounter] = x + polygonParam;
+                                                polyCounter++;
+
+                                            }
+
+                                            //set identifiers
+                                            SetIdentifer(tokensReturned, tokensForPoly);
+                                            bool validPolyComma = true; //control variable for commas
+                                            bool validPolyBounds = true; //control variable for bounds (x,y)
+
+                                            //comma check
+                                            for (int polygonParam = 2; polygonParam < tokensOnLine(tokensReturned, tokensReturned[x].lineNumber); polygonParam += 2)
+                                            {
+                                                if (IsComma(tokensReturned[polygonParam]) == false)
+                                                {
+                                                    validPolyComma = false;
+                                                }
+                                                
+
+                                            }
+
+                                            int[] polygonValues = new int[tokensForPoly.Length + 2];
+                                            polygonValues[0] = local.xCoordinate;
+                                            polygonValues[1] = local.yCoordinate;
+                                            int polyCount = 2;
+
+                                            //dimensions check
+                                            for (int polygonParam = 1; polygonParam < tokensOnLine(tokensReturned, tokensReturned[x].lineNumber)-2; polygonParam += 2)
+                                            {
+                                                
+                                                if (local.CheckDimensions(Convert.ToInt32(tokensReturned[x + polygonParam].value), Convert.ToInt32(tokensReturned[x + (polygonParam + 2)].value)) == false)
+                                                {
+                                                    validPolyBounds = false;
+                                                }
+                                                
+                                            }
+
+                                            //populate values to pass to the polygon shape to draw
+                                            for (int polygonParam = 1; polygonParam < tokensOnLine(tokensReturned, tokensReturned[x].lineNumber); polygonParam += 2)
+                                            {
+                                                polygonValues[polyCount] = Convert.ToInt32(tokensReturned[x + polygonParam].value);
+                                                polyCount++; //increment counter
+
+                                            }
+
+                                            //valid command check
+                                            if ((validPolyComma == true) && (validPolyBounds == true))
+                                            {
+                                                buildShape = parserShapeFactory.getShape("Polygon"); //create shape
+                                                //buildShape.Set(local.xCoordinate, local.yCoordinate, 20, 30, 80, 50, 90, 70);
+                                                buildShape.Set(polygonValues);
+                                                buildShape.Draw(local, sender, drawing); //draws the shape
+
+                                            }
+                                            else
+                                            {
+                                                if (validPolyComma == false)
+                                                {
+                                                    noParseError("Incorrect call to polygon command. Check syntax for commas on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+
+                                                }
+                                                else
+                                                {
+                                                    noParseError("Incorrect call to polygon command. Check dimensions on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+
+                                                }
+
+                                            }
+
+
+                                        }
+                                        //Exception with converting values to integer or out of bounds
+                                        catch(Exception)
+                                        {
+                                            noParseError("Incorrect type of parameters to polygon on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+
+                                        }
+
+
+
+                                    }
+                                    else
+                                    {
+                                        noParseError("Incorrect number of parameters to polygon on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+
+                                    }
+
+                                        
+
+
+
+                                    break;
+
+                                case "Colour": //setting the colour
+                                    
+                                    if (tokensOnLine(tokensReturned, tokensReturned[x].lineNumber) == 3) //syntax check
+                                    {
+                                        if (tokensReturned[x + 1].tokenType.ToString() == "Equals" && tokensReturned[x + 2].tokenType.ToString() == "Identifier")
+                                        {
+                                            if (local.SetColour(tokensReturned[x + 2].name.ToUpper()) != true) //sets the colour and checks it has been set
+                                            {
+                                                noParseError("The colour " + tokensReturned[x+2].name + " is not currently supported"); //error message
+                                            }
+                                        }
+                                        else
+                                        {
+                                            noParseError("Colour set statement not defined properly on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+                                        }
+                                    }
+                                    else
+                                    {
+                                        noParseError("Colour set statement not defined properly on line number " + tokensReturned[x].lineNumber.ToString()); //error message
+                                    }
+
+                                    i++; //increment line
+                                        break;
+
+                                case "Identifier": //Identifier token (this could be a method or variable)
 
                                     //check if it's a method first
                                     if (methods.ReturnPosition(tokensReturned[x].name.ToUpper()) != -1)
@@ -527,6 +670,9 @@ namespace ase
                                                         parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
+                                                default:
+                                                    noParseError("Unrecognised operator in loop statement " + tokensReturned[x].lineNumber.ToString()); //error message
+                                                    break;
                                             }
                                                 
                                             i = loopTokens[loopTokens.Count - 1].lineNumber + 2; //update counter
@@ -566,6 +712,9 @@ namespace ase
                                                     {
                                                         parseTokens(loopTokens, sender, drawing, canvasPen); //parse tokens
                                                     }
+                                                    break;
+                                                default:
+                                                    noParseError("Unrecognised operator in loop statement " + tokensReturned[x].lineNumber.ToString()); //error message
                                                     break;
                                             }
 
@@ -631,6 +780,10 @@ namespace ase
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen); //parse tokens
                                                     }
                                                     break;
+                                                default:
+                                                    noParseError("Unrecognised operator in if statement " + tokensReturned[x].lineNumber.ToString()); //error message
+                                                    break;
+
 
                                             }
                                             i = ifTokens[ifTokens.Count - 1].lineNumber + 1; //update counter
@@ -657,6 +810,9 @@ namespace ase
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
+                                                    break;
+                                                default:
+                                                    noParseError("Unrecognised operator in if statement " + tokensReturned[x].lineNumber.ToString()); //error message
                                                     break;
 
                                             }
@@ -699,6 +855,9 @@ namespace ase
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
                                                     break;
+                                                default:
+                                                    noParseError("Unrecognised operator in if statement " + tokensReturned[x].lineNumber.ToString()); //error message
+                                                    break;
 
                                             }
                                             
@@ -730,6 +889,9 @@ namespace ase
                                                     {
                                                         parseTokens(ifTokens.GetRange(4, ifTokens.Count - 4), sender, drawing, canvasPen);
                                                     }
+                                                    break;
+                                                default:
+                                                    noParseError("Unrecognised operator in if statement " + tokensReturned[x].lineNumber.ToString()); //error message
                                                     break;
 
                                             }
@@ -832,6 +994,8 @@ namespace ase
                                         noParseError("Syntax error. Method not defined properly on line number " + tokensReturned[x].lineNumber.ToString()); //error message
                                     }
                                     break;
+
+                                
 
                                 default: //Token not recognised
                                     if (tokensReturned[x].tokenType.ToString() == "Undefined"){

@@ -49,16 +49,19 @@ namespace ase
         /// <summary>
         /// Called to draw the triangle on the screen.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas to be drawn on.</param>
         /// <param name="drawing">The image to apply to the canvas.</param>
-        public override void Draw(Object sender, Object drawing)
+        public override void Draw(Object Pen, Object sender, Object drawing)
         {
+            DrawingPen colouredPen = (DrawingPen)Pen;
+            Pen penColour = colouredPen.returnColour();
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
             Point[] points = { new Point(x, y), new Point(side1, side2), new Point(side3, y) }; //Sets the points for the triangle
-            g.DrawPolygon(new Pen(Color.Black), points); //Draws the points of the triangle
+            g.DrawPolygon(new Pen(penColour.Color), points); //Draws the points of the triangle
             canvas.Image = image;
 
             g.Dispose(); //Gets rid of the graphics object to free up memory

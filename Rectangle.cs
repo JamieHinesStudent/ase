@@ -45,16 +45,19 @@ namespace ase
         /// <summary>
         /// Draws the rectangle on the screen.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas to draw on.</param>
         /// <param name="drawing">The bitmap image to draw on.</param>
-        public override void Draw(Object sender, Object drawing)
+        public override void Draw(Object Pen, Object sender, Object drawing)
         {
             //Constructs the objects
+            DrawingPen colouredPen = (DrawingPen)Pen;
+            Pen penColour = colouredPen.returnColour();
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
-            g.DrawRectangle(Pens.Black, x, y, width, height); //Draw function
+            g.DrawRectangle(penColour, x, y, width, height); //Draw function
             canvas.Image = image; //Updates canvas image
 
             g.Dispose(); //Disposes of objects to free up memory
