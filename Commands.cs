@@ -51,6 +51,7 @@ namespace ase
         /// <summary>
         /// Draws a line from the current x,y coordinates to the given x,y coordinates.
         /// </summary>
+        /// <param name="Pen">The pen object to draw with.</param>
         /// <param name="sender">The canvas to draw on.</param>
         /// <param name="drawing">The image to darw on.</param>
         /// <param name="canvasPen">The pen object which stores x,y coordinates.</param>

@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// Main form class for the program.
+    /// </summary>
     public partial class Form1 : Form
     {
         Parser parser = new Parser();
@@ -11,6 +14,9 @@ namespace ase
         Bitmap drawing;
         DrawingPen canvasPen = new DrawingPen(0, 0, 860, 677);
 
+        /// <summary>
+        /// Form constructor, initialises the components.
+        /// </summary>
         public Form1()
         {
             InitializeComponent();

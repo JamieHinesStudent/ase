@@ -214,7 +214,12 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.Button runCommand;
+
+        /// <summary>
+        /// The canvas to draw on.
+        /// </summary>
         public System.Windows.Forms.PictureBox canvas;
+
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

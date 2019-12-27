@@ -19,9 +19,6 @@ namespace ase
         /// <summary>
         /// Triangle constructor class.
         /// </summary>
-        /// <param name="sender">The canvas to draw on.</param>
-        /// <param name="drawing">The image to draw on.</param>
-        /// <param name="canvasPen">The pen object.</param>
         /// <param name="side1">x coordinate.</param>
         /// <param name="side2">y coordinate.</param>
         /// <param name="side3">x coordinate.</param>

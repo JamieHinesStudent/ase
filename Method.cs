@@ -11,8 +11,17 @@ namespace ase
     /// </summary>
     public class Method
     {
+        /// <summary>
+        /// Name of the method.
+        /// </summary>
         public string name { get; set; } //name of the method
+        /// <summary>
+        /// Parameters for the method.
+        /// </summary>
         public List<string> parameters { get; set; } //parameters the method can except
+        /// <summary>
+        /// Method definition, the tokens that make it up.
+        /// </summary>
         public List<Token> definition { get;} //the tokens which make up the method
 
         /// <summary>

@@ -53,7 +53,9 @@ namespace ase.tests
             Assert.AreEqual(variables.ReturnValue(0), 10);
         }
 
-        //Test to check variable store clear down.
+        /// <summary>
+        /// Test to check variable store clear down.
+        /// </summary>
         [TestMethod]
         public void Clear_Variable_List_Part2()
         {
