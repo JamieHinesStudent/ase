@@ -13,11 +13,18 @@ namespace ase
     /// </summary>
     class Polygon : Shape
     {
-        int[] polygonPoints;
-        List<Point> points = new List<Point>();
+        int[] polygonPoints; //points array
+        List<Point> points = new List<Point>(); //points list
 
+        /// <summary>
+        /// Base constructor.
+        /// </summary>
         public Polygon():base(){}
 
+        /// <summary>
+        /// Sets the parameters for the shape.
+        /// </summary>
+        /// <param name="list">The x,y coordinates and the points to draw.</param>
         public override void Set(params int[] list)
         {
             base.Set(list[0], list[1]);
@@ -39,12 +46,13 @@ namespace ase
             Bitmap image = (Bitmap)drawing;
             Graphics g = Graphics.FromImage(image);
 
+            //Loops over the points and creates x,y coordinates
             for (int i = 0; i < polygonPoints.Length; i += 2)
             {
                 points.Add(new Point(polygonPoints[i], polygonPoints[i + 1]));
             }
 
-            g.DrawPolygon(penColour, points.ToArray());
+            g.DrawPolygon(penColour, points.ToArray()); //draws the shape
 
             canvas.Image = image; //Sets the bitmap image to the canvas
 

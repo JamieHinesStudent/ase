@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace ase
 {
+    /// <summary>
+    /// Program class.
+    /// </summary>
     static class Program
     {
         /// <summary>

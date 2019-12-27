@@ -11,18 +11,26 @@ namespace ase
     /// </summary>
     public sealed class VariableStore
     {
-        //delete
         private static readonly VariableStore instance = new VariableStore();
         private List<Token> variables = new List<Token>(); //list to hold all the created variables
 
+        /// <summary>
+        /// VariableStore constructor.
+        /// </summary>
         static VariableStore()
         {
         }
 
+        /// <summary>
+        /// VariableStore constructor.
+        /// </summary>
         private VariableStore()
         {
         }
 
+        /// <summary>
+        /// Returns the instance of the VariableStore.
+        /// </summary>
         public static VariableStore Instance{
             get{
                 return instance;

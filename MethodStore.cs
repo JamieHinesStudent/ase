@@ -11,14 +11,23 @@ namespace ase
         private static MethodStore instance = new MethodStore();
         private List<Method> methods = new List<Method>();
 
+        /// <summary>
+        /// MethodStore constructor.
+        /// </summary>
         static MethodStore()
         {
         }
 
+        /// <summary>
+        /// MethodStore constructor.
+        /// </summary>
         private MethodStore()
         {
         }
 
+        /// <summary>
+        /// Returns the instance of the method store.
+        /// </summary>
         public static MethodStore Instance { get{return instance;} }
 
         /// <summary>

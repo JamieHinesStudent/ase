@@ -55,7 +55,7 @@ namespace ase
                     System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
                     sw.WriteLine(commandContent); //Writes all content to file
                     sw.Flush();
-                    sw.Close();
+                    sw.Close(); //close connection
                 }
                 catch (Exception)
                 {

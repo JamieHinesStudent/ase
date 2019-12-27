@@ -9,7 +9,7 @@ namespace ase
     /// </summary>
     class Rectangle : Shape
     { 
-        int width, height;
+        int width, height; //width and height parameters
 
         /// <summary>
         /// Base constructor.

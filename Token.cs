@@ -6,12 +6,12 @@
     public class Token
     {
         
-        public Tokens tokenType { get; set; }
-        public string name { get; set; }
-        public string value { get; set; }
-        public int lineNumber { get; set; }
-        public int position { get; }
-        public int column { get; }
+        public Tokens tokenType { get; set; } //token type
+        public string name { get; set; } //token name
+        public string value { get; set; } //token value
+        public int lineNumber { get; set; } //token line number
+        public int position { get; } //token position
+        public int column { get; } //token column position
 
         /// <summary>
         /// Constructor which builds a token taking in parameters which define the token.

@@ -32,16 +32,16 @@ namespace ase
         public bool SetColour(string colourName)
         {
             switch (colourName){
-                case "RED": Colour.Color = Color.Red;  return true;
-                case "BLUE": Colour.Color = Color.Blue; return true;
-                case "YELLOW": Colour.Color = Color.Yellow; return true;
-                case "GREEN": Colour.Color = Color.Green; return true;
-                case "ORANGE": Colour.Color = Color.Orange; return true;
-                case "BLACK": Colour.Color = Color.Black; return true;
-                case "PINK": Colour.Color = Color.Pink; return true;
-                case "WHITE": Colour.Color = Color.White; return true;
+                case "RED": Colour.Color = Color.Red;  return true; //red
+                case "BLUE": Colour.Color = Color.Blue; return true; //blue
+                case "YELLOW": Colour.Color = Color.Yellow; return true; //yellow
+                case "GREEN": Colour.Color = Color.Green; return true; //green
+                case "ORANGE": Colour.Color = Color.Orange; return true; //orange
+                case "BLACK": Colour.Color = Color.Black; return true; //black
+                case "PINK": Colour.Color = Color.Pink; return true; //pink
+                case "WHITE": Colour.Color = Color.White; return true; //white
             }
-            return false;
+            return false; //if invalid colour false is returned
 
         }
 
@@ -62,7 +62,7 @@ namespace ase
             yCoordinate = y;
             maxXCoordinate = maxX;
             maxYCoordinate = maxY;
-            Colour = new Pen(Color.Black);
+            Colour = new Pen(Color.Black); //default colour
         }
         
         /// <summary>

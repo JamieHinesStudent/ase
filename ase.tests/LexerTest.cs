@@ -79,9 +79,75 @@ namespace ase.tests
         public void Lexer_Returns_Correct_Tokens_For_Loop_Part2()
         {
             List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
-            string[] sutExpectedReturns = { "Loop", "WhiteSpace", "For", "WhiteSpace", "Identifier", "Newline", "Circle", "WhiteSpace", "IntegerLiteral" }; //Expected tokens
+            string[] sutExpectedReturns = { "Loop", "WhiteSpace", "While", "WhiteSpace", "Identifier", "WhiteSpace", "NewLine", "WhiteSpace", "Circle", "WhiteSpace", "IntegerLiteral" }; //Expected tokens
 
-            var sut = new Lexer("Loop for count \n circle 10"); //Sample command
+            var sut = new Lexer("Loop while count \n circle 10"); //Sample command
+            Token nextToken = sut.CreateToken();
+            while (nextToken.tokenType != Tokens.EOF) //Gathers all the tokens until the end of the text
+            {
+                sutReturns.Add(nextToken); //Adds token to list
+                nextToken = sut.CreateToken(); //Gets the token
+            }
+
+            //Assert statement
+            for (int i = 0; i < sutReturns.Count; i++) { Assert.AreEqual(sutExpectedReturns[i], sutReturns[i].tokenType.ToString()); }
+        }
+
+        /// <summary>
+        /// Test to check that the lexer returns the correct tokens for a method.
+        /// </summary>
+        [TestMethod]
+        public void Lexer_Returns_Correct_Tokens_For_Method_Part2()
+        {
+            List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
+            string[] sutExpectedReturns = { "Method", "WhiteSpace", "Identifier", "WhiteSpace", "NewLine", "WhiteSpace", "Circle", "WhiteSpace", "IntegerLiteral", "WhiteSpace", "NewLine", "WhiteSpace", "EndMethod" }; //Expected tokens
+
+            var sut = new Lexer("Method testing \n circle 10 \n EndMethod"); //Sample command
+            Token nextToken = sut.CreateToken();
+            while (nextToken.tokenType != Tokens.EOF) //Gathers all the tokens until the end of the text
+            {
+                sutReturns.Add(nextToken); //Adds token to list
+                nextToken = sut.CreateToken(); //Gets the token
+            }
+
+            //Assert statement
+            for (int i = 0; i < sutReturns.Count; i++) { Assert.AreEqual(sutExpectedReturns[i], sutReturns[i].tokenType.ToString()); }
+        }
+
+        /// <summary>
+        /// Test to check the lexer returns the correct tokens for a single line if statement
+        /// </summary>
+        [TestMethod]
+        public void Lexer_Returns_Correct_Tokens_For_If_Part2()
+        {
+            List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
+            string[] sutExpectedReturns = { "If", "WhiteSpace", "Identifier", "WhiteSpace", "LessThan", "WhiteSpace", "IntegerLiteral", "WhiteSpace", "Then", "WhiteSpace", "Circle", "WhiteSpace", "IntegerLiteral" }; //Expected tokens
+
+            var sut = new Lexer("If X < 10 Then circle 10"); //Sample command
+            Token nextToken = sut.CreateToken();
+            while (nextToken.tokenType != Tokens.EOF) //Gathers all the tokens until the end of the text
+            {
+                sutReturns.Add(nextToken); //Adds token to list
+                nextToken = sut.CreateToken(); //Gets the token
+            }
+
+            //Assert statement
+            for (int i = 0; i < sutReturns.Count; i++) { Assert.AreEqual(sutExpectedReturns[i], sutReturns[i].tokenType.ToString()); }
+        }
+
+        /// <summary>
+        /// Test which checks the correct tokens are returned for a multiline if statement
+        /// </summary>
+        [TestMethod]
+        public void Lexer_Returns_Correct_Tokens_For_MultilineIf_Part2()
+        {
+            List<Token> sutReturns = new List<Token>(); //List to store the returned tokens
+            string[] sutExpectedReturns = { "If", "WhiteSpace", "Identifier", "WhiteSpace", "LessThan", "WhiteSpace", "IntegerLiteral", "WhiteSpace", "Then", "WhiteSpace", "NewLine", 
+                "WhiteSpace", "Circle", "WhiteSpace", "IntegerLiteral", "WhiteSpace", "NewLine", 
+                "WhiteSpace", "Circle", "WhiteSpace", "IntegerLiteral", "WhiteSpace", "NewLine", 
+                "WhiteSpace", "EndIf"}; //Expected tokens
+
+            var sut = new Lexer("If X < 10 Then \n Circle 100 \n Circle 200 \n EndIf"); //Sample command
             Token nextToken = sut.CreateToken();
             while (nextToken.tokenType != Tokens.EOF) //Gathers all the tokens until the end of the text
             {
@@ -105,6 +171,9 @@ namespace ase.tests
             Assert.AreEqual('i', retVal); //Since first character is set on instance next char would be 'i'
         }
 
+        /// <summary>
+        /// Test to check the variable value is set from the lexer.
+        /// </summary>
         [TestMethod]
         public void Check_Variable_Value_Part2()
         {

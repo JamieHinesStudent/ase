@@ -41,7 +41,7 @@ namespace ase
             DrawingPen local = (DrawingPen)canvasPen;
             Graphics g = Graphics.FromImage(image);
 
-            g.TranslateTransform(0, 0);
+            g.TranslateTransform(0, 0); //set 0,0
 
             local.xCoordinate = 0; //Reset x coordinate to 0
             local.yCoordinate = 0; //Reset y coordinate to 0
@@ -58,12 +58,15 @@ namespace ase
         /// <param name="y">The y coordinate to draw to.</param>
         public void drawTo(Object Pen, Object sender, Object drawing, Object canvasPen, int x, int y)
         {
+            //Constructs the objects
+            DrawingPen colouredPen = (DrawingPen)Pen;
+            Pen penColour = colouredPen.returnColour();
             PictureBox canvas = (PictureBox)sender;
             Bitmap image = (Bitmap)drawing;
             DrawingPen local = (DrawingPen)canvasPen;
             Graphics g = Graphics.FromImage(image);
 
-            g.DrawLine(new Pen(Color.Black), local.xCoordinate, local.yCoordinate, x, y); //Draw line command
+            g.DrawLine(penColour, local.xCoordinate, local.yCoordinate, x, y); //Draw line command
             local.xCoordinate = x;
             local.yCoordinate = y;
             canvas.Image = image; //Updates the image

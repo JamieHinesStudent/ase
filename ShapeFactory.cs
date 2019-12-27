@@ -19,12 +19,12 @@ namespace ase
 
             switch (shapeType)
             {
-                case "CIRCLE": return new Circle();
-                case "RECTANGLE": return new Rectangle();
-                case "TRIANGLE": return new Triangle();
-                case "POLYGON": return new Polygon();
+                case "CIRCLE": return new Circle(); //circle shape
+                case "RECTANGLE": return new Rectangle(); //rectangle shape
+                case "TRIANGLE": return new Triangle(); //triangle shape
+                case "POLYGON": return new Polygon(); //polygon shape
                 default:
-                    System.ArgumentException argEx = new System.ArgumentException("Factory error: " + shapeType + " does not exist");
+                    System.ArgumentException argEx = new System.ArgumentException("Factory error: " + shapeType + " does not exist"); //shape doesn't exist
                     throw argEx;
             }
                     

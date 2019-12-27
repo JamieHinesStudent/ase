@@ -9,7 +9,7 @@ namespace ase
     /// </summary>
     class Triangle : Shape
     {
-        int side1, side2, side3;
+        int side1, side2, side3; //triangle sides
 
         /// <summary>
         /// Base constructor class.
