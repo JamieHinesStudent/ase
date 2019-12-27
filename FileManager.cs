@@ -13,6 +13,19 @@ namespace ase
         private SaveFileDialog fileSaver;
 
         /// <summary>
+        /// Checks the extension of the file selected.
+        /// </summary>
+        /// <param name="filename">The file to check.</param>
+        private void ValidateFileType(string filename)
+        {
+            if (Path.GetExtension(filename) != ".txt") //not a text file
+            {
+                throw new InvalidFileTypeException(filename); //Custom exception thrown
+            }
+
+        }
+
+        /// <summary>
         /// Loads a file from the local storage on the computer.
         /// </summary>
         /// <returns>Returns the text contents of a file that is loaded in.</returns>
@@ -23,8 +36,16 @@ namespace ase
             {
                 try
                 {
-                    var sr = new StreamReader(fileOpener.FileName);
-                    return sr.ReadToEnd(); //File in form a string returned
+                    try
+                    {
+                        var sr = new StreamReader(fileOpener.FileName);
+                        ValidateFileType(fileOpener.FileName); //validates file
+                        return sr.ReadToEnd(); //File in form a string returned
+                    }catch(InvalidFileTypeException ex)
+                    {
+                        MessageBox.Show("Error loading the file '" + ex.Message + "'. The program only supports .txt files.");
+                        return null;
+                    }
                     
                 }
                 catch (Exception) //Error in handling file
@@ -51,11 +72,19 @@ namespace ase
             {
                 try
                 {
-                    System.IO.Stream fileStream = fileSaver.OpenFile(); //Opens file
-                    System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                    sw.WriteLine(commandContent); //Writes all content to file
-                    sw.Flush();
-                    sw.Close(); //close connection
+                    try
+                    {
+                        ValidateFileType(fileSaver.FileName);
+                        System.IO.Stream fileStream = fileSaver.OpenFile(); //Opens file
+                        System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
+                        sw.WriteLine(commandContent); //Writes all content to file
+                        sw.Flush();
+                        sw.Close(); //close connection
+                    }
+                    catch (InvalidFileTypeException ex)
+                    {
+                        MessageBox.Show("Error saving the file '" + ex.Message + "'. The program only supports .txt files."); //Error message displayed
+                    }
                 }
                 catch (Exception)
                 {
